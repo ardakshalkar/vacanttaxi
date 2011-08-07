@@ -1,0 +1,120 @@
+/*--------------------------------------
+  Author:      Gabriel Svennerberg
+  Email:       gabriel@svennerberg.com
+  Created:     2010-03-17
+  Description: Stylesheet for Chapter 3
+----------------------------------------*/
+
+body {
+border: 1px solid black;
+width:322px;
+font-size: small;
+background: #fff;
+height:482px;
+color:black;
+font-family: Stencil;
+}
+#main{
+background-color:#FFFF75;
+}
+#label{
+margin-left:5px;
+font-family:Stencil;
+font-size:14px;
+color:#242623;
+}
+#footer{
+position:absolute;
+top:483px;
+}
+#content{
+margin-left:none;
+margin-top:20px;
+}
+
+#editDiv{
+margin-top:3px;	
+overflow:auto;
+overflow-x:hidden; 
+height:310px;
+width:322px;
+background-color:#FFFF75;
+}
+#editDiv table tbody{
+float:right;
+width:250px;
+}
+#editDiv tbody tr{
+width:300px;
+}
+#status{
+margin-top:3px;
+background-color:#FFFF75;
+padding:5px;
+}
+#status label{
+font-family:Stencil;
+font-size:16px;
+margin-left:5px;
+}
+#status input{
+font-family:Stencil;
+background-color:#FFF;
+padding:3px;
+font-size:16px;
+}
+#chat{
+width:60px;
+height:25px;
+font-family:Stencil;
+font-size:14px;
+color:#242623;
+margin-top:15px;
+}
+#edit{
+width:60px;
+height:25px;
+font-family:Stencil;
+font-size:14px;
+color:#242623;
+}
+#messages{
+list-style-type: none;
+margin-top:3px;
+height:260px;
+overflow:auto; 
+-webkit-padding-start: 0px;
+
+}
+#messages li{
+background-color:#ffff75;
+width:300px;
+color:black;
+font-family: Stencil;
+margin-top:2px;
+padding:10px;
+}
+#mes-context{
+position:absolute;
+left:10px;
+top:442px;
+}
+#f{
+position:absolute;
+left:277px;
+top:442px;
+}
+#send{
+width:60px;
+height:25px;
+font-family:Stencil;
+font-size:14px;
+color:#242623;
+margin-top:5px;
+margin-left:155px;
+}
+#logout{
+position:absolute;
+top:20px;
+left: 270px;
+}

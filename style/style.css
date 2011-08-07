@@ -1,0 +1,389 @@
+/*--------------------------------------
+  Author:      Gabriel Svennerberg
+  Email:       gabriel@svennerberg.com
+  Created:     2010-03-17
+  Description: Stylesheet for Chapter 3
+----------------------------------------*/
+.clear{
+clear:both;
+}
+body {
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: small;
+  background: #fff;
+  padding:0px;
+  margin:0px;
+}
+#wrapper{
+width:960px;
+margin:auto;
+}
+#header{
+width:960px;
+margin:auto;
+background-color:#fafafa;
+position:relative;
+}
+#middlepart{
+width:960px;
+margin:auto;
+}
+
+#footer{
+clear:both;
+background-color:#FAFAFA;
+margin:auto;
+width:960px;
+}
+#msgs{
+margin:auto;
+width:840px;
+}
+#menu{
+clear:both;
+}
+#menu ul{
+padding:0px;
+margin:0px;
+}
+#menu ul li{
+float:left;
+padding:0px;
+list-style-type:none;
+}
+#menu ul li a{
+display:block;
+width:100px;
+padding:5px 0px;
+background-color:orange;
+text-align:center;
+text-decoration:none;
+font-size:14px;
+}
+#label{
+margin-left:5px;
+font-family:Stencil;
+font-size:14px;
+color:#242623;
+}
+#addressButton{
+color:#242623;
+font-family:Stencil;
+}
+#address{
+width: 250px;
+height: 16px;
+}
+#client{
+width:100px;
+}
+#taxist{
+width:100px;
+}
+#login{
+width:150px;
+}
+#password{
+width:150px;
+}
+#showPosition {
+height:30px;
+}
+
+#map_container{
+border: 1px solid #000;
+position:absolute;
+bottom:5px;
+right:5px;
+
+}
+#map{
+width:300px;
+height:300px;
+}
+#present{position:relative;}
+#center{
+}
+
+#taxistDiv{
+-moz-border-radius: 5px;
+border-radius:5px;
+background-color:#ffff75;
+width:750px;
+position:absolute;
+z-index:3;
+visibility:visible;
+display:none;
+}
+#clientDiv{
+position:relative;
+}
+#log{
+font-family:Stencil;
+color:#242623;
+}
+#psw{
+font-family:Stencil;
+color:#242623;
+}
+#login{
+width:150px;
+}
+#password{
+width:150px;
+font-family:Stencil;}
+#loginButton{
+font-family:Stencil;
+color:#242623;
+}
+#end_line{
+margin-top:80px;
+margin-left:15px;}
+#enter_button{
+margin-left:90px;
+color:#242623;
+font-family:Stencil;}
+#register{
+}
+#register a{
+color:#242623;
+}
+#help{
+margin-top:5px;
+margin-left:90px;
+}
+#help a{
+color:#242623;
+}
+#user{
+position:absolute;
+right:10px;
+top:10px;
+width:200px;
+height:200px;
+}
+#content{
+margin-left:none;
+margin-top:20px;
+}
+.infowindow{
+font-face: Tahoma; 
+font-style:italic;
+color: #242623; }
+.infowindow h { color: red; }
+
+/* chat */
+#messages{
+list-style-type: none;
+margin-top:3px;
+height:400px;
+overflow:auto; 
+-webkit-padding-start: 0px;
+}
+#messages li{
+background-color:#ffff75;
+color:black;
+font-family: Stencil;
+margin-top:2px;
+padding:10px;
+width:220px;
+}
+#brows{
+width:10px;}
+.pos{
+position:absolute;
+top:420px;
+}
+#mes-context{
+position:absolute;
+right:60px;
+top:450px;
+}
+#f{
+position:absolute;
+right:10px;
+top:450px;
+}
+.regtd{
+font-family:Stencil;
+color:#242623;
+}
+/*new one*/
+.hover_star {
+	background: url('images/star.png'); 
+	z-index: 1;
+}
+
+.hover_star_rated {
+	background: url('images/star.png'); 
+	z-index: 1;
+}
+span {
+/*	float: left;
+	cursor: pointer;*/
+}
+
+.clearleft {
+	clear: left;
+}
+
+.asddiv { 
+	display: block;
+	width: 120px;
+	padding-top: 10px;
+	height: 16px;
+	margin: 0;
+}
+
+.floatleft {
+	float: left;
+}
+
+.highlight {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	position: relative;
+	bottom: 9px;
+	color: #93784b;
+	font-weight: bold;
+}
+
+.star_rating {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	color: #93784b;
+	float: left;
+	width: 100px;
+	position: relative;
+	top: 10px;
+}
+
+#dialog-form input{
+display:block;
+}
+#dialog-form input.text {
+margin-bottom:12px; width:60%; padding: .4em;
+}
+#dialog-form fieldset {
+padding:0;
+border:0;
+margin-top:25px;
+}
+#dialog-form h1{
+font-size: 1.2em;
+margin: .6em 0;
+}
+#dialog-form h1{
+font-size: 1.2em;
+margin: .6em 0;
+}
+ui-dialog .ui-state-error{
+padding: .3em;
+}
+#dialog-form.validateTips{
+border: 1px solid transparent;
+padding: 0.3em;
+}
+#destination{
+width:225px;
+}
+#forTaxist input{
+display:block;
+}
+#forTaxist fieldset{
+border:0;
+padding:0;
+}
+#msgs h3{
+text-align:center;
+width:100%;
+}
+#msgs li{
+padding-left:10px;
+padding-top:5px;
+}
+#taxist_msg ul,#client_msg ul{
+margin:0px;
+padding:0px;
+height:300px;
+overflow-y:scroll;
+background-color:#FF9;
+border-top-left-radius:15px;
+border-bottom-left-radius:15px;
+}
+#msgs .commentsDiv{
+padding-left:5px;
+}
+#msgs .commentsDiv li{
+padding:0px; !important
+}
+#taxist_msg .commentsDiv ul,#client_msg .commentsDiv ul{
+margin:0px;
+padding:0px;
+height:auto;
+border-radius:0px;
+overflow:auto;
+}
+#taxist_msg li,#client_msg li{
+/*cursor:pointer;*/
+}
+#taxist_msg, #client_msg{
+margin:10px;
+float:left;
+width:400px;
+}
+#client_msg li{
+list-style:none;
+}
+#client_msg li:nth-child(even){
+background-color:#FFFF99;
+}
+#client_msg li:nth-child(odd){
+/*background-color:#BDEFB6;*/
+background-color:#FFB871;
+}
+#taxist_msg li{
+list-style:none;
+}
+#taxist_msg li:nth-child(even){
+background-color:#FFFF99;
+}
+#taxist_msg li:nth-child(odd){
+background-color:#FFB871;
+}
+#labelT{
+font-family:"Times New Roman", Times, serif;
+font-size:18px;
+}
+#labelC{
+font-family:"Times New Roman", Times, serif;
+font-size:18px;
+}
+
+
+.twit_name{
+font-weight:bold;
+}
+.twit_message{
+clear:right;
+}
+.twit_from{clear:left;}
+.twit_date{color:#999;font-size:11px;}
+#loginCloseButton{
+position:absolute;
+right:5px;
+top:5px;
+width:10px;
+height:10px;
+border:1px solid black;
+cursor:pointer;
+}
+#leaveMsg{
+	clear:both;
+}
+.twit_comment{
+font-size:12px;
+text-decoration:none;
+border-bottom:1px dashed #000;
+color:gray;
+}

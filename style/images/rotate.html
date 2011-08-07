@@ -1,0 +1,26 @@
+<html>
+<script>
+var x=0;
+function draw(){
+x++;
+var c=document.getElementById("display");
+	var cxt=c.getContext("2d");
+	//cxt.save();
+	//cxt.clearRect(0,0,300,300);
+	cxt.translate(50,50);
+	//cxt.rotate(40*Math.PI/180);
+	cxt.fillStyle="#FF0000";
+	//cxt.fillRect(60,60,30,30);
+	cxt.fillRect(0,0,25,25);
+	cxt.restore();
+	cxt.fillRect(10,10,20,20);
+}
+
+</script>
+<body onload="draw()">
+<canvas id="display" style="border:1px solid red;" width="300px" height="300px">
+Your browser doesn't support canvas
+</canvas>
+<button onclick="draw()">turn</button>
+</body>
+</html>

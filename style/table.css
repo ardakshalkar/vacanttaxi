@@ -1,0 +1,43 @@
+th{
+border:1px solid red;
+}
+.th_col1{
+width:200px;
+
+}
+.th_col2{
+width:200px;
+}
+.th_col3{
+width:200px;
+}
+.th_col4{
+width:100px;
+}
+.th_col5{
+width:100px;
+}
+.th_col6{
+width:100px;
+}
+.th_col7{
+width:100px;
+}
+.th_col8{
+width:100px;
+}
+.th_col9{
+width:100px;
+}
+#catalogue{
+	margin-top:15px;
+	table-layout:fixed;
+	width:900px;
+	clear:both;
+}
+tr.row_selected td{
+background-color:yellow;
+}
+.dialog{
+display:none;
+}
