@@ -59,8 +59,8 @@ $(document).ready(function(){
 							
 							//bValid = bValid && checkLength( name, "Name", 2, 15 );
 							//bValid = bValid && checkRegexp( contacts, /^([0-9+])+$/, "Contacts field only allow : 0-9 and '+'" );
-							bValid = bValid && checkLength( from, "From", 5, 50 );
-							bValid = bValid && checkLength( to, "To", 5, 50 );
+							bValid = bValid && checkLength( from, "From", 2, 50 );
+							bValid = bValid && checkLength( to, "To", 2, 50 );
 							bValid = bValid && checkLength( message, "Message", 5, 50 );
 							bValid = bValid && checkRegexp( name, /^([a-zA-ZА-Яа-яёЁ])+$/, "Name field only allow : a-z" );
 							if ( bValid ) {
@@ -81,7 +81,8 @@ $(document).ready(function(){
 			}
 		});
 
-		$( "#msgButton" ).button().click(function() {
+		$( ".msgButton" ).button().click(function() {
+				$('input[name="type"]').val($(this).attr("type_value"));
 				$( "#dialog-form" ).dialog( "open" );
 		});
 
