@@ -144,13 +144,6 @@ class Front extends MY_Controller
 		echo $this->load->view('front/blocks/forTaxi',$data);
 	}
 	
-	function get_list()
-	{
-		$data=$this->front_model->get_online_list();
-		if (!isset($data)) echo "[]";
-		else echo json_encode($data);
-	}
-	
 	function driver_profile()
 	{
 		$this->load->model('unofficialOrder_model');

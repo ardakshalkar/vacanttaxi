@@ -378,7 +378,7 @@ height:10px;
 border:1px solid black;
 cursor:pointer;
 }
-#leaveMsg{
+.leaveMsg{
 	clear:both;
 }
 .twit_comment{

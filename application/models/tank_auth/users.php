@@ -332,6 +332,7 @@ class Users extends CI_Model
 
 		if ($record_ip)		$this->db->set('last_ip', $this->input->ip_address());
 		if ($record_time)	$this->db->set('last_login', date('Y-m-d H:i:s'));
+		$this->db->set('status','1');
 
 		$this->db->where('id', $user_id);
 		$this->db->update($this->table_name);

@@ -67,6 +67,7 @@ function initialize(){
 		latlng =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 		codeLatLng(latlng);
 	}
+	
 }
 function mapContent(){
 	/*markerWe = new google.maps.Marker({
@@ -100,7 +101,7 @@ function loadMarkers(){
 		}
 		cars.length = 0;
 	}
-	$.get("http://localhost/VacanTaxi/index.php/front/get_list", {},
+	$.get("http://localhost/VacanTaxi/index.php/map/get_list", {},
 		function(data){
 			for (var i = 0; i < data.length; i++) {
 				var marker = new google.maps.Marker({
@@ -124,7 +125,7 @@ function loadMarkers(){
 				})(i, marker);
 			}
 		}, "json");
-	setTimeout(loadMarkers, 60*1000);  
+	setTimeout(loadMarkers, 10*1000);  
 }
 
 function getCoordinates(address) {
