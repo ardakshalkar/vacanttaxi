@@ -42,8 +42,8 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = '';
+$db['default']['username'] = 'admin';
+$db['default']['password'] = '123';
 $db['default']['database'] = 'vacanttaxi';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';

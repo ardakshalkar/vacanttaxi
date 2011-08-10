@@ -17,6 +17,12 @@
         <li><?php echo anchor('backend/company_profile','Параметры компании'); ?></li>
         <li><?php echo anchor('backend/statistics','Статистика заказов'); ?></li> 
     <?php endif; ?>
+    
+    <?php if($this->session->userdata['admin_type'] == DISPATCHER): ?>
+    	<li><?php echo anchor('backend/edit_dispatcher','Профиль'); ?></li>
+        <li><?php echo anchor('backend/manage_orders','Заказы'); ?></li>
+        <li><?php echo anchor('backend/map','Карта'); ?></li>
+    <?php endif; ?>
        
     <li class="logout"><?php echo anchor('backend/login/logout','Выйти'); ?></li>
 </ul>

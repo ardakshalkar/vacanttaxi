@@ -15,11 +15,8 @@ class Catalogue extends MY_Controller {
 	
 	function index()
 	{
-		$this->load->helper(array('url','form'));
-		$this->load->library('table');
 		$this->data["main_title"]="Catalogue";
 		$this->data["component"]	= 'catalogue';
-		$this->load->model("catalogue_model");
 		$drivers = $this->catalogue_model->loadCatalogue($this->session->userdata('city'));
 		$tmpl = array('table_open'  => '<table id="catalogue">');
 		$this->table->set_template($tmpl);

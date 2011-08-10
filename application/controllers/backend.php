@@ -6,6 +6,8 @@ class Backend extends CI_Controller
 		parent::__construct();
 		$this->load->model('backend_model');	
 		$this->load->library('form_validation');
+		$this->lang->load("general");
+		$this->load->library('table');
 		session_start();	
 	}
 	
@@ -550,7 +552,7 @@ class Backend extends CI_Controller
 					$company_id= $this->backend_model->get_cid($this->session->userdata['admin_id']);
 					
 					$info2 = array('user_id'=>$id['id'],
-								   'name'=>$name,
+								   'dname'=>$name,
 								   'company_id'=>$company_id,
 								   'phone'=>$phone,
 								  'mode'=>$mode );
@@ -578,10 +580,20 @@ class Backend extends CI_Controller
 	}
 	
 	# Edit Dispatcher
-	function edit_dispatcher($id)
+	function edit_dispatcher($id=0)
 	{
-		if(($this->session->userdata['admin_id'] > 0 && $this->session->userdata['admin_type'] >= COMPANY))
+		if($this->session->userdata['admin_id'] > 0 && $this->session->userdata['admin_type'] >= DISPATCHER)
 		{
+			if($this->session->userdata['admin_type'] == DISPATCHER)
+			{
+				$id=$this->session->userdata['admin_id'];
+				$menu_items=NULL;
+			}
+			else 
+			{
+				$menu_items = array('backend/add_dispatcher'=>'Добавить Диспетчера',
+								'backend/manage_dispatchers'=>'Все Диспетчера');
+			}
 			if(isset($_POST['edit_dispatcher']))
 			{
 				# If cancel was pressed
@@ -627,17 +639,24 @@ class Backend extends CI_Controller
 								  'password'=>$password,
 								  );
 					
-					$this->backend_model->update_userinfo($id,$info1,ADMIN_TABLE);
-					
 					# For dispatcher table, profiles
 					if($this->session->userdata['admin_type'] == COMPANY)
 						$company_id= $this->backend_model->get_cid($this->session->userdata['admin_id']);
-					
-					$info2 = array('name'=>$name,
+						
+					if($this->session->userdata['admin_type'] >= COMPANY)
+					{
+						$info2 = array('dname'=>$name,
 								   'company_id'=>$company_id,
 								   'phone'=>$phone,
 								   'mode'=>$mode);
-								   
+					}else if($this->session->userdata['admin_type'] == DISPATCHER)
+					{				
+						$info2 = array('name'=>$name,
+								   'phone'=>$phone,
+								   'mode'=>$mode);
+					}
+					
+					$this->backend_model->update_userinfo($id,$info1,ADMIN_TABLE);	   
 					$this->backend_model->update_userinfo_1(array('user_id'=>$id),$info2,DISPATCHER_TABLE);
 					redirect("backend/manage_dispatchers");
 				}				
@@ -646,8 +665,7 @@ class Backend extends CI_Controller
 			$data['id']  = $id;
 			$data['info1'] = $this->backend_model->get_userinfo($id,ADMIN_TABLE);
 			$data['info2'] = $this->backend_model->return_userinfo(array('user_id'=>$id),DISPATCHER_TABLE);
-			$menu_items = array('backend/add_dispatcher'=>'Добавить Диспетчера',
-								'backend/manage_dispatchers'=>'Все Диспетчера');
+			
 			
 			if($this->session->userdata['admin_type'] >= ADMIN)
 				$data['companies']=$this->backend_model->get_companies_list();
@@ -1130,14 +1148,30 @@ class Backend extends CI_Controller
 		{
 			$data = $this->backend_model->general();
 		
-			$menu_items = array('backend/statistics_for_today'=>'Ежедневный',
-								'backend/statistics_for_week'=>'Еженедельный',
-								'backend/statistics_for_month'=>'Ежемесячный');
+			$menu_items = array('backend/statistics_for/1'=>'Ежедневный',
+								'backend/statistics_for/7'=>'Еженедельный',
+								'backend/statistics_for/30'=>'Ежемесячный');
 									
 			$data += $this->backend_model->page_info('page/statistics',
 														'Отчет',$menu_items);
-			$c_id = $this->backend_model->get_cid($this->session->userdata['admin_id']);
-			$data['report'] = $this->backend_model->return_users(array('company_id'=>$c_id),ORDER_TABLE);
+			
+			$report = $this->backend_model->get_orders();
+			$tmpl = array('table_open'  => '<table id="orders_catalogue">');
+			$this->table->set_template($tmpl);
+			$this->table->set_heading('Name','From','To','Status',' Dispatcher','Order date','City');
+			foreach ($report as $row){
+			$status = "";
+			if ($row->status=='1111') $status = lang("unknown");
+			else if ($row->status=='1112') $status = lang("auction");
+			else if ($row->status=='1113') $status = lang("descarded");
+			else if ($row->status=='1114') $status = lang("taken");
+			else if ($row->status=='1115') $status = lang("done");
+				$this->table->add_row(
+					array($row->surname,$row->from,$row->to,$status,$row->dname,$row->order_date, $row->name)
+				);
+			}
+			$data["report"]=$this->table->generate();
+			//$data['city']=$this->session->userdata('city');
 				
 			$this->load->view('backend/index',$data);
 		}else
@@ -1145,6 +1179,30 @@ class Backend extends CI_Controller
 				redirect('backend/login');
 		}
 	}
+	
+	function statistics_for($id)
+	{
+		if(isset($this->session->userdata['admin_id']) && $this->session->userdata['admin_type'] == COMPANY)
+		{
+			$data = $this->backend_model->general();
+		
+			$menu_items = array('backend/statistics_for/1'=>'Ежедневный',
+								'backend/statistics_for/7'=>'Еженедельный',
+								'backend/statistics_for/30'=>'Ежемесячный');
+									
+			$data += $this->backend_model->page_info('page/statistics_for',
+														'Отчет',$menu_items);
+			if($id==1){$data["report"]=$this->backend_model->statistics_for_day();}
+			else if($id==7){$data["report"]=$this->backend_model->statistics_for_week();}
+			else if($id==30){$data["report"]=$this->backend_model->statistics_for_month();}
+			$data['id'] = $id;
+			$this->load->view('backend/index',$data);
+		}else
+		{
+				redirect('backend/login');
+		}
+	}
+
 	
 	# Manage taxi drivers
 	function manage_company_drivers()
@@ -1420,6 +1478,53 @@ class Backend extends CI_Controller
 			$data += $this->backend_model->page_info('page/company_profile','Параметры Компании',$menu_items);
 			$data['company_profile'] = $this->backend_model->get_company($id,COMPANY_TABLE);
 			$data['cities'] = $this->backend_model->get_cities();										
+			$this->load->view('backend/index',$data);
+		}else
+		{
+			redirect('backend/login');
+		}
+	}
+	
+	
+# For DISPATCHER users
+
+	function manage_orders($id=0)
+	{
+		if(isset($this->session->userdata['admin_id']) && $this->session->userdata['admin_type'] == DISPATCHER)
+		{
+			$tmpl = array('table_open'  => '<table id="catalogue">');
+			$this->table->set_template($tmpl);
+			$this->table->set_heading('Имя','Откуда','Куда','Телефон','Когда','Статус','Время');
+			$orders =$this->db->get(ORDER_TABLE);
+			$orders=$orders->result();
+			foreach ($orders as $row){
+			$status = "";
+			if ($row->status=='1111') $status = lang("unknown");
+			else if ($row->status=='1112') $status = lang("auction");
+			else if ($row->status=='1113') $status = lang("descarded");
+			else if ($row->status=='1114') $status = lang("taken");
+			else if ($row->status=='1115') $status = lang("done");
+			
+			
+			$this->table->add_row(
+				array(isset($row->name)?$row->name:$row->surname,$row->from,$row->to,$row->contacts,$row->when.' '.$row->time,$status,$row->order_date)
+			);
+			}
+			
+			if($id > 0)
+			{
+				$this->backend_model->delete_userinfo($id,UNOFFICIAL_ORDER_TABLE);
+				redirect("backend/manage_categories");
+			}	
+			
+			$data = $this->backend_model->general();
+			$data["orders"]=$this->table->generate();
+			$menu_items = array('backend/new_orders'=>'Новые',
+								'backend/done_orders'=>'Выполненные',
+								'backend/manage_orders'=>'Все');
+								
+			$data += $this->backend_model->page_info('page/manage_orders','Заказы',$menu_items);
+													
 			$this->load->view('backend/index',$data);
 		}else
 		{

@@ -10,7 +10,7 @@
 	<table>
 	<?php foreach($dispatchers->result() as $row): ?>
 	<tr>
-		<td><?php echo $row->name; ?></td>
+		<td><?php echo $row->dname; ?></td>
         <td class="action">
                <?php echo anchor('backend/view_dispatcher/'.$row->user_id,
 			   							'Просмотр',array('class'=>'view')); ?>

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.4
+-- version 3.3.2deb1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 07, 2011 at 11:58 AM
+-- Generation Time: Aug 10, 2011 at 01:17 PM
 -- Server version: 5.1.41
--- PHP Version: 5.3.1
+-- PHP Version: 5.3.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -44,10 +44,10 @@ CREATE TABLE IF NOT EXISTS `admins` (
 --
 
 INSERT INTO `admins` (`id`, `username`, `email`, `password`, `type`, `status`, `category`, `online`, `last_visit`) VALUES
-(1, 'ardak', 'ardak@inbox.ru', '123', 1113, 0, 0, 1, '2010-07-21'),
+(1, 'ardak', 'ardak@inbox.ru', '123', 1113, 0, 0, 0, '2010-07-21'),
 (2, 'salta', 'tasalta@gmail.com', '123', 1112, 0, 0, 0, '2011-07-27'),
 (4, 'karina', 'k@mail.com', '123', 1111, 0, 0, 0, '0000-00-00'),
-(7, 'kairat', 'kairat@mail.com', '123', 1110, 0, 0, 0, '2011-08-02'),
+(7, 'kairat', 'kairat@mail.com', '123', 1110, 0, 0, 1, '2011-08-02'),
 (9, 'Dovezu', 'doveza@gmail.com', 'kara', 1111, 0, 0, 0, '0000-00-00');
 
 -- --------------------------------------------------------
@@ -223,7 +223,7 @@ INSERT INTO `company` (`id`, `user_id`, `company_name`, `driver_max`, `disp_max`
 
 CREATE TABLE IF NOT EXISTS `company_dispatcher` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `dname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
   `company_id` int(11) NOT NULL DEFAULT '0',
   `phone` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -236,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `company_dispatcher` (
 -- Dumping data for table `company_dispatcher`
 --
 
-INSERT INTO `company_dispatcher` (`id`, `name`, `user_id`, `company_id`, `phone`, `mode`) VALUES
+INSERT INTO `company_dispatcher` (`id`, `dname`, `user_id`, `company_id`, `phone`, `mode`) VALUES
 (1, 'kairat', 7, 1, '87015527794', 3111);
 
 -- --------------------------------------------------------
@@ -261,7 +261,7 @@ CREATE TABLE IF NOT EXISTS `driver` (
   `about` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=22 ;
 
 --
 -- Dumping data for table `driver`
@@ -278,7 +278,8 @@ INSERT INTO `driver` (`id`, `user_id`, `c_name`, `status`, `smoke`, `city`, `cat
 (15, 31, 'akk', '4111', 0, 1, '5100', 3, '2', '87004266736', '870023000', 'Kaskelen', 'Заберу до работы, в городе'),
 (16, NULL, '', '4111', 0, 1, '5110', 3, '2', '87004266736', '870023000', 'Kaskelen', 'Заберу до работы, в городе'),
 (19, 22, '', '4111', 0, 15, '5100', 0, '1', '', '', '', ''),
-(20, 26, '', '4111', 0, NULL, '5000', 0, '1', NULL, NULL, NULL, '');
+(20, 26, '', '4111', 0, NULL, '5000', 0, '1', NULL, NULL, NULL, ''),
+(21, 33, '', '4111', 0, NULL, '5000', 0, '1', NULL, NULL, NULL, '');
 
 -- --------------------------------------------------------
 
@@ -389,25 +390,31 @@ CREATE TABLE IF NOT EXISTS `order` (
   `to` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `when` date NOT NULL,
   `time` time NOT NULL,
-  `orderDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('1111','1112','1113','1114','1115') COLLATE utf8_unicode_ci NOT NULL COMMENT 'неизв, ауцион, отказано, принят, выполнено',
+  `company_id` int(11) NOT NULL,
+  `dispatcher_id` int(11) NOT NULL,
+  `message` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `order_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `city` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`id`, `surname`, `name`, `contacts`, `from`, `to`, `when`, `time`, `orderDate`) VALUES
-(1, 'surname', 'name', 'contacts', 'otkuda', 'kuda', '0000-00-00', '00:00:00', '2011-06-02 11:40:02'),
-(2, 'surname', 'name', 'contacts', 'otkuda', 'kuda', '0000-00-00', '00:00:00', '2011-06-02 11:40:51'),
-(3, 'surname', 'name', 'contacts', 'otkuda', 'kuda', '0000-00-00', '00:00:00', '2011-06-02 11:42:42'),
-(4, 'Zhienbayev', 'Meiran', '87012222737', 'tastak', 'orbita', '0002-06-11', '21:15:00', '2011-06-02 11:45:31'),
-(5, 'Tursyngaliyev', 'Iliyas', '87012324444', 'tolebi 147', 'Alfarabi Lenina', '2011-06-02', '13:00:00', '2011-06-02 11:51:16'),
-(6, 'Abdykarim', 'Madina', '87014556575', 'tastak', 'Mega', '2011-06-05', '20:00:00', '2011-06-02 11:53:16'),
-(7, 'Tolebi', 'Gulnur', '87021628982', 'Aksai', 'Orbita', '2011-06-07', '14:00:00', '2011-06-03 09:53:15'),
-(8, 'Tolegenova', 'Altynkul', '87013454545', 'Taldybulak', 'Abaya Pravda', '2011-06-08', '18:15:00', '2011-06-03 09:55:18'),
-(9, 'Tasybayeva', 'Gaini', '87004043548', 'Ainabulak', 'Zhanaturmys', '2011-06-09', '08:00:00', '2011-06-07 04:48:36'),
-(10, 'Shalkar', 'Ardak', '87009999999', 'tastak', 'orbita', '0011-06-25', '14:00:00', '2011-06-13 16:01:40');
+INSERT INTO `order` (`id`, `surname`, `name`, `contacts`, `from`, `to`, `when`, `time`, `status`, `company_id`, `dispatcher_id`, `message`, `order_date`, `city`) VALUES
+(1, 'surname', 'name', 'contacts', 'otkuda', 'kuda', '0000-00-00', '00:00:00', '1111', 0, 1, '', '2011-06-02 11:40:02', 2),
+(2, 'surname', 'name', 'contacts', 'otkuda', 'kuda', '0000-00-00', '00:00:00', '1111', 0, 1, '', '2011-06-02 11:40:51', 1),
+(3, 'surname', 'name', 'contacts', 'otkuda', 'kuda', '0000-00-00', '00:00:00', '1111', 0, 1, '', '2011-06-02 11:42:42', 3),
+(4, 'Zhienbayev', 'Meiran', '87012222737', 'tastak', 'orbita', '0002-06-11', '21:15:00', '1111', 0, 1, '', '2011-06-02 11:45:31', 2),
+(5, 'Tursyngaliyev', 'Iliyas', '87012324444', 'tolebi 147', 'Alfarabi Lenina', '2011-06-02', '13:00:00', '1111', 0, 0, '', '2011-06-02 11:51:16', 0),
+(6, 'Abdykarim', 'Madina', '87014556575', 'tastak', 'Mega', '2011-06-05', '20:00:00', '1111', 0, 0, '', '2011-06-02 11:53:16', 0),
+(7, 'Tolebi', 'Gulnur', '87021628982', 'Aksai', 'Orbita', '2011-06-07', '14:00:00', '1111', 0, 0, '', '2011-06-03 09:53:15', 0),
+(8, 'Tolegenova', 'Altynkul', '87013454545', 'Taldybulak', 'Abaya Pravda', '2011-06-08', '18:15:00', '1111', 0, 0, '', '2011-06-03 09:55:18', 0),
+(9, 'Tasybayeva', 'Gaini', '87004043548', 'Ainabulak', 'Zhanaturmys', '2011-06-09', '08:00:00', '1111', 1, 0, '', '2011-06-07 04:48:36', 0),
+(10, 'Shalkar', 'Ardak', '87009999999', 'tastak', 'orbita', '0011-06-05', '14:00:00', '1111', 1, 0, '', '2011-06-13 16:01:40', 0),
+(11, 'kurt', 'kobein', '897232032', 'Almaty', 'Kokshetau', '2011-08-22', '12:00:00', '1114', 4, 0, '', '2011-08-09 17:58:31', 0);
 
 -- --------------------------------------------------------
 
@@ -562,7 +569,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `type` varchar(120) COLLATE utf8_bin NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `users`
@@ -571,7 +578,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `displayname`, `identity`, `provider`, `type`, `status`) VALUES
 (30, '', '', 'ardak.shalkar@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '0000-00-00 00:00:00', '2011-08-03 08:14:48', '2011-08-03 12:14:48', 'Ardak Shalkarbayuli', 'http://www.facebook.com/ardak.shalkar', 'http://www.facebook.com/', '', 0),
 (31, 'marram', '$2a$08$Ep0t6hMYbNR7oLwSoNH7C.IszCYlN0pN89aJP4YQbCBgikqQpYHU.', 'marram@gmail.com', 0, 0, NULL, NULL, NULL, NULL, 'cb12343501c3edb3c9c49061a86952a1', '127.0.0.1', '0000-00-00 00:00:00', '2011-08-04 20:00:51', '2011-08-05 00:00:51', '', '', '', '', 0),
-(32, 'massam', '$2a$08$8MA3urRuoE0Hmuie3fu5A.VCX1c5VxhOjKIvG2v74o.w2vonNCXyO', 'massam@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2011-08-04 20:14:59', '2011-08-04 20:04:53', '2011-08-05 00:14:59', '', '', '', '', 0);
+(32, 'massam', '$2a$08$8MA3urRuoE0Hmuie3fu5A.VCX1c5VxhOjKIvG2v74o.w2vonNCXyO', 'massam@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2011-08-04 20:14:59', '2011-08-04 20:04:53', '2011-08-05 00:14:59', '', '', '', '', 0),
+(33, 'salta', '$2a$08$9Qe1LA1bNdvrJ46pSVTN1eAyTZiJ9UZ2ZlPk42BgsZ6Juum60nPzS', 'tasalta@gmail.com', 1, 0, NULL, NULL, NULL, NULL, 'acb3c21c3a53acf7e295449e6218b591', '0.0.0.0', '2011-08-08 14:58:30', '2011-08-08 14:56:42', '2011-08-08 14:58:30', '', '', '', '', 0);
 
 -- --------------------------------------------------------
 
