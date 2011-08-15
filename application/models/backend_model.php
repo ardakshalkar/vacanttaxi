@@ -327,5 +327,67 @@ class Backend_Model extends CI_Model
 		return $drivers;
 		
 	}
+	
+	#for statistics
+	function get_orders()
+	{
+		$query = $this->db->select("*")->from('order')->join('city','order.city=city.id','left')->join('company_dispatcher','order.dispatcher_id=company_dispatcher.id','left')->order_by('order_date','desc')->get();
+		$orders = $query->result(); 
+		return $orders;
+	}
+	
+	function statistics_for_day()
+	{
+		$query = $this->db->query("SELECT * FROM `order` where status = '1111' and DATE(ORDER_DATE)=curdate()");
+		$query1 = $this->db->query("SELECT * FROM `order` where status = '1112' and DATE(ORDER_DATE)=curdate()");
+		$query2 = $this->db->query("SELECT * FROM `order` where status = '1113' and DATE(ORDER_DATE)=curdate()");
+		$query3 = $this->db->query("SELECT * FROM `order` where status = '1114' and DATE(ORDER_DATE)=curdate()");
+		$query4 = $this->db->query("SELECT * FROM `order` where status = '1115' and DATE(ORDER_DATE)=curdate()");
+		$query5 = $this->db->query("SELECT * FROM `order` where DATE(ORDER_DATE)=curdate()");
+		$result = array();
+		$result[0]= count($query->result());
+		$result[1]= count($query1->result());
+		$result[2]= count($query2->result());
+		$result[3]= count($query3->result());
+		$result[4]= count($query4->result());
+		$result[5]= count($query5->result());
+		return $result;
+	}
+
+	function statistics_for_week()
+	{
+		$query = $this->db->query("SELECT * FROM `order` WHERE status='1111' and DATE(order_date) BETWEEN DATE_SUB(CURDATE(),INTERVAL 7 DAY) AND CURDATE()");
+		$query1 = $this->db->query("SELECT * FROM `order` WHERE status='1112' and DATE(order_date) BETWEEN DATE_SUB(CURDATE(),INTERVAL 7 DAY) AND CURDATE()");
+		$query2 = $this->db->query("SELECT * FROM `order` WHERE status='1113' and DATE(order_date) BETWEEN DATE_SUB(CURDATE(),INTERVAL 7 DAY) AND CURDATE()");
+		$query3 = $this->db->query("SELECT * FROM `order` WHERE status='1114' and DATE(order_date) BETWEEN DATE_SUB(CURDATE(),INTERVAL 7 DAY) AND CURDATE()");
+		$query4 = $this->db->query("SELECT * FROM `order` WHERE status='1115' and DATE(order_date) BETWEEN DATE_SUB(CURDATE(),INTERVAL 7 DAY) AND CURDATE()");
+		$query5 = $this->db->query("SELECT * FROM `order` WHERE DATE(order_date) BETWEEN DATE_SUB(CURDATE(),INTERVAL 7 DAY) AND CURDATE()");
+		$result = array();
+		$result[0]= count($query->result());
+		$result[1]= count($query1->result());
+		$result[2]= count($query2->result());
+		$result[3]= count($query3->result());
+		$result[4]= count($query4->result());
+		$result[5]= count($query5->result());
+		return $result;
+	}
+
+	function statistics_for_month()
+	{
+		$query = $this->db->query("SELECT * FROM `order` WHERE status='1111' and DATE(order_date) BETWEEN DATE_SUB(CURDATE(),INTERVAL 31 DAY) AND CURDATE()");
+		$query1 = $this->db->query("SELECT * FROM `order` WHERE status='1112' and DATE(order_date) BETWEEN DATE_SUB(CURDATE(),INTERVAL 31 DAY) AND CURDATE()");
+		$query2 = $this->db->query("SELECT * FROM `order` WHERE status='1113' and DATE(order_date) BETWEEN DATE_SUB(CURDATE(),INTERVAL 31 DAY) AND CURDATE()");
+		$query3 = $this->db->query("SELECT * FROM `order` WHERE status='1114' and DATE(order_date) BETWEEN DATE_SUB(CURDATE(),INTERVAL 31 DAY) AND CURDATE()");
+		$query4 = $this->db->query("SELECT * FROM `order` WHERE status='1115' and DATE(order_date) BETWEEN DATE_SUB(CURDATE(),INTERVAL 31 DAY) AND CURDATE()");
+		$query5 = $this->db->query("SELECT * FROM `order` WHERE DATE(order_date) BETWEEN DATE_SUB(CURDATE(),INTERVAL 31 DAY) AND CURDATE()"); 
+		$result = array();
+		$result[0]= count($query->result());
+		$result[1]= count($query1->result());
+		$result[2]= count($query2->result());
+		$result[3]= count($query3->result());
+		$result[4]= count($query4->result());
+		$result[5]= count($query5->result());
+		return $result;
+	}
 }
 ?>
