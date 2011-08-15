@@ -1369,6 +1369,7 @@ class CI_Email {
 
 		if ( ! $this->_spool_email())
 		{
+			
 			return FALSE;
 		}
 		else
@@ -1477,7 +1478,6 @@ class CI_Email {
 	private function _spool_email()
 	{
 		$this->_unwrap_specials();
-
 		switch ($this->_get_protocol())
 		{
 			case 'mail'	:

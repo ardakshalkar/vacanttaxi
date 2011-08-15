@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 07, 2011 at 11:58 AM
+-- Generation Time: Aug 08, 2011 at 02:43 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.1
 
@@ -436,16 +436,20 @@ CREATE TABLE IF NOT EXISTS `pages` (
 --
 
 CREATE TABLE IF NOT EXISTS `position` (
-  `user_id` int(11) NOT NULL,
+  `driver_id` int(11) NOT NULL,
   `lat` double NOT NULL DEFAULT '0',
   `lon` double NOT NULL DEFAULT '0',
-  UNIQUE KEY `user_id` (`user_id`)
+  UNIQUE KEY `user_id` (`driver_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `position`
 --
 
+INSERT INTO `position` (`driver_id`, `lat`, `lon`) VALUES
+(0, 43.243265, 76.907301),
+(1, 43.243265, 76.907301),
+(2, 43.253365, 76.918301);
 
 -- --------------------------------------------------------
 
@@ -513,26 +517,15 @@ CREATE TABLE IF NOT EXISTS `unofficial_order` (
   `user_id` int(11) NOT NULL,
   `type` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `unofficial_order`
 --
 
 INSERT INTO `unofficial_order` (`id`, `name`, `message`, `contacts`, `date`, `from`, `to`, `user_id`, `type`) VALUES
-(1, 'Talgat', 'helllo', '87011717776', '2011-07-28 13:39:18', 'Kaskelen', 'Kazgu', 0, 0),
-(2, 'Karlyga', 'utrom...', '87755655656', '2011-07-16 12:11:25', 'Shanyrak', 'Tastak', 0, 1),
-(3, 'Aituar', 'vecherom k 20:00', '87073074538', '2011-07-16 12:32:05', 'Kazgu', 'Shanyrak1', 0, 0),
-(4, 'Alizhan', 'azanda sagat 8:00-de', '87027808887', '2011-07-16 12:33:44', 'Orbita', 'Koktem', 0, 1),
-(5, 'salta', '0', '87015527795', '2011-07-27 15:12:43', 'kaskeln', 'almaty', 0, 1),
-(6, 'kooory', 'telebashnya', '87015527795', '2011-07-28 13:40:29', 'kaskelen', 'almaty', 0, 1),
-(7, '0', '? ??????? 5 ?????', '0', '2011-08-01 03:56:36', '?????? 2', '?????? 1', 0, 0),
-(8, 'Yermek', 'v 9 ve4era nado', '8700232000', '2011-08-01 09:51:43', 'Ryskulova-Petrova', 'Orbita', 0, 0),
-(9, 'Yermek', 'v 9 ve4era nado', '8700232000', '2011-08-02 12:05:02', 'Ryskulova-Petrova', 'Orbita', 0, 1),
-(10, 'Жандос', 'Сейчас срочно', '8700232000', '2011-08-02 12:33:49', 'Абая - Правда', 'Гоголя - Муратбаева', 0, 0),
-(11, 'Жандос', 'в 5 вечера', '8700232000', '2011-08-02 12:41:03', 'Абая - Правда', 'Гоголя - Муратбаева', 0, 1),
-(12, '0', 'В 9 вечера поедем', '8700320000', '2011-08-03 01:07:05', 'Розыбакиева-Абая', 'Сатпаева-Ермекова', 17, 1),
-(13, 'Ardak Shalkarbayuli', 'Срочно надо ребенка отвезти', '87009999999', '2011-08-03 12:23:14', 'Абая-Саина', 'Пятилетка', 30, 1);
+(14, 'Вася', 'за 1000 отвезите', '87009999999', '2011-08-08 12:35:28', 'Каменка', 'Вокзал-1', 0, 0),
+(15, 'Вася', 'за 1000', '87009999999', '2011-08-08 12:37:08', 'БАО', 'Аль-фараби-Навои', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -571,7 +564,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `displayname`, `identity`, `provider`, `type`, `status`) VALUES
 (30, '', '', 'ardak.shalkar@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '0000-00-00 00:00:00', '2011-08-03 08:14:48', '2011-08-03 12:14:48', 'Ardak Shalkarbayuli', 'http://www.facebook.com/ardak.shalkar', 'http://www.facebook.com/', '', 0),
 (31, 'marram', '$2a$08$Ep0t6hMYbNR7oLwSoNH7C.IszCYlN0pN89aJP4YQbCBgikqQpYHU.', 'marram@gmail.com', 0, 0, NULL, NULL, NULL, NULL, 'cb12343501c3edb3c9c49061a86952a1', '127.0.0.1', '0000-00-00 00:00:00', '2011-08-04 20:00:51', '2011-08-05 00:00:51', '', '', '', '', 0),
-(32, 'massam', '$2a$08$8MA3urRuoE0Hmuie3fu5A.VCX1c5VxhOjKIvG2v74o.w2vonNCXyO', 'massam@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2011-08-04 20:14:59', '2011-08-04 20:04:53', '2011-08-05 00:14:59', '', '', '', '', 0);
+(32, 'massam', '$2a$08$8MA3urRuoE0Hmuie3fu5A.VCX1c5VxhOjKIvG2v74o.w2vonNCXyO', 'massam@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2011-08-08 10:38:14', '2011-08-04 20:04:53', '2011-08-08 14:38:14', '', '', '', '', 1);
 
 -- --------------------------------------------------------
 

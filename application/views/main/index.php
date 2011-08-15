@@ -11,8 +11,5 @@
 		</div>
 		<div id="footer"><?php $this->load->view('main/footer'); ?></div>
 	</div>
-
-
-
 </body>
 </html>

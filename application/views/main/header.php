@@ -11,7 +11,11 @@ foreach ($menu as $mitem){
 ?>
 
 <div id = "header">
+	<div>
+	
+	</div>
 	<img src="<?php echo base_url()."style/images/logo.png"; ?>" />
+	
 	<div id="user">
 		<?php if (!$logged_in) : ?>
 			<span id="taxist">Войти</span>
@@ -21,10 +25,11 @@ foreach ($menu as $mitem){
 			<a href="<?=base_url()?>/index.php/auth/edit_profile">Edit profile info</a>
 		<?php endif ?>
 		<div id = "changeCity">
-			<label  id="yourCity">Your city:</label><button id = "cityName"><?=$city?></button>
+			<label  id="yourCity">Ваш город:</label><button id = "cityName"><?=$city?></button>
 		</div>
-		<?php echo anchor("chat/start",'<img id="chat_img"  src="'.base_url().'style/images/chat.png" />','target="_blank"'); ?>
-
+		<?php if ($logged_in) : ?>
+			<?php echo anchor("chat/start",'<img id="chat_img"  src="'.base_url().'style/images/chat.png" />','target="_blank"'); ?>
+		<?php endif; ?>
 	</div>
 	<div id="menu">
 		<? echo ul($links); ?><div class="clear"></div>
@@ -36,10 +41,16 @@ foreach ($menu as $mitem){
 
         <div id="taxistDiv">
 			<script src="http://loginza.ru/js/widget.js" type="text/javascript"></script>
-			<div style="float:left;width:48%;"><iframe src="http://loginza.ru/api/widget?overlay=loginza&token_url=<?= base_url()."index.php/login/loginza"?>" 
-			style="width:359px;height:300px;" scrolling="no" frameborder="no"></iframe></div>
+			<div style="float:left;width:48%;">
+				<div id="loginzaInfo">Зайдите с помощью вашего аккаунта из социальных сетей</div>
+				<iframe src="http://loginza.ru/api/widget?overlay=loginza&lang=ru&token_url=<?= base_url()."index.php/login/loginza"?>" style="width:359px;height:300px;" scrolling="no" frameborder="no">
+				</iframe>
+			</div>
 			<div style="float:right;width:48%;position:relative;">
-				<div id="loginPart"></div>
+				<div id="registerInfo">Или создайте аккаунт на нашем сайте</div>
+				<div id="loginPart">
+					
+				</div>
 				<div id="loginCloseButton">X</div>
 			</div>
 			

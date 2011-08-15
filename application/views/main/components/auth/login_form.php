@@ -7,9 +7,9 @@ $login = array(
 	'size'	=> 30,
 );
 if ($login_by_username AND $login_by_email) {
-	$login_label = 'Email or login';
+	$login_label = 'Email/Имя пользователя';
 } else if ($login_by_username) {
-	$login_label = 'Login';
+	$login_label = 'Имя пользователя';
 } else {
 	$login_label = 'Email';
 }

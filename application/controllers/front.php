@@ -9,7 +9,7 @@ class Front extends MY_Controller
 		$this->load->library('form_validation');
 		$this->load->library('calendar');
 		$this->load->helper('language');
-		$this->lang->load("menu");
+		$this->lang->load('menu');
 	}
 	
 	
@@ -313,8 +313,7 @@ class Front extends MY_Controller
   		$this->form_validation->set_rules('nameArea','Name','xss_clean');
   		if($this->form_validation->run())
   		{
-    		$user_id = $this->session->userdata['user_id'];
-    		$name = $this->user_model->get_display_name($user_id);
+			$name = "Паленбай";
     		$msg_id = $this->input->post('id');
     		if(isset($this->session->userdata['user_id']))
     		{
@@ -323,6 +322,7 @@ class Front extends MY_Controller
     		}
     		else{ 
 				$user_id = 0;
+				$name = $this->input->post('nameArea');
 			}
     		date_default_timezone_set('Asia/Almaty');
     		$time = time();
