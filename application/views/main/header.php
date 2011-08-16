@@ -21,8 +21,8 @@ foreach ($menu as $mitem){
 			<span id="taxist">Войти</span>
 		<?php else:?>
 			<?= $username; ?> <a href="<?=base_url()."index.php/auth/logout"?>">Выйти</a><br/>
-			<a href="<?=base_url()?>/index.php/auth/edit_driver">Edit driver info</a>|
-			<a href="<?=base_url()?>/index.php/auth/edit_profile">Edit profile info</a>
+			<a href="<?=base_url()?>/index.php/auth/edit_driver">Изменить данные в каталоге</a>|
+			<a href="<?=base_url()?>/index.php/auth/edit_profile">Изменить профиль</a>
 		<?php endif ?>
 		<div id = "changeCity">
 			<label  id="yourCity">Ваш город:</label><button id = "cityName"><?=$city?></button>

@@ -15,12 +15,12 @@ class Catalogue extends MY_Controller {
 	
 	function index()
 	{
-		$this->data["main_title"]="Catalogue";
+		$this->data["main_title"]="Каталог";
 		$this->data["component"]	= 'catalogue';
 		$drivers = $this->catalogue_model->loadCatalogue($this->session->userdata('city'));
 		$tmpl = array('table_open'  => '<table id="catalogue">');
 		$this->table->set_template($tmpl);
-		$this->table->set_heading('Name','Location','Description','Phone','Car Type','','Trip type','');
+		$this->table->set_heading('Имя','Позиция','Описание (услуги, цены, тип)','Телефон','Машина','','Тип услуг','');
 		foreach ($drivers as $row){
 			$cartype = "";
 			if ($row->type=='6111') $cartype = lang("car");
@@ -44,19 +44,11 @@ class Catalogue extends MY_Controller {
 	{
 		$data = $this->data;
 		$data['base_url']= $this->config->item('base_url');
-		$data["main_title"]="Catalogue of Companies";
+		$data["main_title"]="Каталог Компаний";
 		$data["component"]	= 'companies';
 		$companies = $this->catalogue_model->get_companies();
-		$tmpl = array('table_open'  => '<table id="companies_catalogue">');
-		$this->table->set_template($tmpl);
-		$this->table->set_heading('Taxi company','City','Contacts','About','Site');
-		foreach ($companies as $row){
-			$this->table->add_row(
-				array($row->company_name,$row->name,$row->contacts,$row->about,$row->site)
-			);
-		}
-		$data["companies"]=$this->table->generate();
 		$data['city']=$this->session->userdata('city');
+		$data['companies'] = $companies;
 		$this->load->view('main/index',$data);
 		
 	}
