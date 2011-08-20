@@ -6,7 +6,13 @@
 $(document).ready(function(){
 	table = $("#catalogue").dataTable({
 		"oLanguage": {
-			"sSearch": "Поиск:"
+			"sSearch": "Поиск:",
+			"sZeroRecords": "No records to display",
+			"sProcessing": "DataTables is currently busy",
+			"sLoadingRecords": "Please wait - loading...",
+			"sInfoEmpty": "No entries to show",
+			"sLengthMenu": "Показать _MENU_ полей",
+			"sInfo": "Показано записи с _START_ по _END_ (из _TOTAL_ записей)"
 		},
 		"bAutoWidth": false,
 		"aoColumnDefs":[{"aTargets":[5,7],"bVisible":false}],

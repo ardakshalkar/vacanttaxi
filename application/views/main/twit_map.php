@@ -1,3 +1,22 @@
+<?php 
+   $nameArea = array(
+    'name'  => 'nameArea',
+    'id'    => 'nameArea',
+    'placeholder' => 'Имя..',
+    'width' => '50',
+    'value' => ''
+   );
+   $comment = array(
+    'name' => 'commentArea',
+    'id'   => 'commentArea',
+    'cols' => '25',
+    'rows' => '2',
+    'placeholder' => 'Текст комментария...',
+    'value'=> ''
+   );
+?>
+
+
 <ul id="<?php echo $ulid;?>">    
 	<?php 
 	if (count($messages)==0) :?>
@@ -14,10 +33,17 @@
                         <span class="twit_comment">
 							<? 
 								$comments_amount = count($messages[$i]['comments']);
-								if ($comments_amount>0)
-									echo $comments_amount." Comments";
+								if ($comments_amount==0)
+									echo "оставить комментарий";
+								else if ($comments_amount>9&&$comments_amount<20)
+									echo $comments_amount." комментариев";
+								else if ($comments_amount%10==1&&$comments_amount!=11)
+									echo $comments_amount." комментарий";
+								else if ($comments_amount%10>0&&$comments_amount%10<5)
+									echo $comments_amount." комментария";
 								else
-									echo "leave comment";
+									echo $comments_amount." комментариев";
+									
 							?>
 						</span><br/>
                         <div class="commentsDiv" style="display:none">
@@ -41,7 +67,7 @@
 							echo form_hidden('id',$messages[$i]['id']);
 							
 							?>
-							<?php echo form_submit(array('name'=>'send_comment'),'Send');   
+							<?php echo form_submit(array('name'=>'send_comment'),'Отправить');   
 							echo form_close();?>
                         </div>
                      

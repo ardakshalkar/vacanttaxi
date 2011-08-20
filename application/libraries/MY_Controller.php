@@ -16,6 +16,7 @@ class MY_Controller extends CI_Controller{
 		else {
 			$this->data["logged_in"] = false;
 		}
+		$this->data['title'] = 'vacanttaxi.kz';
 	}
 }
 ?>

@@ -2,7 +2,7 @@ var map, geocoder,latlng,latLng_marker, markerWe, cnt;
 var cars =[];
 var infowindow, infowindow2;
 var browserSupportFlag =  new Boolean();
-var hostpath='http://localhost/VacanTaxi/';
+var hostpath='http://localhost/VacanTaxi';
 var carIcons = [];
 carIcons[0] = new google.maps.MarkerImage(
 	hostpath+'style/images/car.png', 

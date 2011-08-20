@@ -1,24 +1,4 @@
-<?php
-$beaconpush->add_channel('taxi'); 
-echo $beaconpush->embed();
-?>     
-<?php 
-   $nameArea = array(
-    'name'  => 'nameArea',
-    'id'    => 'nameArea',
-    'placeholder' => 'Name..',
-    'width' => '50',
-    'value' => ''
-   );
-   $comment = array(
-    'name' => 'commentArea',
-    'id'   => 'commentArea',
-    'cols' => '25',
-    'rows' => '2',
-    'placeholder' => 'Leave Comment...',
-    'value'=> ''
-   );
-?>
+
 <div id="msgs">
 	<div id="taxist_msg">
 		<h3>Таксист</h3>
@@ -107,20 +87,24 @@ echo $beaconpush->embed();
         <p class="validateTips"></p>
         <fieldset>
             <? if (!$id) : ?>
-				<label for="name" id="nlabel">Name:</label>
+				<label for="name" id="nlabel">Имя:</label>
 				<?php echo form_input($name);?>
 				
             <? endif; ?>
-            <label for="contacts" id="clabel">Contact:</label>
+            <label for="contacts" id="clabel">Контакты:</label>
 			<?php echo form_input($contacts);?>
-            <label for="from" id="flabel">From:</label>
+            <label for="from" id="flabel">Откуда:</label>
             <?php echo form_input($from);?>
-            <label for="to" id="tlabel">To:</label>
+            <label for="to" id="tlabel">Куда:</label>
             <?php echo form_input($to);?>
-           	<label for="destination">Leave message:</label>
+           	<label for="destination">Описание (время, цена, требования):</label>
             <?php echo form_textarea($messages);?>
         </fieldset>
         <?php echo form_hidden('type','0');?>
         <?php echo form_close();?>        
     </div>
 </div>
+<?php
+$beaconpush->add_channel('taxi'); 
+echo $beaconpush->embed();
+?>     

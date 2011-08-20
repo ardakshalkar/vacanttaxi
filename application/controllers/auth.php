@@ -12,6 +12,7 @@ class Auth extends MY_Controller
 		$this->load->library('tank_auth');
 		$this->lang->load('tank_auth');
 		$this->load->helper('language');
+		
 		$this->lang->load("menu");
 	}
 
@@ -29,19 +30,15 @@ class Auth extends MY_Controller
 		}
 	}
 
-	/**
-	 * Login user on the site
-	 *
-	 * @return void
-	 */
-	function login()
-	{
+
+	function login2(){
+		$data = $this->data;
 		if ($this->tank_auth->is_logged_in()) {									// logged in
 			redirect('');
 
-		/*} elseif ($this->tank_auth->is_logged_in($activate)) {						// logged in, not activated
+		} elseif ($this->tank_auth->is_logged_in(FALSE)) {						// logged in, not activated
 			redirect('/auth/send_again/');
-	*/
+	
 		} else {
 			$data['login_by_username'] = ($this->config->item('login_by_username', 'tank_auth') AND
 					$this->config->item('use_username', 'tank_auth'));
@@ -99,7 +96,83 @@ class Auth extends MY_Controller
 					$data['captcha_html'] = $this->_create_captcha();
 				}
 			}
-			$this->load->view('auth/login_form', $data);
+			$data["component"] = "auth/login_form";
+			$this->load->view('auth/login_form',$data);
+		}
+	}
+	/**
+	 * Login user on the site
+	 *
+	 * @return void
+	 */
+	function login()
+	{
+		$data = $this->data;
+		if ($this->tank_auth->is_logged_in()) {									// logged in
+			redirect('');
+
+		} elseif ($this->tank_auth->is_logged_in(FALSE)) {						// logged in, not activated
+			redirect('/auth/send_again/');
+	
+		} else {
+			$data['login_by_username'] = ($this->config->item('login_by_username', 'tank_auth') AND
+					$this->config->item('use_username', 'tank_auth'));
+			$data['login_by_email'] = $this->config->item('login_by_email', 'tank_auth');
+
+			$this->form_validation->set_rules('login', 'Login', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('remember', 'Remember me', 'integer');
+
+			// Get login for counting attempts to login
+			if ($this->config->item('login_count_attempts', 'tank_auth') AND
+					($login = $this->input->post('login'))) {
+				$login = $this->security->xss_clean($login);
+			} else {
+				$login = '';
+			}
+
+			$data['use_recaptcha'] = $this->config->item('use_recaptcha', 'tank_auth');
+			if ($this->tank_auth->is_max_login_attempts_exceeded($login)) {
+				if ($data['use_recaptcha'])
+					$this->form_validation->set_rules('recaptcha_response_field', 'Confirmation Code', 'trim|xss_clean|required|callback__check_recaptcha');
+				else
+					$this->form_validation->set_rules('captcha', 'Confirmation Code', 'trim|xss_clean|required|callback__check_captcha');
+			}
+			$data['errors'] = array();
+
+			if ($this->form_validation->run()) {								// validation ok
+				if ($this->tank_auth->login(
+						$this->form_validation->set_value('login'),
+						$this->form_validation->set_value('password'),
+						$this->form_validation->set_value('remember'),
+						$data['login_by_username'],
+						$data['login_by_email'])) {								// success
+					redirect('');
+
+				} else {
+					$errors = $this->tank_auth->get_error_message();
+					if (isset($errors['banned'])) {								// banned user
+						$this->_show_message($this->lang->line('auth_message_banned').' '.$errors['banned']);
+
+					} elseif (isset($errors['not_activated'])) {				// not activated user
+						redirect('/auth/send_again/');
+
+					} else {													// fail
+						foreach ($errors as $k => $v)	$data['errors'][$k] = $this->lang->line($v);
+					}
+				}
+			}
+			$data['show_captcha'] = FALSE;
+			if ($this->tank_auth->is_max_login_attempts_exceeded($login)) {
+				$data['show_captcha'] = TRUE;
+				if ($data['use_recaptcha']) {
+					$data['recaptcha_html'] = $this->_create_recaptcha();
+				} else {
+					$data['captcha_html'] = $this->_create_captcha();
+				}
+			}
+			$data["component"] = "auth/login_form";
+			$this->load->view('main/index', $data);
 		}
 	}
 
@@ -111,8 +184,8 @@ class Auth extends MY_Controller
 	function logout()
 	{
 		$this->tank_auth->logout();
-
-		$this->_show_message($this->lang->line('auth_message_logged_out'));
+		redirect('front');
+		//$this->_show_message($this->lang->line('auth_message_logged_out'));
 	}
 
 	/**
@@ -138,6 +211,7 @@ class Auth extends MY_Controller
 			if ($use_username) {
 				$this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean|min_length['.$this->config->item('username_min_length', 'tank_auth').']|max_length['.$this->config->item('username_max_length', 'tank_auth').']|alpha_dash');
 			}
+			$this->form_validation->set_rules('displayname','Display Name','required|xss_clean|max_lenght[30]');
 			$this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|min_length['.$this->config->item('password_min_length', 'tank_auth').']|max_length['.$this->config->item('password_max_length', 'tank_auth').']|alpha_dash');
 			$this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|xss_clean|matches[password]');
@@ -160,7 +234,7 @@ class Auth extends MY_Controller
 						$use_username ? $this->form_validation->set_value('username') : '',
 						$this->form_validation->set_value('email'),
 						$this->form_validation->set_value('password'),
-						$email_activation))) {									// success
+						$email_activation,$this->form_validation->set_value('displayname')))) {									// success
 
 					$data['site_name'] = $this->config->item('website_name', 'tank_auth');
 
@@ -211,10 +285,12 @@ class Auth extends MY_Controller
 	 */
 	function send_again()
 	{
-		if (!$this->tank_auth->is_logged_in(FALSE)) {							// not logged in or activated
+		if (!$this->tank_auth->is_logged_in(FALSE)) {			// not logged in or activated
+			
 			redirect('/auth/login/');
 
-		} else {
+		}
+		 else {
 			$this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email');
 
 			$data['errors'] = array();
@@ -600,16 +676,26 @@ class Auth extends MY_Controller
 		if ($this->tank_auth->is_logged_in()){
 			$id = $this->tank_auth->get_user_id();
 			$profile = $this->db->get_where('user_profiles',array('user_id'=>$id))->result();
-			$profile = $profile[0];
+			if (count($profile)>0)
+				$profile = $profile[0];
+			else
+				$profile = NULL;
+				
+			$data = $this->data;
 			$data["profile"] = $profile;
 			$data["user_id"] = $id;
-			$this->load->view('edit_profile',$data);
+			$data['main_title'] = lang('register');
+			$data['component'] = 'auth/edit_profile';
+			$this->load->view('main/index',$data);
+			
+			//$this->load->view('edit_profile',$data);
 		}
 	}
 	/*
 	 * Edit driver information
 	 */
 	function edit_driver(){
+		
 		if ($this->tank_auth->is_logged_in()){
 			$id = $this->tank_auth->get_user_id();
 			$profile = $this->db->get_where('driver',array('user_id'=>$id))->result();

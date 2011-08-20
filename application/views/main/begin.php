@@ -14,7 +14,8 @@
 <?php
 if ($component == "front"){ 
 	$this->load->view('head/twits');
-	$this->load->view('head/map'); 
+	echo "<script>function initialize(){}</script>";
+	//$this->load->view('head/map'); 
 }
 if ($component == "map"){
 	$this->load->view('head/map');
@@ -42,7 +43,8 @@ $(document).ready(function(){
 	$("#dateoforder").datepicker({dateFormat: 'yy-mm-dd'});
 	$("#chatDiv").hide();
 	$("#taxist").click( function(){
-		$("#loginPart").load("<?php echo base_url()?>index.php/auth/login");
+		$("#loginPart").load("<?php echo base_url()?>index.php/auth/login2");
+		
 		$("#taxistDiv").show();
 	});
 	$("#loginCloseButton").click(function(){
@@ -101,6 +103,7 @@ $(document).ready(function(){
 			});
 	
 	$("#cityName").click(function(){
+		$("#dialog").load('<?php echo base_url();?>index.php/front/getCityFromDb');
 		$("#dialog").dialog("open");
 	});
 
@@ -130,7 +133,6 @@ function getCities(){
 
 </script>
 <script>
-
 var _ues = {
 host:'vtaxi.userecho.com',
 forum:'6248',
