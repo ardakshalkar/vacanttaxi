@@ -24,100 +24,132 @@ if ($PAGE == 'page/manage_orders'){
 
 
 <script>
-(function($) {
-/*
- * Function: fnGetColumnData
- * Purpose:  Return an array of table values from a particular column.
- * Returns:  array string: 1d data array 
- * Inputs:   object:oSettings - dataTable settings object. This is always the last argument past to the function
- *           int:iColumn - the id of the column to extract the data from
- *           bool:bUnique - optional - if set to false duplicated values are not filtered out
- *           bool:bFiltered - optional - if set to false all the table data is used (not only the filtered)
- *           bool:bIgnoreEmpty - optional - if set to false empty values are not filtered from the result array
- * Author:   Benedikt Forchhammer <b.forchhammer /AT\ mind2.de>
- */
-$.fn.dataTableExt.oApi.fnGetColumnData = function ( oSettings, iColumn, bUnique, bFiltered, bIgnoreEmpty ) {
-	// check that we have a column id
-	if ( typeof iColumn == "undefined" ) return new Array();
-	
-	// by default we only wany unique data
-	if ( typeof bUnique == "undefined" ) bUnique = true;
-	
-	// by default we do want to only look at filtered data
-	if ( typeof bFiltered == "undefined" ) bFiltered = true;
-	
-	// by default we do not wany to include empty values
-	if ( typeof bIgnoreEmpty == "undefined" ) bIgnoreEmpty = true;
-	
-	// list of rows which we're going to loop through
-	var aiRows;
-	
-	// use only filtered rows
-	if (bFiltered == true) aiRows = oSettings.aiDisplay; 
-	// use all rows
-	else aiRows = oSettings.aiDisplayMaster; // all row numbers
 
-	// set up data array	
-	var asResultData = new Array();
 	
-	for (var i=0,c=aiRows.length; i<c; i++) {
-		iRow = aiRows[i];
-		var aData = this.fnGetData(iRow);
-		var sValue = aData[iColumn];
-		
-		// ignore empty values?
-		if (bIgnoreEmpty == true && sValue.length == 0) continue;
 
-		// ignore unique values?
-		else if (bUnique == true && jQuery.inArray(sValue, asResultData) > -1) continue;
-		
-		// else push the value onto the result data array
-		else asResultData.push(sValue);
-	}
-	
-	return asResultData;
-}}(jQuery));
-function fnCreateSelect( aData )
+/* Formating function for row details */
+function fnFormatDetails ( oTable, nTr )
 {
-	var r='<select><option value=""></option>', i, iLen=aData.length;
-	for ( i=0 ; i<iLen ; i++ )
-	{
-		r += '<option value="'+aData[i]+'">'+aData[i]+'</option>';
-	}
-	return r+'</select>';
+	var aData = oTable.fnGetData( nTr );
+	var sOut = '<table cellspacing="0" border="0" style="padding-left:50px;">';
+	sOut += '<tr><td>Время выпонения заказа:</td><td>'+aData[5]+'</td></tr>';
+	sOut += '<tr><td>Был сделан:</td><td>'+aData[7]+'</td></tr>';
+	sOut += '<tr><td>Extra info:</td><td>And any further details here (images etc)</td></tr>';
+	sOut += '</table>';
+	
+	return sOut;
 }
-	$(document).ready(function(){
-		var oTable=$('#catalogue').dataTable({
+$(document).ready(function(){
+	
+	/*
+	 * Insert a 'details' column to the table
+	 */
+	var nCloneTh = document.createElement( 'th' );
+	var nCloneTd = document.createElement( 'td' );
+	nCloneTd.innerHTML = '<img src="http://www.datatables.net/release-datatables/examples/api/../examples_support/details_open.png">';
+	nCloneTd.className = "center";
+	
+	$('#catalogue thead tr').each( function () {
+		this.insertBefore( nCloneTh, this.childNodes[0] );
+	} );
+	
+	$('#catalogue tbody tr').each( function () {
+		this.insertBefore(  nCloneTd.cloneNode( true ), this.childNodes[0] );
+	} );
+	
+	/*
+	 * Initialse DataTables, with no sorting on the 'details' column
+	 */
+	var oTable = $('#catalogue').dataTable( {
+		"aoColumnDefs": [
+			{ "bSortable": false, "aTargets": [ 0 ] },
+			{ "bVisible": false, "aTargets": [ 5 ] },
+			{ "bVisible": false, "aTargets": [ 7 ] },
+		],
+		"aaSorting": [[1, 'asc']],
 		"oLanguage": {
 			"sSearch": "Search all columns:"
 		},
 		"bJQueryUI": true,
 		"sPaginationType": "full_numbers",
-		"aoColumnDefs": [ 
-			{
-				"fnRender": function ( oObj ) {
-					return oObj.aData[0] +' T:'+ oObj.aData[3];
-				},
-				"aTargets": [ 0 ]
-			},
-			{
-				"fnRender": function ( oObj ) {
-					return oObj.aData[1] +' ->'+ oObj.aData[2];
-				},
-				"aTargets": [ 1 ]
-			},
-			{ "bVisible": false,  "aTargets": [ 3 ] },
-			{ "bVisible": false,  "aTargets": [ 2 ] },
-			{ "sClass": "center", "aTargets": [ 4 ] }
-		]});
-		oTable.append('<tfoot><tr><th rowspan="1" colspan="1"></th><th  rowspan="1" colspan="1"></th><th  rowspan="1" colspan="1"></th><th  rowspan="1" colspan="1"></th><th  rowspan="1" colspan="1"></th><th  rowspan="1" colspan="1"></th></tr></tfoot>');
+		"sDom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+	});
+	
+	/*Add toolbar*/
+	
+	$("div.top").prepend('<p>Дата Заказа с: <input type="text" id="date_from"> по: <input type="text" id="date_to"></p>');
+	$('#date_from,#date_to').datepicker({dateFormat: 'yy-mm-dd'});
+	
+	$('#date_from,#date_to').change(function(){ 
+		$.fn.dataTableExt.afnFiltering.push(
+ 		function( oSettings, aData, iDataIndex ) {
+ 		// "date-range" is the id for my input
+ 		dateMin =  $.datepicker.formatDate('yymmdd', $('#date_from').datepicker("getDate"));
+ 		dateMax =  $.datepicker.formatDate('yymmdd', $('#date_to').datepicker("getDate"));
+ 		
+		// 4 here is the column where my dates are.
+ 		var date = aData[7];
+ 		date = date.substring(0,10);
+ 		date = date.substring(0,4) + date.substring(5,7) + date.substring( 8,10 )
+
+ 		if ( dateMin == "" && date <= dateMax){
+ 			return true;
+ 		}
+ 		else if ( dateMin =="" && date <= dateMax ){
+ 			return true;
+ 		}
+ 		else if ( dateMin <= date && "" == dateMax ){
+ 			return true;
+ 		}
+ 		else if ( dateMin <= date && date <= dateMax ){
+ 			return true;
+ 		}
+ 		return false;
+ 		});
+		oTable.fnDraw(); 
+		});
+	
+	
+	/* Add event listener for opening and closing details
+	 * Note that the indicator for showing which row is open is not controlled by DataTables,
+	 * rather it is done here
+	 */
+	$('#catalogue tbody td img').live('click', function () {
+		var nTr = this.parentNode.parentNode;
+		if ( this.src.match('details_close') )
+		{
+			/* This row is already open - close it */
+			this.src = "http://www.datatables.net/release-datatables/examples/api/../examples_support/details_open.png";
+			oTable.fnClose( nTr );
+		}
+		else
+		{
+			/* Open this row */
+			this.src = "http://www.datatables.net/release-datatables/examples/api/../examples_support/details_close.png";
+			oTable.fnOpen( nTr, fnFormatDetails(oTable, nTr), 'details' );
+		}
+	} );
+	
+	
+	
+	
 		
-		$("tfoot th").each( function ( i ) {
-		this.innerHTML = fnCreateSelect( oTable.fnGetColumnData(i) );
-		$('select', this).change( function () {
-			oTable.fnFilter( $(this).val(), i );
-		} );
-		} );
+		
+		$("#sidebar .sideNav li a:eq(0)").click(function(event) {
+ 		 event.preventDefault();
+ 		 
+  		alert('hello');
+  		});
+  		$("#sidebar .sideNav li a:eq(1)").click(function(event) {
+ 		 event.preventDefault(); 		 
+  		oTable.fnFilter('1115', 6 );
+  		});
+  		$("#sidebar .sideNav li a:eq(2)").click(function(event) {
+ 		 event.preventDefault();
+  		oTable.fnFilter('',6);
+  		oTable.fnFilter('',6);
+  		});
+  		
 		
 		$("#add").click(function(event){
 		$("#dialog").dialog({modal:true});

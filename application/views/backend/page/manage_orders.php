@@ -6,10 +6,11 @@
 
 <div id="main">
 <br/>
-
 <?= $orders;?>
 
 <br/>
+<input type="text" id="date-range"/>
+
 </div>
 
 <div class="clear"></div>

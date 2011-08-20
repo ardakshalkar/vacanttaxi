@@ -53,5 +53,28 @@ class Order_Model extends CI_Model
  		$this->db->where('type', 0);
  		return $this->db->get('unofficial_order')->result();
  	}
+ 	
+ 	function get_companies()
+	{
+		$query = $this->db->get(COMPANY_TABLE);
+		$c_list = NULL;
+		$c_list['0']='Любая';
+		foreach($query->result() as $i)
+		{
+			$c_list[$i->id] = $i->company_name; 
+		}
+		return $c_list;
+	}
+	function get_cities()
+	{
+		$this->db->order_by('name','asc');
+		$query = $this->db->get(CITY_TABLE);
+		$c_list = NULL;
+		foreach($query->result() as $i)
+		{
+			$c_list[$i->id] = $i->name; 
+		}
+		return $c_list;
+	}
 }
 ?>

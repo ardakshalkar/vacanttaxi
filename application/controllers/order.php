@@ -17,6 +17,8 @@ class Order extends MY_Controller {
 		$data["main_title"]="Order";
 		$data['component']	= 'order';
 		$this->load->model("order_model");
+		$data['companies']=$this->order_model->get_companies();
+		$data['cities']=$this->order_model->get_cities();
 		
 			$this->form_validation->set_rules('surname','Surname','required|xss_clean');
 			$this->form_validation->set_rules('name','Name','required|min_length[2]|xss_clean');
@@ -34,27 +36,29 @@ class Order extends MY_Controller {
 				$surname = $this->input->post('surname');
 				$name = $this->input->post('name');
 				$contacts = $this->input->post('contacts');
+				$company_id=$this->input->post('company');
+				$city_id=$this->input->post('city');
 				$d = $this->input->post('date');
 				$h = $this->input->post('hours');
 				$m = $this->input->post('mins');
 				$otkuda = $this->input->post('otkuda');
 				$kuda = $this->input->post('kuda');
-				//echo $surname." ".$name." ".$contacts." ".$date." ".$h.":".$m." ".$otkuda."-".$kuda;
 				$time = $h.":".$m;
-				date_default_timezone_set('Asia/Almaty');
-				$dateTime = DateTime::createFromFormat('d/m/Y', $d);
-				$date = $dateTime->format('Y-m-d');
 				$orders = array(
+					'session_id'=>$this->session->userdata['session_id'],
 					'surname'  => $surname,
 					'name'     => $name,
 					'contacts' => $contacts,
-					'when'     => $date,
+					'when'     => $d,
 					'time'     => $time,
 					'from'     => $otkuda,
-					'to'       => $kuda
+					'to'       => $kuda,
+					'company_id'=>$company_id,
+					'city'=>$city_id
 				);
 				$this->order_model->insert_Order('order', $orders);
-				redirect('order');	
+				echo $this->session->userdata['city_id'];
+				echo "Ваш заказ будет принят, пожалуйста дождитесь звонка оператора.";	
 			}
 		}
 }

@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link type="text/css" href="<?php echo base_url()."style/css/ui-lightness/jquery-ui.css"; ?>" rel="stylesheet" media="all" />	
 <link type="text/css" href="<?php echo base_url()."style/style.css"; ?>" rel="stylesheet" media="all" />
 <link type="text/css" href="<?php echo base_url()."style/table.css"; ?>" rel="stylesheet" media="all" />
 <script src="<?php echo base_url()."style/js/jquery.js"; ?>"></script>
-<link rel="stylesheet" href="<?php echo base_url()."style/js/jquery-ui.css"; ?>"/>
-<script src="<?php echo base_url()."style/js/jquery-ui.js"; ?>"></script>
+<script type="text/javascript" src="<?php echo base_url()."style/js/jquery-ui-1.8.15.custom.min.js";?>" ></script>
 <script src="<?php echo base_url()."style/js/jquery.timeago.js"; ?>" type="text/javascript"></script>
 <script>
 	city = '<?=$city?>';
@@ -39,6 +39,7 @@ if (isset($extraHeadContent)) {
 <script>
 var id2,loginWidget=false,loginWidgetClicked=false;;
 $(document).ready(function(){
+	$("#dateoforder").datepicker({dateFormat: 'yy-mm-dd'});
 	$("#chatDiv").hide();
 	$("#taxist").click( function(){
 		$("#loginPart").load("<?php echo base_url()?>index.php/auth/login");

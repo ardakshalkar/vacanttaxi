@@ -1492,6 +1492,8 @@ class Backend extends CI_Controller
 	{
 		if(isset($this->session->userdata['admin_id']) && $this->session->userdata['admin_type'] == DISPATCHER)
 		{
+			require('beaconpush.php');
+  			$beaconpush = new BeaconPush();
 			$tmpl = array('table_open'  => '<table id="catalogue">');
 			$this->table->set_template($tmpl);
 			$this->table->set_heading('Имя','Откуда','Куда','Телефон','Когда','Статус','Время');
@@ -1499,15 +1501,15 @@ class Backend extends CI_Controller
 			$orders=$orders->result();
 			foreach ($orders as $row){
 			$status = "";
-			if ($row->status=='1111') $status = lang("unknown");
-			else if ($row->status=='1112') $status = lang("auction");
-			else if ($row->status=='1113') $status = lang("descarded");
-			else if ($row->status=='1114') $status = lang("taken");
-			else if ($row->status=='1115') $status = lang("done");
+			if ($row->status=='1111') {$status = lang("unknown");$class='ui-icon ui-icon-help';}
+			else if ($row->status=='1112') {$status = lang("auction"); $class='ui-icon ui-icon-radio-on';}
+			else if ($row->status=='1113') {$status = lang("descarded"); $class='ui-icon ui-icon-minus';}
+			else if ($row->status=='1114') {$status = lang("taken"); $class='ui-icon ui-icon-plus';}
+			else if ($row->status=='1115') {$status = lang("done"); $class='ui-icon ui-icon-check';}
 			
 			
 			$this->table->add_row(
-				array(isset($row->name)?$row->name:$row->surname,$row->from,$row->to,$row->contacts,$row->when.' '.$row->time,$status,$row->order_date)
+				array(isset($row->name)?$row->name:$row->surname,$row->from,$row->to,$row->contacts,$row->when.' '.$row->time,'<span class="'.$class.'" title="'.$status.'">'.$row->status.'</span>',$row->order_date)
 			);
 			}
 			
@@ -1517,6 +1519,7 @@ class Backend extends CI_Controller
 				redirect("backend/manage_categories");
 			}	
 			
+			
 			$data = $this->backend_model->general();
 			$data["orders"]=$this->table->generate();
 			$menu_items = array('backend/new_orders'=>'Новые',
@@ -1524,7 +1527,7 @@ class Backend extends CI_Controller
 								'backend/manage_orders'=>'Все');
 								
 			$data += $this->backend_model->page_info('page/manage_orders','Заказы',$menu_items);
-													
+			$beaconpush->add_channel('taxi');										
 			$this->load->view('backend/index',$data);
 		}else
 		{
