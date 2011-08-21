@@ -68,12 +68,12 @@ $captcha = array(
 	<?php } else { ?>
 	<tr>
 		<td colspan="3">
-			<p>Enter the code exactly as it appears:</p>
+			<p>Введите буквы изображенные на картинке:</p>
 			<?php echo $captcha_html; ?>
 		</td>
 	</tr>
 	<tr>
-		<td><?php echo form_label('Confirmation Code', $captcha['id']); ?></td>
+		<td><?php echo form_label('Код подтверждения', $captcha['id']); ?></td>
 		<td><?php echo form_input($captcha); ?></td>
 		<td style="color: red;"><?php echo form_error($captcha['name']); ?></td>
 	</tr>
@@ -83,9 +83,9 @@ $captcha = array(
 	<tr>
 		<td colspan="3">
 			<?php echo form_checkbox($remember); ?>
-			<?php echo form_label('Remember me', $remember['id']); ?>
-			<?php echo anchor('/auth/forgot_password/', 'Forgot password'); ?>
-			<?php if ($this->config->item('allow_registration', 'tank_auth')) echo anchor('/auth/register/', 'Register'); ?>
+			<?php echo form_label('Запомнить', $remember['id']); ?>
+			<?php echo anchor('/auth/forgot_password/', 'Заполнить пароль'); ?>
+			<?php if ($this->config->item('allow_registration', 'tank_auth')) echo anchor('/auth/register/', 'Регистрация'); ?>
 		</td>
 	</tr>
 </table>

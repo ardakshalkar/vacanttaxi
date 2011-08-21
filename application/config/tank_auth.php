@@ -116,7 +116,7 @@ $config['captcha_height'] = 50;
 $config['captcha_font_size'] = 14;
 $config['captcha_grid'] = FALSE;
 $config['captcha_expire'] = 180;
-$config['captcha_case_sensitive'] = TRUE;
+$config['captcha_case_sensitive'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,8 +127,8 @@ $config['captcha_case_sensitive'] = TRUE;
 |--------------------------------------------------------------------------
 */
 $config['use_recaptcha'] = FALSE;
-$config['recaptcha_public_key'] = '';
-$config['recaptcha_private_key'] = '';
+$config['recaptcha_public_key'] = '6LeQT8cSAAAAAEwKD9X7qqAZs1-pi1HtXf5cr5q4';
+$config['recaptcha_private_key'] = '6LeQT8cSAAAAACb3NLMrWUYbvE2s57nduwe6KnWA';
 
 /*
 |--------------------------------------------------------------------------

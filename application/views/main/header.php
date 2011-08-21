@@ -21,7 +21,7 @@ foreach ($menu as $mitem){
 			<span id="taxist">Войти</span>
 		<?php else:?>
 			<?= $username; ?> <a href="<?=base_url()."index.php/auth/logout"?>">Выйти</a><br/>
-			<a href="<?=base_url()?>/index.php/auth/edit_driver">Изменить данные в каталоге</a>|
+			<a href="<?=base_url()?>/index.php/auth/edit_driver">В каталоге</a>|
 			<a href="<?=base_url()?>/index.php/auth/edit_profile">Изменить профиль</a>
 		<?php endif ?>
 		<div id = "changeCity">
@@ -38,7 +38,7 @@ foreach ($menu as $mitem){
 
 
 
-
+	<?php if (!$logged_in) : ?>
         <div id="taxistDiv">
 			<script src="http://loginza.ru/js/widget.js" type="text/javascript"></script>
 			<div style="float:left;width:48%;">
@@ -55,6 +55,7 @@ foreach ($menu as $mitem){
 			</div>
 			
         </div>
+	<?php endif;?>
 <div id = "dialog">
     <ul>
 		    

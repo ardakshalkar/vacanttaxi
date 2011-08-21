@@ -36,7 +36,81 @@
 function organizeTwits(){
 	$(".twit_date").timeago();
 }
+function addTweet(id,message){
+	var twit = '<li><span class="twit_name">'+message.name+'</span><br/>';
+	twit += '<span class="twit_message">'+message.message+'</span><br/>';
+	twit += '<span class="twit_from">(A) '+message.from+'</span>';
+	twit += '<span class="twit_to">(B) '+message.to+'</span>';
+	twit += '<span class="twit_contacts">(T)'+message.contacts+'</span><br/>';
+	twit += '<span class="twit_date" title='+message.date+'>'+message.date+'</span> ';
+	twit += '<span class="twit_comment">0 комментарий</span><br/>';
+	twit += '<div class="commentsDiv" style="display:none;">';
+	twit += '<ul id="'+message.id+'">';
+	twit += '<?php 
+		   $nameArea = array(
+			'name'  => 'nameArea',
+			'id'    => 'nameArea',
+			'placeholder' => 'Имя..',
+			'width' => '50',
+			'value' => ''
+		   );
+		   $comment = array(
+			'name' => 'commentArea',
+			'class'   => 'commentArea',
+			'cols' => '25',
+			'rows' => '2',
+			'placeholder' => 'Текст комментария...',
+			'value'=> ''
+		   );
+			
+			$attributes = array('class' => 'leave_comment');
+			echo form_open_multipart("front/ajaxComment",$attributes);
+			if (!$this->session->userdata('user_id'))
+				echo form_input($nameArea).br();
+			echo form_textarea($comment).br();?><input type="hidden" name="id" value="'+message.id+'"/><?
+			echo form_submit(array('name'=>'send_comment'),'Отправить');
+			echo form_close();?></ul></div>';
+	$(id).prepend(twit);
+	
+	$(".twit_date").timeago();
+	$(".leave_comment").submit(function(){
+		event.preventDefault();
+		var msg_id=$(this).find("[name='id']").attr("value");
+		$.post("<?php echo base_url();?>index.php/front/ajaxComment", $(this).serialize(),  function(data) {
+			$("#"+msg_id).append(data);
+			$(".commentArea").val("");
+		}); 
+	 }); 
+	$(".twit_comment").unbind('click').click(function(){
+		$(this).next().next().toggle("slow");  
+		$(this).next().find("#nameArea").attr("value","");
+  		$(this).next().find("#commentArea").attr("value","");
+  				
+	 });
+	
+}
 $(document).ready(function(){
+	
+	 $(".leave_comment").submit(function(){
+		 
+		event.preventDefault();
+
+		var msg_id=$(this).find("[name='id']").attr("value");
+		$.post("<?php echo base_url();?>index.php/front/ajaxComment", $(this).serialize(),  function(data) {
+			$("#"+msg_id).append(data);
+			$(".twit_date").timeago();
+			$(".commentArea").val("");
+		}); 
+	 });
+	$(".twit_comment").click(function(){
+		$(this).next().next().toggle("slow");  
+		$(this).next().find("#nameArea").attr("value","");
+  		$(this).next().find("#commentArea").attr("value","");
+  				
+	 });
+	
+	
+	
 	$( "#dialog:ui-dialog" ).dialog( "destroy" );
 
 				var name = $( "#name" ),
@@ -83,7 +157,7 @@ $(document).ready(function(){
 			buttons: [{
 						id:"s_button",
 						name:"s_button",
-						text:"Submit",
+						text:"Добавить запись",
 						click: function() {
 							
 							var bValid = true;
@@ -91,17 +165,19 @@ $(document).ready(function(){
 							
 							//bValid = bValid && checkLength( name, "Name", 2, 15 );
 							//bValid = bValid && checkRegexp( contacts, /^([0-9+])+$/, "Contacts field only allow : 0-9 and '+'" );
-							bValid = bValid && checkLength( from, "From", 2, 50 );
-							bValid = bValid && checkLength( to, "To", 2, 50 );
-							bValid = bValid && checkLength( message, "Message", 5, 50 );
-							bValid = bValid && checkRegexp( name, /^([a-zA-ZА-Яа-яёЁ])+$/, "Name field only allow : a-z" );
+							bValid = bValid && checkLength( from, "Откуда", 2, 50 );
+							bValid = bValid && checkLength( to, "Куда", 2, 50 );
+							bValid = bValid && checkLength( message, "Сообщение", 5, 50 );
+							bValid = bValid && checkRegexp( name, /^([a-zA-ZА-Яа-яёЁ])+$/, "Вводе только кириллицу/латиницу" );
 							if ( bValid ) {
-								document.unoffOrder.submit();
+								$.post("<?php echo base_url();?>index.php/unofficialOrder", $(document.unoffOrder).serialize(),  function(data) {});
 								$( this ).dialog( "close" );
+								//document.unoffOrder.submit();
+								
 							}
 						}
 				},{
-					text:"Cancel",
+					text:"Отмена",
 					click: function() {
 					allFields.val( "" );
 					$( this ).dialog( "close" );
@@ -117,7 +193,18 @@ $(document).ready(function(){
 				$('input[name="type"]').val($(this).attr("type_value"));
 				$( "#dialog-form" ).dialog( "open" );
 		});
-
+		$("a.cancelOrder").click(function(){
+			event.preventDefault();
+			var cancelLink = this;
+			
+			var parent = $(this).parent();
+			$.get($(cancelLink).attr("href"), function(data) {
+				$(parent).fadeTo("fast",0.5);
+				$(cancelLink).text("Заказ отменен");
+				$(cancelLink).css("text-decoration","line-through");
+			});
+			return false;
+		});
 	});
 	
 </script>

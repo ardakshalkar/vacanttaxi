@@ -25,7 +25,7 @@
 		</div>
 
     </div>
-    <div id="dialog-form" title="Leave message">
+    <div id="dialog-form" title="Оставить сообщение">
        	<?php 
 			$id = $this->session->userdata('user_id');
 //			echo $id;

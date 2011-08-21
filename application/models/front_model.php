@@ -197,6 +197,7 @@ class Front_Model extends CI_Model
 		$query = $this->db->get('unofficial_order');
 		$msg_clients = NULL;
 		$counter=0;
+		$user_id = $this->session->userdata('user_id');
 		foreach($query->result() as $i)
 		{
 			$msg_clients[$counter]['id'] = $i->id;
@@ -206,8 +207,16 @@ class Front_Model extends CI_Model
 			$msg_clients[$counter]['from'] = $i->from;
 			$msg_clients[$counter]['to'] = $i->to;
 			$msg_clients[$counter]['date'] = $i->date;
+			$msg_clients[$counter]['authority'] = ($this->session->userdata('user_id')==$i->user_id)?true:false;
+			$msg_clients[$counter]['accomplished'] = $i->accomplished;
 			$query2 = $this->db->query("SELECT * FROM `comments` WHERE `message_id`=".$i->id);
 			$msg_clients[$counter]['comments']=$query2->result();
+			if ($user_id==$i->user_id&&$user_id)
+				$msg_clients[$counter]['authority'] = true;
+			else if ($this->input->cookie('access_token')&&$this->input->cookie('access_token')==$i->access_token)
+				$msg_clients[$counter]['authority'] = true;
+			else
+				$msg_clients[$counter]['authority'] = false;
 			$counter++;
 		}
 		return $msg_clients;

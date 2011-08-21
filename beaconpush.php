@@ -79,15 +79,15 @@ class BeaconPush {
 
         $r .= "<script type=\"text/javascript\">";
         $r .= "Beacon.connect(\"".BeaconPush::$api_key."\",[\"".implode('","', BeaconPush::$channels)."\"]".$beacon_options.");";
-		$r .= "Beacon.listen(function( message) { 
+		$r .= "Beacon.listen(function( message) {
 		var msg = message.name;
 		console.log(message.data);
-		var mess='<li><span class=\"twit_name\">'+message.data.name+'</span><span class=\"twit_message\">'+message.data.message+'</span><span class=\"from\">From:'+message.data.from+'</span><span class=\"twit_to\">To:'+message.data.to+'</span><span class=\"twit_contacts\">Contacts:'+message.data.contacts+'</span><span class=\"twit_date\">Date:'+message.data.date+'</span></li>';
+		
 		if(msg == 'client_msg'){
-			$(\"#show_msgC\").prepend(mess);
+			addTweet(\"#show_msgC\",message.data);
 		}
 		else if (msg =='driver_msg'){
-			$(\"#show_msgT\").prepend(mess);
+			addTweet(\"#show_msgT\",message.data);
 		}
 		else if (msg == 'chat'){
 			$(\"#messages\").prepend('<li id='+message.data.from+'><label class=\"name\">'+message.data.name+'</label></br><a class=\"reply\">Ответить</a></br>'+message.data.text+'</li>');
