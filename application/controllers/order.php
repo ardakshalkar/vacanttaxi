@@ -9,6 +9,8 @@ class Order extends MY_Controller {
 	
 	function index()
 	{
+		require('beaconpush.php');
+  		$beaconpush = new BeaconPush();
 		$this->load->helper(array('url','form'));
 		$this->load->library('form_validation');
 		$this->load->helper('language');
@@ -56,9 +58,11 @@ class Order extends MY_Controller {
 					'company_id'=>$company_id,
 					'city'=>$city_id
 				);
-				$this->order_model->insert_Order('order', $orders);
-				echo $this->session->userdata['city_id'];
-				echo "Ваш заказ будет принят, пожалуйста дождитесь звонка оператора.";	
+				$id=$this->order_model->insert_Order('order', $orders);
+				$co_name=$data['companies'][$company_id];
+				$order=$this->order_model->get_data($id);
+				$beaconpush->add_channel($co_name);
+				$beaconpush->send_to_channel($co_name,'client_order',$order);	
 			}
 		}
 }

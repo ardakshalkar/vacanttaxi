@@ -1493,10 +1493,12 @@ class Backend extends CI_Controller
 		if(isset($this->session->userdata['admin_id']) && $this->session->userdata['admin_type'] == DISPATCHER)
 		{
 			require('beaconpush.php');
+			
   			$beaconpush = new BeaconPush();
+			
 			$tmpl = array('table_open'  => '<table id="catalogue">');
 			$this->table->set_template($tmpl);
-			$this->table->set_heading('Имя','Откуда','Куда','Телефон','Когда','Статус','Время');
+			$this->table->set_heading('Имя','Откуда','Куда','Телефон','Когда','Статус','Время','id','session_id');
 			$orders =$this->db->get(ORDER_TABLE);
 			$orders=$orders->result();
 			foreach ($orders as $row){
@@ -1509,7 +1511,7 @@ class Backend extends CI_Controller
 			
 			
 			$this->table->add_row(
-				array(isset($row->name)?$row->name:$row->surname,$row->from,$row->to,$row->contacts,$row->when.' '.$row->time,'<span class="'.$class.'" title="'.$status.'">'.$row->status.'</span>',$row->order_date)
+				array(isset($row->name)?$row->name:$row->surname,$row->from,$row->to,$row->contacts,$row->when.' '.$row->time,'<span class="'.$class.'" title="'.$status.'">'.$row->status.'</span>',$row->order_date,$row->id,$row->session_id)
 			);
 			}
 			
@@ -1521,13 +1523,13 @@ class Backend extends CI_Controller
 			
 			
 			$data = $this->backend_model->general();
+			$data['company']=$this->backend_model->get_company_name($this->session->userdata['admin_id'],DISPATCHER_TABLE);
 			$data["orders"]=$this->table->generate();
 			$menu_items = array('backend/new_orders'=>'Новые',
 								'backend/done_orders'=>'Выполненные',
 								'backend/manage_orders'=>'Все');
-								
-			$data += $this->backend_model->page_info('page/manage_orders','Заказы',$menu_items);
-			$beaconpush->add_channel('taxi');										
+			$data["beaconpush"]=$beaconpush;					
+			$data += $this->backend_model->page_info('page/manage_orders','Заказы',$menu_items);									
 			$this->load->view('backend/index',$data);
 		}else
 		{

@@ -9,6 +9,8 @@ class Order_Model extends CI_Model
 	function insert_Order($table, $data)
 	{
 		$this->db->insert($table, $data);
+		$id = $this->db->insert_id();
+		return $id;
 	}
 	function get_name($id)
 	{
@@ -75,6 +77,12 @@ class Order_Model extends CI_Model
 			$c_list[$i->id] = $i->name; 
 		}
 		return $c_list;
+	}
+	function get_data($id){
+		$this->db->where('id',$id);
+		$query = $this->db->get(ORDER_TABLE);
+		$order = $query->result_array();
+		return $order[0];
 	}
 }
 ?>
