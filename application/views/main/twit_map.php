@@ -8,7 +8,7 @@
    );
    $comment = array(
     'name' => 'commentArea',
-    'id'   => 'commentArea',
+    'class'   => 'commentArea',
     'cols' => '25',
     'rows' => '2',
     'placeholder' => 'Текст комментария...',
@@ -24,12 +24,21 @@
 	<? endif;?>
    <?php for ($i=0;$i<count($messages);$i++){?>
      <li>
-      <span class="twit_name"><?php echo $messages[$i]['name'];?></span><br/>
+      <span class="twit_name"><?php echo $messages[$i]['name'];?></span>
+      <? if (!$messages[$i]['accomplished']&&$messages[$i]['authority']) : ?>
+      <?=anchor('unofficialOrder/cancel_order/'.$messages[$i]['id'],'Отменить заказ',array('class'=>'cancelOrder'))?>
+      <br/>
+      <? endif; ?>
+      <? if ($messages[$i]['accomplished']) : ?>
+			Заказ отменен
+      <? endif; ?>
+      <br/>
       <span class="twit_message"><?php echo $messages[$i]['message'];?></span><br/>
       <span class="twit_from">(A) <?php echo $messages[$i]['from'];?></span> 
       <span class="twit_to">(B) <?php echo $messages[$i]['to'];?></span>
       <span class="twit_contacts">(T) <?php echo $messages[$i]['contacts'];?></span><br/>
       <span class="twit_date" title="<?php echo $messages[$i]['date'];?>"><?php echo $messages[$i]['date'];?></span>
+      
                         <span class="twit_comment">
 							<? 
 								$comments_amount = count($messages[$i]['comments']);
@@ -37,7 +46,7 @@
 									echo "оставить комментарий";
 								else if ($comments_amount>9&&$comments_amount<20)
 									echo $comments_amount." комментариев";
-								else if ($comments_amount%10==1&&$comments_amount!=11)
+								else if ($comments_amount%10==1)
 									echo $comments_amount." комментарий";
 								else if ($comments_amount%10>0&&$comments_amount%10<5)
 									echo $comments_amount." комментария";
@@ -60,7 +69,7 @@
 							<?php endif;?>
 							</ul>
 						   <?php $attributes = array('class' => 'leave_comment');
-							echo form_open_multipart("front/leaveComments",$attributes);
+							echo form_open_multipart("front/ajaxComment",$attributes);
 							if (!$this->session->userdata('user_id'))
 								echo form_input($nameArea).br();
 							echo form_textarea($comment).br();

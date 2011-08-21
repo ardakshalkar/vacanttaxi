@@ -97,7 +97,11 @@ class Auth extends MY_Controller
 				}
 			}
 			$data["component"] = "auth/login_form";
-			$this->load->view('auth/login_form',$data);
+			$data["main_title"] = "Неправильный пароль";
+			if (isset($_GET["ajax"]))
+				$this->load->view('auth/login_form',$data);
+			else
+				$this->load->view('main/index',$data);
 		}
 	}
 	/**
@@ -344,6 +348,7 @@ class Auth extends MY_Controller
 	 */
 	function forgot_password()
 	{
+		$data = $this->data;
 		if ($this->tank_auth->is_logged_in()) {									// logged in
 			redirect('');
 
@@ -358,7 +363,7 @@ class Auth extends MY_Controller
 			if ($this->form_validation->run()) {								// validation ok
 				if (!is_null($data = $this->tank_auth->forgot_password(
 						$this->form_validation->set_value('login')))) {
-
+					
 					$data['site_name'] = $this->config->item('website_name', 'tank_auth');
 
 					// Send email with password activation link
@@ -371,7 +376,10 @@ class Auth extends MY_Controller
 					foreach ($errors as $k => $v)	$data['errors'][$k] = $this->lang->line($v);
 				}
 			}
-			$this->load->view('auth/forgot_password_form', $data);
+			$data = array_merge($data,$this->data);
+			$data['component'] = 'auth/forgot_password_form';
+			//$this->load->view('auth/forgot_password_form', $data);
+			$this->load->view('main/index',$data);
 		}
 	}
 
@@ -417,6 +425,7 @@ class Auth extends MY_Controller
 				$this->_show_message($this->lang->line('auth_message_new_password_failed'));
 			}
 		}
+		
 		$this->load->view('auth/reset_password_form', $data);
 	}
 

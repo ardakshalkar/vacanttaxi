@@ -9,6 +9,7 @@ class Order_Model extends CI_Model
 	function insert_Order($table, $data)
 	{
 		$this->db->insert($table, $data);
+		return $this->db->insert_id();
 	}
 	function get_name($id)
 	{

@@ -42,7 +42,7 @@ var id2,loginWidget=false,loginWidgetClicked=false;;
 $(document).ready(function(){
 	$("#chatDiv").hide();
 	$("#taxist").click( function(){
-		$("#loginPart").load("<?php echo base_url()?>index.php/auth/login2");
+		$("#loginPart").load("<?php echo base_url()?>index.php/auth/login2?ajax=true");
 		
 		$("#taxistDiv").show();
 	});
@@ -77,23 +77,6 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	 $(".leave_comment").submit(function(){
-		event.preventDefault();
-
-		var msg_id=$(this).find("[name='id']").attr("value");
-		$.post("<?php echo base_url();?>index.php/front/ajaxComment", $(this).serialize(),  function(data) {
-			$("#"+msg_id).append(data);
-			$("#commentArea").empty();
-		}); 
-	 });
-	 
-	 
-	$(".twit_comment").click(function(){
-		$(this).next().next().toggle("slow");  
-		$(this).next().find("#nameArea").attr("value","");
-  		$(this).next().find("#commentArea").attr("value","");
-  				
-	 });
  	 
 	$( "#dialog" ).dialog({
 			autoOpen: false,

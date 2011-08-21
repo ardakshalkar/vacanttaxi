@@ -278,33 +278,6 @@ class Front extends MY_Controller
 			echo "<li><a href = '".base_url()."/index.php/front/setCityOnMap/".$row->name."'>".$row->name."</a></li>";
 		}
 	}
-	
-	function leaveComments()
-	{
-		$this->load->model('user_model');
-		$msg_id = $this->input->post('id');
-		if(isset($this->session->userdata['user_id']))
-		{
-    		$user_id = $this->session->userdata['user_id'];
-    		$name = $this->user_model->get_display_name($user_id);
-   		}
-   		else{ $user_id = 0;}
-   		
-   		$d = date("Y-m-d");
-   		$eventDate = DateTime::createFromFormat('Y-m-d', $d, new DateTimeZone('Asia/Almaty'));
-  		$date = date_format($eventDate, 'Y-m-d h:i:s');
-   		$name = ($this->input->post('nameArea'))?$this->input->post('nameArea'):$name;
-   		$text = $this->input->post('commentArea');
-   		$data = array(
-       		'message_id' => $msg_id,
-       		'user_id' => $user_id,
-       		'name' => $name,
-       		'date' => $date,
-       		'text' => $text
-   			);
-   	   $this->front_model->insert_userinfo($data, 'comments');
-   	   //redirect();
-  	}
  
  	function ajaxComment()
  	{
@@ -331,7 +304,6 @@ class Front extends MY_Controller
 				'message_id' => $msg_id,
 				'user_id' => $user_id,
 				'name' => $name,
-				'date' => $time,
 				'text' => $this->input->post('commentArea')
    			);
 			$this->front_model->insert_userinfo($data, 'comments'); 

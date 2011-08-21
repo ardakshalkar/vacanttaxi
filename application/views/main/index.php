@@ -9,7 +9,7 @@
 		<div id="present">
 			<?php $this->load->view('main/components/'.$component); ?>
 		</div>
-		<div id="footer"><?php $this->load->view('main/footer'); ?></div>
 	</div>
+	<div id="footer"><?php $this->load->view('main/footer'); ?></div>
 </body>
 </html>
