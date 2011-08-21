@@ -1,4 +1,8 @@
+<script>
+
+</script>
 <?php
+
 	echo form_open("order");
 	$surname = array(
 		'name'  => 'surname',
@@ -20,7 +24,7 @@
 	);
 	$date = array(
 		'name'  => 'date',
-		'id'    => 'date',
+		'id'    => 'dateoforder',
 		'class' => 'orderLabels',
 		'value' => set_value('date')
 	);
@@ -57,33 +61,41 @@
 		<?php echo validation_errors();?>
         </div>
 		<div>
-			<label for="otkuda" id="otlabel">Pickup Address:</label>
+			<label for="otkuda" id="otlabel">Откуда:</label>
         	<?php echo form_input($otkuda);?>
         </div>
         <div>
-        	<label for="kuda" id="klabel">Drop Off Address:</label>
+        	<label for="kuda" id="klabel">Куда:</label>
         	<?php echo form_input($kuda);?>
         </div>
         <div>
-        	<label for="date" id="dlabel">Pickup Date:</label>
+        	<label for="date" id="dlabel">На какой день:</label>
         	<?php echo form_input($date);?>
         </div>
         <div>
-        	<label for="time" id="tlabel">Time:</label>
+        	<label for="time" id="tlabel">Время:</label>
         	<?php echo form_dropdown('hours',$hours,'00');?>
             <?php echo form_dropdown('mins',$mins,'00');?>
         </div>
         <div>
-			<label for="surname" id="slabel">Surname:</label>
+			<label for="surname" id="slabel">Фамилия:</label>
         	<?php echo form_input($surname);?>
         </div>
         <div>
-			<label for="name" id="nlabel">Name:</label>
+			<label for="name" id="nlabel">Имя:</label>
         	<?php echo form_input($name);?>
         </div>
         <div>
-        	<label for="contacts" id="conlabel">Contact:</label>
+        	<label for="contacts" id="conlabel">Номер Тел:</label>
         	<?php echo form_input($contacts);?>
+        </div>
+        <div>
+        	<label for="contacts" id="conlabel">Такси Компания:</label>
+        	<?php echo form_dropdown('company',$companies); ?>
+        </div>
+        <div>
+        	<label for="contacts" id="conlabel">Ваш город:</label>
+        	<?php echo form_dropdown('city',$cities,$this->session->userdata['city_id']); ?>
         </div>
         <div>
         	<?php echo form_submit(array('name'=>'order_button'),'Order');?>
