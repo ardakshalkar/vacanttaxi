@@ -77,5 +77,12 @@ class Order_Model extends CI_Model
 		}
 		return $c_list;
 	}
+	
+	function get_data($id){
+		$this->db->where('id',$id);
+		$query = $this->db->get(ORDER_TABLE);
+		$order = $query->result_array();
+		return $order[0];
+	}
 }
 ?>
