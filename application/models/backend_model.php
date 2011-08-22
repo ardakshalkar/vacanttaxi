@@ -108,38 +108,7 @@ class Backend_Model extends CI_Model
 		$this->db->where('id',$id);
 		$this->db->update($table,array('online'=>$var));
 	}
-	
-	# Return string
-	function get_name($type)
-	{
-		switch($type)
-		{
-			case SUPERADMIN:
-				return "SuperAdmin";
-			case ADMIN:
-				return "Admin";
-			case MODERATOR:
-				return "Moderator";
-			default:
-				return "Error!!!";
-		}
-	}
-	
-	function get_front_name($type)
-	{
-		switch($type)
-		{
-			case EMPLOYEE:
-				return 'Employee';
-			case EMPLOYER:
-				return 'Employer';
-			case AGENCY:
-				return 'Agency';
-			default:
-				return 'Error!!!';
-		}
-	}
-	
+		
 	# Return user information by id
 	# Must return row, for this need $query[0], don't change it
 	function get_userinfo($id,$table)
@@ -236,15 +205,25 @@ class Backend_Model extends CI_Model
   		return $query[0];
  	}
  	
- 	function get_company_name($id,$table)
+ 	function get_company_channels()
+ 	{
+  		$query = $this->db->get(COMPANY_TABLE);
+  		$list[0] = 'VT';
+  		$i=1;
+  		foreach ($query->result() as $row)
+  		{
+  			$list[$i]='company'.$row->id;
+  			$i++;
+  		}
+  		return $list;
+ 	}
+ 	
+ 	function get_company_channel($id,$table)
  	{
   		$this->db->where('user_id',$id);
   		$query = $this->db->get(DISPATCHER_TABLE);
   		$query = $query->result();
-  		$this->db->where('id',$query[0]->company_id);
-  		$query2 = $this->db->get(COMPANY_TABLE);
-  		$row =$query2->result();
-  		return $row[0]->company_name;
+  		return 'company'.$query[0]->company_id;
   		
  	}
 	

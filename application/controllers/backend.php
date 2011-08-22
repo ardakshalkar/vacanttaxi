@@ -8,6 +8,7 @@ class Backend extends CI_Controller
 		$this->load->library('form_validation');
 		$this->lang->load("general");
 		$this->load->library('table');
+		require('beaconpush.php');
 		session_start();	
 	}
 	
@@ -1492,13 +1493,13 @@ class Backend extends CI_Controller
 	{
 		if(isset($this->session->userdata['admin_id']) && $this->session->userdata['admin_type'] == DISPATCHER)
 		{
-			require('beaconpush.php');
+			
 			
   			$beaconpush = new BeaconPush();
 			
 			$tmpl = array('table_open'  => '<table id="catalogue">');
 			$this->table->set_template($tmpl);
-			$this->table->set_heading('Имя','Откуда','Куда','Телефон','Когда','Статус','Время','id','session_id');
+			$this->table->set_heading('Имя','Откуда','Куда','Телефон','Когда','Статус','Время','session_id');
 			$orders =$this->db->get(ORDER_TABLE);
 			$orders=$orders->result();
 			foreach ($orders as $row){
@@ -1509,9 +1510,8 @@ class Backend extends CI_Controller
 			else if ($row->status=='1114') {$status = lang("taken"); $class='ui-icon ui-icon-plus';}
 			else if ($row->status=='1115') {$status = lang("done"); $class='ui-icon ui-icon-check';}
 			
-			
 			$this->table->add_row(
-				array(isset($row->name)?$row->name:$row->surname,$row->from,$row->to,$row->contacts,$row->when.' '.$row->time,'<span class="'.$class.'" title="'.$status.'">'.$row->status.'</span>',$row->order_date,$row->id,$row->session_id)
+				array(isset($row->name)?$row->oname:$row->surname,$row->from,$row->to,$row->contacts,$row->when.' '.$row->time,'<button id="'.$row->id.'" class="pro_order '.$class.'">'.$row->status.'</button>',$row->order_date,$row->session_id)
 			);
 			}
 			
@@ -1523,7 +1523,7 @@ class Backend extends CI_Controller
 			
 			
 			$data = $this->backend_model->general();
-			$data['company']=$this->backend_model->get_company_name($this->session->userdata['admin_id'],DISPATCHER_TABLE);
+			$data['company']=$this->backend_model->get_company_channel($this->session->userdata['admin_id'],DISPATCHER_TABLE);
 			$data["orders"]=$this->table->generate();
 			$menu_items = array('backend/new_orders'=>'Новые',
 								'backend/done_orders'=>'Выполненные',
@@ -1535,6 +1535,26 @@ class Backend extends CI_Controller
 		{
 			redirect('backend/login');
 		}
+	}
+	
+	function edit_order(){
+		if(isset($this->session->userdata['admin_id']) && $this->session->userdata['admin_type'] == DISPATCHER){
+		$status = $this->input->post('status');
+		$message = $this->input->post('message');
+		$id = $this->input->post('order_id');
+		$arr=array('status'=>$status,'dispatcher_id'=>$this->session->userdata['admin_id']);
+		if($status='1113'){	$arr['message']=$message;}
+		$this->backend_model->update_userinfo($id,$arr,ORDER_TABLE);
+		if($status='1112')//send to other companies
+		{
+			$beaconpush = new BeaconPush();
+			$order=$this->backend_model->get_userinfo($id,ORDER_TABLE);
+			$channels=$this->backend_model->get_company_channels();
+			$beaconpush->send_to_channels($channels,'client_order',$order);
+		}
+		echo done;
+		}
+		else return 0;
 	}
 
 	function change_photo($mode=0)

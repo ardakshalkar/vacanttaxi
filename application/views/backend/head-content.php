@@ -29,7 +29,12 @@ echo $beaconpush->embed(array('log' => TRUE, 'user' => $this->session->userdata[
 ?>
 <script>
 
-	
+function addRow(id,message){
+	$(id).dataTable().fnAddData( [
+			message.name+' '+message.surname,
+			message.from,message.to,message.contacts,message.when+' '+message.time,message.status,message.order_date,message.id,message.session_id
+			] );
+}	
 
 /* Formating function for row details */
 function fnFormatDetails ( oTable, nTr )
@@ -38,12 +43,101 @@ function fnFormatDetails ( oTable, nTr )
 	var sOut = '<table cellspacing="0" border="0" style="padding-left:50px;">';
 	sOut += '<tr><td>Время выпонения заказа:</td><td>'+aData[5]+'</td></tr>';
 	sOut += '<tr><td>Был сделан:</td><td>'+aData[7]+'</td></tr>';
-	sOut += '<tr><td>Extra info:</td><td>And any further details here (images etc)</td></tr>';
 	sOut += '</table>';
 	
 	return sOut;
 }
+
 $(document).ready(function(){
+	
+	
+	$( "#dialog:ui-dialog" ).dialog( "destroy" );
+
+				//status = $( "#status" ),
+				message = $( "#message" ),
+				allFields = $( [] ).add( message ),
+				tips = $( ".validateTips" );
+		
+		function updateTips( t ) {
+			tips.text( t ).addClass( "ui-state-highlight" );
+			setTimeout(function() {
+				tips.removeClass( "ui-state-highlight", 1500 );
+			}, 500 );
+		}
+
+		function checkLength( o, n, min, max ) {
+			if ( o.val().length > max || o.val().length < min ) {
+				o.addClass( "ui-state-error" );
+				updateTips( "Length of " + n + " must be between " +
+					min + " and " + max + "." );
+				return false;
+			} else {
+				return true;
+			}
+		}
+	
+		function checkRegexp( o, regexp, n ) {
+			if ( !( regexp.test( o.val() ) ) ) {
+				o.addClass( "ui-state-error" );
+				updateTips( n );
+				return false;
+			} else {
+				return true;
+			}
+		};
+		
+	$( "#dialog-form" ).dialog({
+			autoOpen: false,
+			height: 200,
+			width: 280,
+			modal: true,
+			buttons: [{
+					text:"Отмена",
+					click: function() {
+					allFields.val( "" );
+					$( this ).dialog( "close" );
+										}
+					},{
+						id:"s_button",
+						name:"s_button",
+						text:"Принять",
+						click: function() {
+							var bValid = true;
+							allFields.removeClass( "ui-state-error" );
+							
+							bValid = bValid && checkLength( message, "Сообщение", 5, 50 );
+							if ( bValid ) {
+							alert($(document.pro_order).serialize());
+								$.post("<?php echo base_url();?>index.php/backend/edit_order", $(document.pro_order).serialize(),  function(data) {alert(data)});
+								$( this ).dialog( "close" );
+								}
+							}
+						}],
+			close: function() {
+				allFields.val( "" ).removeClass( "ui-state-error" );
+				$(".validateTips").html("");
+			}
+		});
+		
+		
+		
+		$( ".pro_order" ).button().click(function() {
+				$('input[name="order_id"]').val($(this).attr("id"));
+				$( "#dialog-form" ).dialog( "open" );
+		});
+		$("a.cancelOrder").click(function(){
+			event.preventDefault();
+			var cancelLink = this;
+			
+			var parent = $(this).parent();
+			$.get($(cancelLink).attr("href"), function(data) {
+				$(parent).fadeTo("fast",0.5);
+				$(cancelLink).text("Заказ не пройден");
+				$(cancelLink).css("text-decoration","line-through");
+			});
+			return false;
+		});
+	
 	
 	/*
 	 * Insert a 'details' column to the table
@@ -67,8 +161,7 @@ $(document).ready(function(){
 	var oTable = $('#catalogue').dataTable( {
 		"aoColumnDefs": [
 			{ "bSortable": false, "aTargets": [ 0 ] },
-			{ "bVisible": false, "aTargets": [ 5 ] },
-			{ "bVisible": false, "aTargets": [ 7 ] },
+			{ "bVisible": false, "aTargets": [ 5,7,8] },
 		],
 		"aaSorting": [[1, 'asc']],
 		"oLanguage": {
@@ -113,7 +206,7 @@ $(document).ready(function(){
 		oTable.fnDraw(); 
 		});
 	
-	
+	$(".pro_order span").attr('class','ui-button');
 	/* Add event listener for opening and closing details
 	 * Note that the indicator for showing which row is open is not controlled by DataTables,
 	 * rather it is done here

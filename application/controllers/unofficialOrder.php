@@ -80,16 +80,5 @@ class UnofficialOrder extends CI_Controller
 		 $this->db->update('unofficial_order',array('accomplished'=>'1'),$filter);
 		 redirect('front');
 	 }
-	 
-	 function send_mes(){
-		date_default_timezone_set('Asia/Almaty');
-		//require('beaconpush.php');
-		$beaconpush = new BeaconPush();
-		$data['message']="hello world";
-		$beaconpush->add_channel('taxi');
-     	$beaconpush->send_to_channel('taxi','driver_msg',$data);
-		
-		//$beaconpush >send_to_channel('Almaty Taxi', 'newMessage',$data);
-	}
 }
 ?>
