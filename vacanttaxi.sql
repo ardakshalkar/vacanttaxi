@@ -387,6 +387,7 @@ INSERT INTO `message` (`id`, `from`, `to`, `date`, `name`, `text`) VALUES
 
 CREATE TABLE IF NOT EXISTS `order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `session_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '0',
   `surname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `contacts` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
@@ -394,25 +395,14 @@ CREATE TABLE IF NOT EXISTS `order` (
   `to` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `when` date NOT NULL,
   `time` time NOT NULL,
-  `orderDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('1111','1112','1113','1114','1115') COLLATE utf8_unicode_ci NOT NULL COMMENT 'неизв, ауцион, отказано, принят, выполнено',
+  `company_id` int(11) NOT NULL,
+  `dispatcher_id` int(11) NOT NULL,
+  `message` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `order_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `city` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
-
---
--- Dumping data for table `order`
---
-
-INSERT INTO `order` (`id`, `surname`, `name`, `contacts`, `from`, `to`, `when`, `time`, `orderDate`) VALUES
-(1, 'surname', 'name', 'contacts', 'otkuda', 'kuda', '0000-00-00', '00:00:00', '2011-06-02 11:40:02'),
-(2, 'surname', 'name', 'contacts', 'otkuda', 'kuda', '0000-00-00', '00:00:00', '2011-06-02 11:40:51'),
-(3, 'surname', 'name', 'contacts', 'otkuda', 'kuda', '0000-00-00', '00:00:00', '2011-06-02 11:42:42'),
-(4, 'Zhienbayev', 'Meiran', '87012222737', 'tastak', 'orbita', '0002-06-11', '21:15:00', '2011-06-02 11:45:31'),
-(5, 'Tursyngaliyev', 'Iliyas', '87012324444', 'tolebi 147', 'Alfarabi Lenina', '2011-06-02', '13:00:00', '2011-06-02 11:51:16'),
-(6, 'Abdykarim', 'Madina', '87014556575', 'tastak', 'Mega', '2011-06-05', '20:00:00', '2011-06-02 11:53:16'),
-(7, 'Tolebi', 'Gulnur', '87021628982', 'Aksai', 'Orbita', '2011-06-07', '14:00:00', '2011-06-03 09:53:15'),
-(8, 'Tolegenova', 'Altynkul', '87013454545', 'Taldybulak', 'Abaya Pravda', '2011-06-08', '18:15:00', '2011-06-03 09:55:18'),
-(9, 'Tasybayeva', 'Gaini', '87004043548', 'Ainabulak', 'Zhanaturmys', '2011-06-09', '08:00:00', '2011-06-07 04:48:36'),
-(10, 'Shalkar', 'Ardak', '87009999999', 'tastak', 'orbita', '0011-06-25', '14:00:00', '2011-06-13 16:01:40');
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=30 ;
 
 -- --------------------------------------------------------
 
