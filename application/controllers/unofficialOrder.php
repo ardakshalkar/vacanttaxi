@@ -82,7 +82,7 @@ class UnofficialOrder extends CI_Controller
 	 }
 	 
 	 function send_mes(){
-		//date_default_timezone_set('Asia/Almaty');
+		date_default_timezone_set('Asia/Almaty');
 		//require('beaconpush.php');
 		$beaconpush = new BeaconPush();
 		$data['message']="hello world";
