@@ -92,6 +92,13 @@ class BeaconPush {
 		else if (msg == 'chat'){
 			$(\"#messages\").prepend('<li id='+message.data.from+'><label class=\"name\">'+message.data.name+'</label></br><a class=\"reply\">Ответить</a></br>'+message.data.text+'</li>');
 		}
+		else if (msg == 'client_order'){
+			$(\"#catalogue\").dataTable().fnAddData( [
+			message.data.name+' '+message.data.surname,
+			message.data.from,message.data.to,message.data.contacts,message.data.when+' '+message.data.time,message.data.status,message.data.order_date,message.data.id,message.data.session_id
+			] );
+			
+		}
 		});";
         $r .= "</script>";
 

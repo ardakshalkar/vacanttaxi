@@ -235,6 +235,18 @@ class Backend_Model extends CI_Model
   		$query = $query->result();
   		return $query[0];
  	}
+ 	
+ 	function get_company_name($id,$table)
+ 	{
+  		$this->db->where('user_id',$id);
+  		$query = $this->db->get(DISPATCHER_TABLE);
+  		$query = $query->result();
+  		$this->db->where('id',$query[0]->company_id);
+  		$query2 = $this->db->get(COMPANY_TABLE);
+  		$row =$query2->result();
+  		return $row[0]->company_name;
+  		
+ 	}
 	
 	# Return all cities
 	function get_cities()
