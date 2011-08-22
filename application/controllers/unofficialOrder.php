@@ -4,6 +4,7 @@ class UnofficialOrder extends CI_Controller
 	function __construct()
 	{
   		parent::__construct();
+  		require('beaconpush.php');
   	}
  
  	function index()
@@ -12,7 +13,7 @@ class UnofficialOrder extends CI_Controller
   		$data["main_title"]="Unofficial Order";
   		$data['component'] = 'front';
   		$this->load->model("order_model");
-  		require('beaconpush.php');
+  		
   		$beaconpush = new BeaconPush();
 		$checked = (isset($_POST['taxistbox']))?true:false;
 		//echo $this->session->userdata['user_id'];
@@ -79,5 +80,16 @@ class UnofficialOrder extends CI_Controller
 		 $this->db->update('unofficial_order',array('accomplished'=>'1'),$filter);
 		 redirect('front');
 	 }
+	 
+	 function send_mes(){
+		//date_default_timezone_set('Asia/Almaty');
+		//require('beaconpush.php');
+		$beaconpush = new BeaconPush();
+		$data['message']="hello world";
+		$beaconpush->add_channel('taxi');
+     	$beaconpush->send_to_channel('taxi','driver_msg',$data);
+		
+		//$beaconpush >send_to_channel('Almaty Taxi', 'newMessage',$data);
+	}
 }
 ?>

@@ -21,8 +21,12 @@ if ($PAGE == 'page/manage_orders'){
 }
 ?>  
 
-
-
+<?php
+if (isset($beaconpush)){
+$beaconpush->add_channel($company);
+echo $beaconpush->embed(array('log' => TRUE, 'user' => $this->session->userdata['admin_id']	));
+}
+?>
 <script>
 
 	

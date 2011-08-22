@@ -1,7 +1,3 @@
-<?php
-$beaconpush->add_channel($company);
-echo $beaconpush->embed(array('log' => TRUE, 'user' => $this->session->userdata['admin_id']	));
-?>
 <!-- h2 stays for breadcrumbs -->
 <h2>
 	<?php echo anchor('/backend/index','Главная'); ?>  &raquo; 
@@ -13,8 +9,7 @@ echo $beaconpush->embed(array('log' => TRUE, 'user' => $this->session->userdata[
 <?= $orders;?>
 
 <br/>
-<input type="text" id="date-range"/>
-
+<button id="bb">add</button>
 </div>
 
 <div class="clear"></div>

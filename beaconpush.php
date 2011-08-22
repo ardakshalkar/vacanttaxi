@@ -80,7 +80,7 @@ class BeaconPush {
         $r .= "<script type=\"text/javascript\">";
         $r .= "Beacon.connect(\"".BeaconPush::$api_key."\",[\"".implode('","', BeaconPush::$channels)."\"]".$beacon_options.");";
 		$r .= "Beacon.listen(function( message) {
-		var msg = message.name;
+		var msg = message.name; alert(msg);
 		console.log(message.data);
 		
 		if(msg == 'client_msg'){
