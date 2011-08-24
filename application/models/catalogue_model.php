@@ -15,7 +15,14 @@ class Catalogue_Model extends CI_Model
 		return $drivers;
 		
 	}
-	
+	function is_present_in_catalogue($user_id){
+		$this->db->where('user_id',$user_id);
+		$query = $this->db->get('driver');
+		if ($query->num_rows()>0)
+			return true;
+		else
+			return false;
+	}
 	function get_driver($id)
 	{
 		$this->db->where('user_id',$id);

@@ -36,10 +36,10 @@ class Auth extends MY_Controller
 		if ($this->tank_auth->is_logged_in()) {									// logged in
 			redirect('');
 
-		} elseif ($this->tank_auth->is_logged_in(FALSE)) {						// logged in, not activated
+		} /*elseif ($this->tank_auth->is_logged_in(FALSE)) {						// logged in, not activated
 			redirect('/auth/send_again/');
 	
-		} else {
+		} */else {
 			$data['login_by_username'] = ($this->config->item('login_by_username', 'tank_auth') AND
 					$this->config->item('use_username', 'tank_auth'));
 			$data['login_by_email'] = $this->config->item('login_by_email', 'tank_auth');
@@ -275,8 +275,9 @@ class Auth extends MY_Controller
 			$data['use_username'] = $use_username;
 			$data['captcha_registration'] = $captcha_registration;
 			$data['use_recaptcha'] = $use_recaptcha;
-			
+			$data['component']	= 'auth/register_form';
 			$data['main_title'] = lang('register');
+			$data = array_merge($data,$this->data);
 			$this->load->view('main/index',$data);
 			//$this->load->view('auth/register_form', $data);
 		}
@@ -315,7 +316,12 @@ class Auth extends MY_Controller
 					foreach ($errors as $k => $v)	$data['errors'][$k] = $this->lang->line($v);
 				}
 			}
-			$this->load->view('auth/send_again_form', $data);
+			$data['component'] = 'auth/send_again_form';
+			$data = array_merge($data,$this->data);
+			$errors = array("На указанный вами email было послано письмо. Перейдите по ссылке указанной в email.<br/> Если же сообщение не было доставленно, введите email повторно.");
+			$data['errors'] = $errors;
+			$this->load->view('main/index',$data);
+			//$this->load->view('auth/send_again_form', $data);
 		}
 	}
 

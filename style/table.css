@@ -2,14 +2,14 @@ th{
 border:1px solid red;
 }
 .th_col1{
-width:150px;
+width:170px;
 
 }
 .th_col2{
 width:200px;
 }
 .th_col3{
-width:200px;
+width:230px;
 }
 .th_col4{
 width:100px;
@@ -21,7 +21,7 @@ width:100px;
 width:100px;
 }
 .th_col7{
-width:150px;
+width:140px;
 }
 .th_col8{
 width:100px;
@@ -40,4 +40,7 @@ background-color:yellow;
 }
 .dialog{
 display:none;
+}
+#catalogue td{
+padding-left:3px;
 }
