@@ -76,12 +76,7 @@ class Backend_Model extends CI_Model
 		$c_list = NULL;
 		foreach($query->result() as $i)
 		{
-			$c_list[$i->name] = $i->name; 
-			$query2 = $this->db->query("SELECT * FROM `district` WHERE `city_id`=".$i->id);
-			foreach($query2->result() as $j)
-			{
-				$c_list[$j->name] = "&hellip;".$j->name;
-			}
+			$c_list[$i->id] = $i->name; 
 		}
 		return $c_list;
 	}
@@ -117,6 +112,13 @@ class Backend_Model extends CI_Model
 		$query = $this->db->get($table);
 		$query = $query->result();
 		return $query[0];
+	}
+	
+	function get_userinfo2($id,$table){
+		$this->db->where('id',$id);
+		$query = $this->db->get($table);
+		$order = $query->result_array();
+		return $order[0];
 	}
 	
 	function get_districts($city_id,$table)
@@ -184,12 +186,22 @@ class Backend_Model extends CI_Model
 		}
 	}
 	
+	#get where
+	function get_or_where($rule,$rule2,$table)
+	{
+		$this->db->where($rule);
+		$this->db->or_where($rule2);
+		$query = $this->db->get($table);
+		$query = $query->result();
+  		return $query;
+	}
+	
 	# Return all companies
 	function get_companies_list()
 	{
-		$query = $this->db->query('SELECT * FROM `company`');
+		$query = $this->db->get(COMPANY_TABLE);
 		$c_list = NULL;
-		$c_list['0']='Vacant Taxi';
+		$c_list['0']='Любая';
 		foreach($query->result() as $i)
 		{
 			$c_list[$i->id] = $i->company_name; 
@@ -218,12 +230,12 @@ class Backend_Model extends CI_Model
   		return $list;
  	}
  	
- 	function get_company_channel($id,$table)
+ 	function get_company_id($id,$table)
  	{
   		$this->db->where('user_id',$id);
   		$query = $this->db->get(DISPATCHER_TABLE);
   		$query = $query->result();
-  		return 'company'.$query[0]->company_id;
+  		return $query[0]->company_id;
   		
  	}
 	

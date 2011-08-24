@@ -1333,19 +1333,17 @@ class Backend extends CI_Controller
 							$this->form_validation->set_rules('add_address','Address',
 														'required|xss_clean');
 							$this->form_validation->set_rules('add_experience','Experience',
-														'required|xss_clean');
+														'xss_clean');
 							$this->form_validation->set_rules('add_about','About',
-														'required|xss_clean');
+														'xss_clean');
 							
 							if($this->form_validation->run())
 							{				
-									$image_name = 'company.png';
 									$info1 = array(
 										  'user_id'=>NULL,
 										  'c_name'=>$this->input->post('add_cname'),
 										  'status'=>$this->input->post('add_status'),
 										  'smoke'=>$this->input->post('add_smoke'),
-										  'photo'=>$image_name,
 										  'city'=>$this->input->post('add_city'),
 										  'category'=>$this->input->post('add_category'),
 										  'experience'=>$this->input->post('add_experience'),
@@ -1366,7 +1364,7 @@ class Backend extends CI_Controller
 									);
 									$this->backend_model->insert_userinfo($info2,DRIVER_TO_COMPANY_TABLE);
 									
-									redirect("backend/manage_taxi_drivers");
+									redirect("backend/manage_company_drivers");
 							}
 						}
 					
@@ -1493,15 +1491,13 @@ class Backend extends CI_Controller
 	{
 		if(isset($this->session->userdata['admin_id']) && $this->session->userdata['admin_type'] == DISPATCHER)
 		{
-			
-			
+			$data = $this->backend_model->general();
+			$data["company_id"]=$this->backend_model->get_company_id($this->session->userdata['admin_id'],DISPATCHER_TABLE);
   			$beaconpush = new BeaconPush();
-			
 			$tmpl = array('table_open'  => '<table id="catalogue">');
 			$this->table->set_template($tmpl);
-			$this->table->set_heading('Имя','Откуда','Куда','Телефон','Когда','Статус','Время','session_id');
-			$orders =$this->db->get(ORDER_TABLE);
-			$orders=$orders->result();
+			$this->table->set_heading('Имя','Откуда','Куда','Телефон','Когда','Статус','Время','session_id','company_id','city_id');
+			$orders =$this->backend_model->get_or_where(array('company_id'=>$data["company_id"]),array('status'=>'1112'),ORDER_TABLE);
 			foreach ($orders as $row){
 			$status = "";
 			if ($row->status=='1111') {$status = lang("unknown");$class='ui-icon ui-icon-help';}
@@ -1511,7 +1507,7 @@ class Backend extends CI_Controller
 			else if ($row->status=='1115') {$status = lang("done"); $class='ui-icon ui-icon-check';}
 			
 			$this->table->add_row(
-				array(isset($row->name)?$row->oname:$row->surname,$row->from,$row->to,$row->contacts,$row->when.' '.$row->time,'<button id="'.$row->id.'" class="pro_order '.$class.'">'.$row->status.'</button>',$row->order_date,$row->session_id)
+				array(isset($row->name)?$row->oname:$row->surname,$row->from,$row->to,$row->contacts,$row->when.' '.$row->time,'<button id="'.$row->id.'" class="pro_order '.$class.'">'.$row->status.'</button>',$row->order_date,$row->session_id,$row->company_id,$row->city)
 			);
 			}
 			
@@ -1520,15 +1516,15 @@ class Backend extends CI_Controller
 				$this->backend_model->delete_userinfo($id,UNOFFICIAL_ORDER_TABLE);
 				redirect("backend/manage_categories");
 			}	
+					
 			
-			
-			$data = $this->backend_model->general();
-			$data['company']=$this->backend_model->get_company_channel($this->session->userdata['admin_id'],DISPATCHER_TABLE);
+			$data["company_list"]=$this->backend_model->get_companies_list();
+			$data["city_list"]=$this->backend_model->get_city_list();
 			$data["orders"]=$this->table->generate();
 			$menu_items = array('backend/new_orders'=>'Новые',
 								'backend/done_orders'=>'Выполненные',
 								'backend/manage_orders'=>'Все');
-			$data["beaconpush"]=$beaconpush;					
+			$data["beaconpush"]=$beaconpush;	
 			$data += $this->backend_model->page_info('page/manage_orders','Заказы',$menu_items);									
 			$this->load->view('backend/index',$data);
 		}else
@@ -1538,23 +1534,31 @@ class Backend extends CI_Controller
 	}
 	
 	function edit_order(){
-		if(isset($this->session->userdata['admin_id']) && $this->session->userdata['admin_type'] == DISPATCHER){
-		$status = $this->input->post('status');
-		$message = $this->input->post('message');
-		$id = $this->input->post('order_id');
-		$arr=array('status'=>$status,'dispatcher_id'=>$this->session->userdata['admin_id']);
-		if($status='1113'){	$arr['message']=$message;}
-		$this->backend_model->update_userinfo($id,$arr,ORDER_TABLE);
-		if($status='1112')//send to other companies
+		if(isset($this->session->userdata['admin_id']) && $this->session->userdata['admin_type'] == DISPATCHER)
 		{
 			$beaconpush = new BeaconPush();
-			$order=$this->backend_model->get_userinfo($id,ORDER_TABLE);
-			$channels=$this->backend_model->get_company_channels();
-			$beaconpush->send_to_channels($channels,'client_order',$order);
-		}
-		echo done;
-		}
-		else return 0;
+			$status = $this->input->post('status');
+			$p_status=$this->input->post('prev_stat');
+			$message = $this->input->post('message');
+			$id = $this->input->post('order_id');
+			$arr=array('status'=>$status,'dispatcher_id'=>$this->session->userdata['admin_id']);
+			if($status=='1113'){	$arr['message']=$message;}
+			$this->backend_model->update_userinfo($id,$arr,ORDER_TABLE);
+			$order=$this->backend_model->get_userinfo2($id,ORDER_TABLE);
+			if($status=='1112'||$p_status=='1112')
+			{
+				
+				$channels=$this->backend_model->get_company_channels();
+				$beaconpush->send_to_channels($channels,'client_order',$order);
+			}
+			else{
+				$arr['id']=$id;
+				$beaconpush->send_to_channel('company'.$order['company_id'],'client_order',$arr);
+			}
+			
+			
+		}else{echo 'You are not permited to do that';}
+		
 	}
 
 	function change_photo($mode=0)

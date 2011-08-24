@@ -44,6 +44,7 @@
             <?php echo form_textarea($messages);?>
         </fieldset>
         <?php echo form_hidden('order_id','0');?>
+        <?php echo form_hidden('prev_stat','1111');?>
         <?php echo form_close();?>        
     </div>
 

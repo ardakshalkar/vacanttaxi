@@ -84,5 +84,17 @@ class Order_Model extends CI_Model
 		$order = $query->result_array();
 		return $order[0];
 	}
+	function get_company_channels()
+ 	{
+  		$query = $this->db->get(COMPANY_TABLE);
+  		$list[0] = 'VT';
+  		$i=1;
+  		foreach ($query->result() as $row)
+  		{
+  			$list[$i]='company'.$row->id;
+  			$i++;
+  		}
+  		return $list;
+ 	}
 }
 ?>

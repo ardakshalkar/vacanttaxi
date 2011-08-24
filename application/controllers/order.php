@@ -59,12 +59,19 @@ class Order extends MY_Controller {
 					'city'=>$city_id
 				);
 				$id=$this->order_model->insert_Order('order', $orders);
-				$co_name='company'.$company_id;
 				$order=$this->order_model->get_data($id);
+				if ($company_id==0){
+					$co_name=$this->order_model->get_company_channels();
+					$beaconpush->send_to_channels($co_name,'client_order',$order);	
+					
+				}else{
+				$co_name='company'.$company_id;
 				$beaconpush->add_channel($co_name);
 				$beaconpush->send_to_channel($co_name,'client_order',$order);	
-				print_r($co_name);
+				}
+				//redirect('order/index');	
 			}
+			
 		}
 }
 /* End of file welcome.php */
