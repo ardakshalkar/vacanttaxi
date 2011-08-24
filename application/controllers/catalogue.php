@@ -36,6 +36,13 @@ class Catalogue extends MY_Controller {
 				array(isset($row->displayname)?$row->displayname:$row->c_name,$row->address,$row->about,$row->m_phone,$cartype,$row->type,$triptype,$row->category)
 			);
 		}
+		if ($this->data['logged_in']){
+			$presence = $this->catalogue_model->is_present_in_catalogue($this->data['user']->id);
+			if (!$presence) 
+				$this->data['message'] = "Если вы хотите добавить данные о себе в каталог, Заполните <a href='".base_url()."index.php/auth/edit_driver'>форму</a>";
+		}
+		else
+			$this->data['message'] = "Если вы хотите добавить данные о себе в каталог, Зарегистрируйтесь";
 		$this->data["drivers"]=$this->table->generate();
 		$this->load->view('main/index',$this->data);
 	}
