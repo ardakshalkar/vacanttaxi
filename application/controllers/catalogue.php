@@ -17,6 +17,14 @@ class Catalogue extends MY_Controller {
 	{
 		$this->data["main_title"]="Каталог";
 		$this->data["component"]	= 'catalogue';
+		$presence = false;
+		if ($this->data['logged_in']){
+			$presence = $this->catalogue_model->is_present_in_catalogue($this->data['user']->id);
+			if (!$presence) 
+				$this->data['message'] = "Если вы хотите добавить данные о себе в каталог, Заполните <a href='".base_url()."index.php/auth/edit_driver'>форму</a>";
+		}
+		else
+			$this->data['message'] = "Если вы хотите добавить данные о себе в каталог, <a href='".base_url()."index.php/auth/register'>зарегистрируйтесь</a> на сайте";
 		$drivers = $this->catalogue_model->loadCatalogue($this->session->userdata('city'));
 		$tmpl = array('table_open'  => '<table id="catalogue">');
 		$this->table->set_template($tmpl);
@@ -32,17 +40,13 @@ class Catalogue extends MY_Controller {
 			if ((int)($mask/10)%10==1) $triptype[1]=lang("cities");
 			if ($mask%10==1) $triptype[2]=lang("suburb");
 			$triptype = implode(", 	",$triptype);
+			$profile_part = isset($row->displayname)?$row->displayname:$row->c_name;
+			if ($row->user_id == $this->data['user']->id)
+				$profile_part.=" (<a href='".base_url()."index.php/auth/edit_driver'>изменить</a>)";
 			$this->table->add_row(
-				array(isset($row->displayname)?$row->displayname:$row->c_name,$row->address,$row->about,$row->m_phone,$cartype,$row->type,$triptype,$row->category)
+				array($profile_part,$row->address,$row->about,$row->m_phone,$cartype,$row->type,$triptype,$row->category)
 			);
 		}
-		if ($this->data['logged_in']){
-			$presence = $this->catalogue_model->is_present_in_catalogue($this->data['user']->id);
-			if (!$presence) 
-				$this->data['message'] = "Если вы хотите добавить данные о себе в каталог, Заполните <a href='".base_url()."index.php/auth/edit_driver'>форму</a>";
-		}
-		else
-			$this->data['message'] = "Если вы хотите добавить данные о себе в каталог, Зарегистрируйтесь";
 		$this->data["drivers"]=$this->table->generate();
 		$this->load->view('main/index',$this->data);
 	}

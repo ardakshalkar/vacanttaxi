@@ -8,16 +8,18 @@
 		</div>
 		<div id="present">
 			<div id="message_box"><?php echo $this->session->flashdata('message'); ?></div>
-			<div id="instant_message_box"><?php if (isset($message)) echo $message;?></div>
-			<div class="errors_box">
-				<?php 
-					if (isset($errors)){
-						foreach ($errors as $error) { 
+			<?php if (isset($message)) :?>
+				<div id="instant_message_box"><? echo $message;?></div>
+			<?php endif;?>
+			<?php 
+				if (isset($errors)) :
+			?>
+					<div class="errors_box">
+					<? foreach ($errors as $error) { 
 							echo $error.br();
-						}
-					}
-				?>
-			</div>
+					}?>
+					</div>
+			<?php endif; ?>
 			<?php $this->load->view('main/components/'.$component); ?>
 		</div>
 	</div>

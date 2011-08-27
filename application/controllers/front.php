@@ -314,7 +314,7 @@ class Front extends MY_Controller
  	function map(){
 		$data = $this->data;
 		$data['component'] = 'map';
-		$data['main_title'] = 'Map';
+		$data['main_title'] = 'Карта';
 		$this->load->view('main/index',$data);
 	}
 }

@@ -10,7 +10,7 @@ class Catalogue_Model extends CI_Model
 	{
 		$city = $this->db->get_where('city',array('name'=>$city))->result();
 		$city_id = $city[0]->id;
-		$query = $this->db->select("*")->from('driver')->join('car','driver.id=car.driver_id','left')->join('users','users.id=driver.user_id','left')->where('city',$city_id)->get();
+		$query = $this->db->select('*')->from('driver')->join('car','driver.id=car.driver_id','left')->join('users','users.id=driver.user_id','left')->where('city',$city_id)->get();
 		$drivers = $query->result();
 		return $drivers;
 		

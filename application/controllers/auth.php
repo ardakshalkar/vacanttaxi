@@ -717,32 +717,36 @@ class Auth extends MY_Controller
 			if (count($profile)>0)
 				$profile = $profile[0];
 			else {
-				$data = array('user_id'=>$id);
+				$data['user_id'] = $id;
 				$this->db->insert('driver',$data);
 				$this->db->where('id',$this->db->insert_id());
 				$query = $this->db->get('driver')->result();
 				$profile = $query[0];
 			}
-			$data = $profile;
+			
+			$data = array_merge($this->data);
+			$data['profile'] = $profile;
 			$cities = $this->db->get('city')->result();
-			$data->cities = array();
+			$data['cities'] = array();
 			foreach ($cities as $city){
-				$data->cities[$city->id]=$city->name;
+				$data['cities'][$city->id]=$city->name;
 			}
-			$this->load->view('edit_driver',$data);
+			$data['component'] = 'auth/edit_driver';
+			$this->load->view('main/index',$data);
+			//$this->load->view('edit_driver',$data);
 		}
 	}
 	function save_driver(){
-		print_r($_POST);
-		if ($this->tank_auth->is_logged_in()){
+		//print_r($_POST);
+		if ($this->data["logged_in"]){
 			$this->form_validation->set_rules('city','City','required|is_natural');
 			//$this->form_validation->set_rules('displayname','Display Name','required|xss_clean');
 			$this->form_validation->set_rules('experience','Experience','required|is_natural');
 			$this->form_validation->set_rules('schedule','Schedule','is_natural');
-			$this->form_validation->set_rules('h_phone','Home phone','alpha_dash');
-			$this->form_validation->set_rules('m_phone','Mobile Phone','alpha_dash');
-			$this->form_validation->set_rules('address','Address','xss_clean');
-			$this->form_validation->set_rules('about','About','xss_clean');
+			$this->form_validation->set_rules('h_phone','Home phone','xss_clean');
+			$this->form_validation->set_rules('m_phone','Mobile Phone','xss_clean');
+			$this->form_validation->set_rules('address','Address','xss_clean|nl2br');
+			$this->form_validation->set_rules('about','About','xss_clean|nl2br');
 			if ($this->form_validation->run()){
 				$categories = $_POST['category'];
 				$num = 5000;
@@ -753,12 +757,15 @@ class Auth extends MY_Controller
 					if ($category=='cities') $num = $num +10;
 					if ($category=='suburb') $num = $num +1;
 				}
-				echo $num;
+				//echo $num;
+				$_POST['c_name'] = $this->data['user']->displayname;
 				$_POST['category'] = "".$num;
+				echo $this->tank_auth->get_user_id()."---)";
 				$this->db->where('user_id',$this->tank_auth->get_user_id());
 				$this->db->update('driver', $_POST);
 			}
-			echo validation_errors();
+			//echo validation_errors();
+			redirect('catalogue');
 			redirect('auth/edit_driver');
 		}
 	}

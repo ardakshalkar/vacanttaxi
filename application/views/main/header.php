@@ -12,7 +12,6 @@ foreach ($menu as $mitem){
 
 <div id = "header">
 	<div>
-	
 	</div>
 	<img src="<?php echo base_url()."style/images/logo.png"; ?>" />
 	
@@ -20,7 +19,7 @@ foreach ($menu as $mitem){
 		<?php if (!$logged_in) : ?>
 			<span id="taxist">Войти</span>
 		<?php else:?>
-			<?= $username; ?> <a href="<?=base_url()."index.php/auth/logout"?>">Выйти</a><br/>
+			<?= $user->displayname; ?> <a href="<?=base_url()."index.php/auth/logout"?>">Выйти</a><br/>
 			<a href="<?=base_url()?>/index.php/auth/edit_driver">В каталоге</a>|
 			<a href="<?=base_url()?>/index.php/auth/edit_profile">Изменить профиль</a>
 		<?php endif ?>
@@ -31,10 +30,11 @@ foreach ($menu as $mitem){
 			<?php echo anchor("chat/start",'<img id="chat_img"  src="'.base_url().'style/images/chat.png" />','target="_blank"'); ?>
 		<?php endif; ?>
 	</div>
+</div>
+
 	<div id="menu">
 		<? echo ul($links); ?><div class="clear"></div>
 	</div>
-</div>
 
 
 

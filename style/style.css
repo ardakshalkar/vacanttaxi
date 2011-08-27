@@ -11,12 +11,12 @@ body:before {
 	width:0;
 	margin-top:-32767px;/
 }
-
+td{vertical-align:top;}
 .clear{
 clear:both;
 }
 body {
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-family: Helvetica,Verdana, Geneva, Arial, Helvetica, sans-serif;
   font-size: small;
   background: #fff;
   padding:0px;
@@ -29,11 +29,18 @@ width:960px;
 margin:auto;
 min-height:100%;
 }
+#menu{
+margin:20px 0px 0px 0px;
+}
 #header{
 width:960px;
+height:140px;
 margin:auto;
 background-color:#fafafa;
 position:relative;
+background:url('images/taxipattern.png');
+background-repeat:repeat-x;
+background-position:0% 100%;
 }
 #middlepart{
 width:960px;
@@ -49,6 +56,9 @@ text-align:center;
 position: relative;
 margin-top: -100px;
 height: 100px;
+background:url('images/taxipattern.png');
+background-repeat:repeat-x;
+background-position:0% 100%;
 }
 #msgs{
 margin:auto;
@@ -67,13 +77,13 @@ padding:0px;
 list-style-type:none;
 }
 #menu ul li a{
-display:block;
-width:100px;
-padding:5px 0px;
-background-color:orange;
+padding:5px 15px;
 text-align:center;
 text-decoration:none;
 font-size:14px;
+color:black;
+font-weight:bold;
+font-family:Helvetica,Arial;
 }
 #label{
 margin-left:5px;
@@ -411,3 +421,9 @@ color:blue;
 cursor:pointer;
 }
 #dialog-form{display:none;}
+#instant_message_box{
+background-color:#5BE15D;
+padding:5px;
+margin:5px;	
+border:1px solid #4BAE3D;
+}
