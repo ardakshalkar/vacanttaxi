@@ -41,7 +41,7 @@ class Catalogue extends MY_Controller {
 			if ($mask%10==1) $triptype[2]=lang("suburb");
 			$triptype = implode(", 	",$triptype);
 			$profile_part = isset($row->displayname)?$row->displayname:$row->c_name;
-			if ($row->user_id == $this->data['user']->id)
+			if ($this->data['logged_in']&&$row->user_id == $this->data['user']->id)
 				$profile_part.=" (<a href='".base_url()."index.php/auth/edit_driver'>изменить</a>)";
 			$this->table->add_row(
 				array($profile_part,$row->address,$row->about,$row->m_phone,$cartype,$row->type,$triptype,$row->category)

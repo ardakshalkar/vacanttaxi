@@ -1664,7 +1664,7 @@ class Backend extends CI_Controller
 			else if ($row->status=='1115') {$status = lang("done"); $class='ui-icon ui-icon-check';}
 			
 			$this->table->add_row(
-				array(isset($row->name)?$row->oname:$row->surname,$row->from,$row->to,$row->contacts,$row->when.' '.$row->time,'<button id="'.$row->id.'" class="pro_order '.$class.'">'.$row->status.'</button>',$row->order_date,$row->session_id,$row->company_id,$row->city)
+				array(isset($row->name)?$row->name:$row->surname,$row->from,$row->to,$row->contacts,$row->when.' '.$row->time,'<button id="'.$row->id.'" class="pro_order '.$class.'">'.$row->status.'</button>',$row->order_date,$row->session_id,$row->company_id,$row->city)
 			);
 			}
 			

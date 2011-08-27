@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 22, 2011 at 07:02 AM
+-- Generation Time: Aug 27, 2011 at 10:59 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.1
 
@@ -44,11 +44,13 @@ CREATE TABLE IF NOT EXISTS `admins` (
 --
 
 INSERT INTO `admins` (`id`, `username`, `email`, `password`, `type`, `status`, `category`, `online`, `last_visit`) VALUES
-(1, 'ardak', 'ardak@inbox.ru', '123', 1113, 0, 0, 1, '2010-07-21'),
+(1, 'ardak', 'ardak@inbox.ru', '123', 1113, 0, 0, 0, '2010-07-21'),
 (2, 'salta', 'tasalta@gmail.com', '123', 1112, 0, 0, 0, '2011-07-27'),
 (4, 'karina', 'k@mail.com', '123', 1111, 0, 0, 0, '0000-00-00'),
 (7, 'kairat', 'kairat@mail.com', '123', 1110, 0, 0, 0, '2011-08-02'),
-(9, 'Dovezu', 'doveza@gmail.com', 'kara', 1111, 0, 0, 0, '0000-00-00');
+(13, 'aaaaaaa', 'aaaaaa@mail.ru', '123', 1110, 0, 0, 0, '0000-00-00'),
+(12, 'samat', 'samat@mail.ru', '1234', 1110, 0, 0, 0, '0000-00-00'),
+(11, 'daniyar', 'dan@mail.ru', '123', 1110, 0, 0, 0, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -92,6 +94,8 @@ CREATE TABLE IF NOT EXISTS `car` (
 -- Dumping data for table `car`
 --
 
+INSERT INTO `car` (`id`, `driver_id`, `car_no`, `type`, `model`, `description`, `photo`) VALUES
+(10, 15, 'A018WXO', '6111', 'Toyota Yaris', 'krasiya mawinka', 'default.png');
 
 -- --------------------------------------------------------
 
@@ -162,8 +166,7 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('11962d26b3fe3b7dd0f621c767258f7a', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.24 (', 1313964709, 'a:2:{s:4:"city";s:6:"Almaty";s:7:"city_id";s:1:"1";}'),
-('8aa4e2eb8e4a5488ff66141edf8b8553', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.24 (', 1313989016, 'a:2:{s:4:"city";s:6:"Almaty";s:7:"city_id";s:1:"1";}');
+('11394c4b184b6432b1d22a404d0ee782', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.24 (', 1314435309, 'a:5:{s:4:"city";s:6:"Almaty";s:7:"city_id";s:1:"1";s:7:"user_id";s:2:"38";s:8:"username";s:6:"marram";s:6:"status";s:1:"1";}');
 
 -- --------------------------------------------------------
 
@@ -226,7 +229,7 @@ INSERT INTO `company` (`id`, `user_id`, `company_name`, `driver_max`, `disp_max`
 
 CREATE TABLE IF NOT EXISTS `company_dispatcher` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `dname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
   `company_id` int(11) NOT NULL DEFAULT '0',
   `phone` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -239,8 +242,10 @@ CREATE TABLE IF NOT EXISTS `company_dispatcher` (
 -- Dumping data for table `company_dispatcher`
 --
 
-INSERT INTO `company_dispatcher` (`id`, `name`, `user_id`, `company_id`, `phone`, `mode`) VALUES
-(1, 'kairat', 7, 1, '87015527794', 3111);
+INSERT INTO `company_dispatcher` (`id`, `dname`, `user_id`, `company_id`, `phone`, `mode`) VALUES
+(1, 'kairat', 7, 1, '87015527794', 3111),
+(6, 'aaaaa', 13, 1, '87073074538', 3111),
+(5, 'Samat', 12, 1, '87073074538', 3111);
 
 -- --------------------------------------------------------
 
@@ -264,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `driver` (
   `about` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=23 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `driver`
@@ -275,15 +280,38 @@ INSERT INTO `driver` (`id`, `user_id`, `c_name`, `status`, `smoke`, `city`, `cat
 (2, 2, 'Санат', '4111', 1, 1, '5100', 3, '1', '727272', '8701000001', 'с Орбиты', 'Заберу до работы в Капчагае'),
 (5, 7, 'Жанибек', '4111', 0, 1, '5100', 0, '2', '87004266736', '870023000', 'Левый берег', 'Работаю целый день, с пяти утра до восьми вечера'),
 (7, 4, '', '4111', 0, 2, '5100', 0, '', NULL, NULL, NULL, ''),
-(11, 14, 'Noel', '4111', 0, 1, '5110', 5, '2', '87004266736', '870023000', 'Kaskelen', 'Заберу до работы, в городе'),
-(12, 15, 'Johny', '4111', 0, 1, '5110', 10, '2', '87004266736', '870023000', 'Сайран', 'До талдыкоргана'),
+(11, 32, 'Noel', '4111', 0, 1, '5110', 5, '2', '87004266736', '870023000', 'Kaskelen', 'Заберу до работы, в городе'),
+(12, 30, 'Johny', '4111', 0, 1, '5110', 10, '2', '87004266736', '870023000', 'Сайран', 'До талдыкоргана'),
 (13, 19, '', '4111', 0, 1, '5100', 1, '2', '3762047', '87015527795', 'koktem-2-2-83', ''),
-(15, 31, 'akk', '4111', 0, 1, '5100', 3, '2', '87004266736', '870023000', 'Kaskelen', 'Заберу до работы, в городе'),
+(15, 33, 'akk', '4111', 0, 1, '5100', 3, '2', '87004266736', '870023000', 'Kaskelen', 'Заберу до работы, в городе'),
 (16, NULL, '', '4111', 0, 1, '5110', 3, '2', '87004266736', '870023000', 'Kaskelen', 'Заберу до работы, в городе'),
 (19, 22, '', '4111', 0, 15, '5100', 0, '1', '', '', '', ''),
 (20, 26, '', '4111', 0, NULL, '5000', 0, '1', NULL, NULL, NULL, ''),
-(21, 32, '', '4111', 0, NULL, '5000', 0, '1', NULL, NULL, NULL, ''),
-(22, 36, '', '4111', 0, 1, '5110', 3, '2', '3245063', '870023000', 'Парк первого президента, Парк Горького', 'Подвезу до Вокзала за 2000');
+(21, 34, '', '4111', 0, NULL, '5000', 0, '1', NULL, NULL, NULL, ''),
+(22, NULL, 'Samgat', '4112', 0, 1, '5100', 3, '2', '87272412407', '87017606679', 'orbita 3, d.24,kv45', 'good guy'),
+(25, NULL, 'fasdfas', '4112', 0, 2, '5100', 3, '1', '87272412403', '87021608982', 'aaaaaaaaaaaaaaaaaa', 'aaaaaaaaaaaaaaaaaaaaaaa'),
+(24, NULL, 'Kalkaman', '4112', 0, 1, '5100', 4, '2', '87272412403', '87021608982', 'akdjlfakjldsfjlajlakjldsj', 'jfdlakjsldkfjlaskjdflkjsd'),
+(26, NULL, 'kajflak', '4112', 0, 1, '5100', 3, '1', '87272412403', '87021608982', 'kjflasjlkfdjl', 'aaaaaaaaaaaaa');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `driver_location`
+--
+
+CREATE TABLE IF NOT EXISTS `driver_location` (
+  `uid` int(11) NOT NULL,
+  `lat` double NOT NULL,
+  `lon` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `driver_location`
+--
+
+INSERT INTO `driver_location` (`uid`, `lat`, `lon`) VALUES
+(33, 43.25061798095703, 76.88825225830078),
+(32, 43.240293, 76.915197);
 
 -- --------------------------------------------------------
 
@@ -327,7 +355,12 @@ CREATE TABLE IF NOT EXISTS `driver_to_company` (
 --
 
 INSERT INTO `driver_to_company` (`id`, `driver_id`, `company_id`) VALUES
-(1, 15, 1);
+(1, 15, 1),
+(2, 22, 1),
+(3, 11, 1),
+(4, 15, 1),
+(6, 25, 1),
+(7, 26, 1);
 
 -- --------------------------------------------------------
 
@@ -347,6 +380,10 @@ CREATE TABLE IF NOT EXISTS `login_attempts` (
 -- Dumping data for table `login_attempts`
 --
 
+INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
+(1, '127.0.0.1', 'marram', '2011-08-25 21:22:39'),
+(2, '127.0.0.1', 'marram', '2011-08-25 21:23:30'),
+(3, '127.0.0.1', 'marram', '2011-08-25 21:24:28');
 
 -- --------------------------------------------------------
 
@@ -387,7 +424,6 @@ INSERT INTO `message` (`id`, `from`, `to`, `date`, `name`, `text`) VALUES
 
 CREATE TABLE IF NOT EXISTS `order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `session_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '0',
   `surname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `contacts` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
@@ -403,6 +439,23 @@ CREATE TABLE IF NOT EXISTS `order` (
   `city` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=30 ;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`id`, `surname`, `name`, `contacts`, `from`, `to`, `when`, `time`, `status`, `company_id`, `dispatcher_id`, `message`, `order_date`, `city`) VALUES
+(1, 'surname', 'name', 'contacts', 'otkuda', 'kuda', '0000-00-00', '00:00:00', '1111', 0, 1, '', '2011-06-02 11:40:02', 2),
+(2, 'surname', 'name', 'contacts', 'otkuda', 'kuda', '0000-00-00', '00:00:00', '1111', 0, 1, '', '2011-06-02 11:40:51', 1),
+(3, 'surname', 'name', 'contacts', 'otkuda', 'kuda', '0000-00-00', '00:00:00', '1111', 0, 1, '', '2011-06-02 11:42:42', 3),
+(4, 'Zhienbayev', 'Meiran', '87012222737', 'tastak', 'orbita', '0002-06-11', '21:15:00', '1111', 0, 1, '', '2011-06-02 11:45:31', 2),
+(5, 'Tursyngaliyev', 'Iliyas', '87012324444', 'tolebi 147', 'Alfarabi Lenina', '2011-06-02', '13:00:00', '1111', 0, 0, '', '2011-06-02 11:51:16', 0),
+(6, 'Abdykarim', 'Madina', '87014556575', 'tastak', 'Mega', '2011-06-05', '20:00:00', '1111', 0, 0, '', '2011-06-02 11:53:16', 0),
+(7, 'Tolebi', 'Gulnur', '87021628982', 'Aksai', 'Orbita', '2011-06-07', '14:00:00', '1111', 0, 0, '', '2011-06-03 09:53:15', 0),
+(8, 'Tolegenova', 'Altynkul', '87013454545', 'Taldybulak', 'Abaya Pravda', '2011-06-08', '18:15:00', '1111', 0, 0, '', '2011-06-03 09:55:18', 0),
+(9, 'Tasybayeva', 'Gaini', '87004043548', 'Ainabulak', 'Zhanaturmys', '2011-06-09', '08:00:00', '1111', 1, 0, '', '2011-06-07 04:48:36', 0),
+(10, 'Shalkar', 'Ardak', '87009999999', 'tastak', 'orbita', '0011-06-05', '14:00:00', '1111', 1, 0, '', '2011-06-13 16:01:40', 0),
+(11, 'kurt', 'kobein', '897232032', 'Almaty', 'Kokshetau', '2011-08-22', '12:00:00', '1114', 4, 0, '', '2011-08-09 17:58:31', 0);
 
 -- --------------------------------------------------------
 
@@ -514,14 +567,16 @@ CREATE TABLE IF NOT EXISTS `unofficial_order` (
   `accomplished` int(11) NOT NULL,
   `access_token` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=66 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=68 ;
 
 --
 -- Dumping data for table `unofficial_order`
 --
 
 INSERT INTO `unofficial_order` (`id`, `name`, `message`, `contacts`, `date`, `from`, `to`, `user_id`, `type`, `accomplished`, `access_token`) VALUES
-(65, 'Marram Marram', '2000 через пять минут', '87009999999', '2011-08-21 23:23:20', 'Вокзал-1', 'Барахолка', 38, 1, 0, '');
+(65, 'Marram Marram', '2000 через пять минут', '87009999999', '2011-08-21 23:23:20', 'Вокзал-1', 'Барахолка', 38, 1, 0, ''),
+(66, 'Marram Marram', 'за 2000 тенге', '87009999999', '2011-08-22 13:31:40', 'Kaskelen', 'Karaganda', 38, 0, 0, ''),
+(67, 'Marram Marram', 'за 1500', '87009999999', '2011-08-22 13:32:24', 'Алматы-1', 'Фурманова-Аль-фараби', 38, 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -550,17 +605,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   `provider` varchar(120) COLLATE utf8_bin NOT NULL,
   `type` varchar(120) COLLATE utf8_bin NOT NULL,
   `status` int(11) NOT NULL,
+  `public` int(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=40 ;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `displayname`, `identity`, `provider`, `type`, `status`) VALUES
-(36, 'ardakshalkar', '$2a$08$K/3wFNG3KM6wLn4.F0NbsuxrbEDxSVMFDygy4VBzper13E7nTm.3y', 'ardak.shalkar@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2011-08-10 12:38:47', '2011-08-10 12:23:22', '2011-08-10 16:38:47', 'Ardak Shalkarbayuly', '', '', '', 1),
-(37, '', '', 'alhalal.kz@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '0000-00-00 00:00:00', '2011-08-17 23:59:00', '2011-08-18 03:59:00', 'Alhalal Kz', 'http://www.facebook.com/profile.php?id=1280830524', 'http://www.facebook.com/', '', 0),
-(38, 'marram', '$2a$08$aYezZzfUTNeTp7k54YKdW.ROzLpyZw0MXBZj38LjQcsIR2A9QDfpO', 'marram@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2011-08-21 13:14:02', '2011-08-21 12:46:32', '2011-08-21 17:14:02', 'Marram Marram', '', '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -605,9 +657,30 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
 --
 
 INSERT INTO `user_profiles` (`id`, `user_id`, `country`, `website`, `dob`, `photo`, `status`, `contacts`) VALUES
-(34, 33, NULL, NULL, '1986-03-20', 'http://vkontakte.ru/images/question_c.gif', '', ''),
-(35, 34, NULL, NULL, '0000-00-00', '', '', ''),
-(36, 35, NULL, NULL, '0000-00-00', '', '', ''),
-(37, 36, NULL, NULL, '0000-00-00', '', '', ''),
-(38, 37, NULL, NULL, '0000-00-00', 'https://graph.facebook.com/1280830524/picture', '', ''),
-(39, 38, NULL, NULL, '0000-00-00', '', '', '');
+(7, 7, NULL, NULL, '0000-00-00', 'https://graph.facebook.com/670603239/picture', '', ''),
+(8, 8, NULL, NULL, '0000-00-00', 'http://a3.twimg.com/profile_images/180763003/00_normal.jpg', '', ''),
+(9, 9, NULL, NULL, '1986-03-20', 'http://vkontakte.ru/images/question_c.gif', '', ''),
+(10, 10, NULL, NULL, '1986-03-20', 'http://vkontakte.ru/images/question_c.gif', '', ''),
+(11, 11, NULL, NULL, '1986-03-20', 'http://avt.appsmail.ru/mail/ardak_sh/_avatar', '', ''),
+(12, 12, NULL, NULL, '1986-03-20', 'http://vkontakte.ru/images/question_c.gif', '', ''),
+(13, 13, NULL, NULL, '1986-03-20', 'http://vkontakte.ru/images/question_c.gif', '', ''),
+(14, 14, NULL, NULL, '1986-03-20', 'http://localhost/VacanTaxi//style/uploads/web1.jpg', '', ''),
+(15, 15, NULL, NULL, '1986-03-20', 'http://vkontakte.ru/images/question_c.gif', '', ''),
+(16, 9, NULL, NULL, '1986-03-20', 'http://vkontakte.ru/images/question_c.gif', '', ''),
+(17, 10, NULL, NULL, '1986-03-20', 'http://vkontakte.ru/images/question_c.gif', '', '8700320000'),
+(18, 11, NULL, NULL, '1986-03-20', 'http://avt.appsmail.ru/mail/ardak_sh/_avatar', '', ''),
+(19, 12, NULL, NULL, '0000-00-00', '', '', ''),
+(20, 13, NULL, NULL, '0000-00-00', '', '', ''),
+(21, 14, NULL, NULL, '0000-00-00', 'http://localhost/VacanTaxi//style/uploads/web1.jpg', '', ''),
+(22, 15, NULL, NULL, '0000-00-00', '', '', ''),
+(23, 17, NULL, NULL, '0000-00-00', '', '', '8700320000'),
+(24, 18, NULL, NULL, '0000-00-00', 'http://www.google.com/ig/c/photos/private/AIbEiAIAAABDCNKZspn2o9uSYSILdmNhcmRfcGhvdG8qKDZhMGFiZGFkNGQ3NjhmMDA5NDY4ZTU2MWY3ZGNhOTUxZDU2MDViOWMwAVyO3rBqdVvNhv6tOTiRPZ48C4hM', '', ''),
+(25, 23, NULL, NULL, '0000-00-00', 'https://graph.facebook.com/670603239/picture', '', ''),
+(26, 24, NULL, NULL, '0000-00-00', 'https://graph.facebook.com/670603239/picture', '', ''),
+(27, 25, NULL, NULL, '0000-00-00', 'https://graph.facebook.com/670603239/picture', '', ''),
+(28, 26, NULL, NULL, '0000-00-00', 'https://graph.facebook.com/670603239/picture', '', ''),
+(29, 27, NULL, NULL, '0000-00-00', 'https://graph.facebook.com/670603239/picture', '', ''),
+(30, 28, NULL, NULL, '0000-00-00', 'https://graph.facebook.com/670603239/picture', '', ''),
+(31, 29, NULL, NULL, '0000-00-00', 'https://graph.facebook.com/670603239/picture', '', ''),
+(32, 30, NULL, NULL, '0000-00-00', 'https://graph.facebook.com/670603239/picture', '', ''),
+(33, 32, NULL, NULL, '0000-00-00', 'http://localhost/vacanttaxi/style/uploads/user_photos/japanesemacaque.jpg', '', '');

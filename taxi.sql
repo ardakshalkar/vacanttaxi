@@ -559,21 +559,24 @@ CREATE TABLE IF NOT EXISTS `unofficial_order` (
   `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `message` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `contacts` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `from` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `to` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `user_id` int(11) NOT NULL,
   `type` int(11) NOT NULL,
+  `accomplished` int(11) NOT NULL,
+  `access_token` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=68 ;
 
 --
 -- Dumping data for table `unofficial_order`
 --
 
-INSERT INTO `unofficial_order` (`id`, `name`, `message`, `contacts`, `date`, `from`, `to`, `user_id`, `type`) VALUES
-(14, 'Вася', 'за 1000 отвезите', '87009999999', '2011-08-08 12:35:28', 'Каменка', 'Вокзал-1', 0, 0),
-(15, 'Вася', 'за 1000', '87009999999', '2011-08-08 12:37:08', 'БАО', 'Аль-фараби-Навои', 0, 1);
+INSERT INTO `unofficial_order` (`id`, `name`, `message`, `contacts`, `date`, `from`, `to`, `user_id`, `type`, `accomplished`, `access_token`) VALUES
+(65, 'Marram Marram', '2000 через пять минут', '87009999999', '2011-08-21 23:23:20', 'Вокзал-1', 'Барахолка', 38, 1, 0, ''),
+(66, 'Marram Marram', 'за 2000 тенге', '87009999999', '2011-08-22 13:31:40', 'Kaskelen', 'Karaganda', 38, 0, 0, ''),
+(67, 'Marram Marram', 'за 1500', '87009999999', '2011-08-22 13:32:24', 'Алматы-1', 'Фурманова-Аль-фараби', 38, 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -610,13 +613,16 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `displayname`, `identity`, `provider`, `type`, `status`, `public`) VALUES
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `displayname`, `identity`, `provider`, `type`, `status`) VALUES
 (30, '', '', 'ardak.shalkar@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '0000-00-00 00:00:00', '2011-08-03 08:14:48', '2011-08-25 21:19:28', 'Ardak Shalkarbayuli', 'http://www.facebook.com/ardak.shalkar', 'http://www.facebook.com/', '', 0, 1),
 (31, 'marram', '123', 'marram@gmail.com', 1, 0, NULL, NULL, NULL, NULL, 'cb12343501c3edb3c9c49061a86952a1', '127.0.0.1', '0000-00-00 00:00:00', '2011-08-04 20:00:51', '2011-08-25 21:24:08', '', '', '', '', 0, 1),
 (32, 'massam', '$2a$08$8MA3urRuoE0Hmuie3fu5A.VCX1c5VxhOjKIvG2v74o.w2vonNCXyO', 'massam@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2011-08-04 20:14:59', '2011-08-04 20:04:53', '2011-08-27 09:18:32', '', '', '', '', 1, 1),
 (33, 'salta', '$2a$08$9Qe1LA1bNdvrJ46pSVTN1eAyTZiJ9UZ2ZlPk42BgsZ6Juum60nPzS', 'tasalta@gmail.com', 1, 0, NULL, NULL, NULL, NULL, 'acb3c21c3a53acf7e295449e6218b591', '0.0.0.0', '2011-08-08 14:58:30', '2011-08-08 14:56:42', '2011-08-25 21:42:50', '', '', '', '', 1, 0),
 (34, 'karaman', '$2a$08$/vTUJ06glg9QBiuP6y8xV.ER3QwI4z5bd/gA8qZRXHbcPboNpVxka', 'karaman@gmail.com', 0, 0, NULL, NULL, NULL, NULL, 'eda187ebbb5b0019cf46769106535bd7', '127.0.0.1', '0000-00-00 00:00:00', '2011-08-18 21:06:20', '2011-08-25 21:19:28', 'Karaman', '', '', '', 0, 1),
 (35, 'dauren', '$2a$08$ErtNmiOeFVUtHlsPSCEB/.UWqmYyUJR9WlSIHcMzZeeZ7qjLg0ruO', 't.fatimka@mail.ru', 0, 0, NULL, NULL, NULL, NULL, '3c64f2a1df667fe0a950070f14f6e35a', '127.0.0.1', '0000-00-00 00:00:00', '2011-08-19 07:15:15', '2011-08-25 21:19:28', 'Dauren', '', '', '', 0, 1);
+(37, '', '', 'alhalal.kz@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '0000-00-00 00:00:00', '2011-08-17 23:59:00', '2011-08-18 03:59:00', 'Alhalal Kz', 'http://www.facebook.com/profile.php?id=1280830524', 'http://www.facebook.com/', '', 0),
+(38, 'marram', '$2a$08$aYezZzfUTNeTp7k54YKdW.ROzLpyZw0MXBZj38LjQcsIR2A9QDfpO', 'marram@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2011-08-27 08:54:43', '2011-08-21 12:46:32', '2011-08-27 12:54:43', 'Marram Marram', '', '', '', 1),
+(39, 'massam', '$2a$08$2DAXMGBCUxl8e72as5iIyu7NaUqaIia4v2G6W5FPRS4iWETk5nq6q', 'massam@gmail.com', 0, 0, NULL, NULL, NULL, NULL, 'e43a6ca10061d0eb1508c7c998e25b01', '127.0.0.1', '0000-00-00 00:00:00', '2011-08-22 20:28:18', '2011-08-23 00:28:18', 'Marram Marram', '', '', '', 0);
 
 -- --------------------------------------------------------
 

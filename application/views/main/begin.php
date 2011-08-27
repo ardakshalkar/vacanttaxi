@@ -9,6 +9,7 @@
 <script type="text/javascript" src="<?php echo base_url()."style/js/jquery-ui-1.8.15.custom.min.js";?>" ></script>
 <script src="<?php echo base_url()."style/js/jquery.timeago.js"; ?>" type="text/javascript"></script>
 <script>
+	base_url = '<?php echo base_url();?>';
 	city = '<?=$city?>';
 </script>
 <?php
@@ -116,6 +117,7 @@ function getCities(){
 
 </script>
 <script>
+	
 var _ues = {
 host:'vtaxi.userecho.com',
 forum:'6248',

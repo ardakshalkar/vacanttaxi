@@ -5,7 +5,7 @@ var browserSupportFlag =  new Boolean();
 var hostpath='http://localhost/vacanttaxi/';
 var carIcons = [];
 carIcons[0] = new google.maps.MarkerImage(
-	hostpath+'style/images/car.png', 
+	base_url+'style/images/car.png', 
 	new google.maps.Size(32, 32),
 	new google.maps.Point(0, 0), 
 	new google.maps.Point(16, 30)
@@ -109,7 +109,7 @@ function loadMarkers(){
 		}
 		cars.length = 0;
 	}
-	$.get("http://localhost/vacanttaxi/index.php/front/get_list", {},
+	$.get(base_url+"front/get_list", {},
 		function(data){
 			for (var i = 0; i < data.length; i++) {
 				var carMarker = new google.maps.Marker({
@@ -119,12 +119,11 @@ function loadMarkers(){
 					title: data[i].title
 				});
 				cars.push(carMarker);
-				alert(data[i].id);
 				(function(i, carMarker) {		
 					google.maps.event.addListener(carMarker, 'click', 
 					function() {
 						if (!infowindow2) {infowindow2 = new google.maps.InfoWindow();}
-						$.post( "http://localhost/vacanttaxi/index.php/front/get_driver2", {'id':data[i].id} ,
+						$.post( base_url+"front/get_driver2", {'id':data[i].id} ,
 							function( data ) {
 								infowindow2.setContent(data);
 							}

@@ -3,7 +3,7 @@ var markers = [];
 var markersArray = [];
 var cars =[];
 var carIcons = [];
-var hostpath='http://localhost/vacanttaxi/';
+var hostpath='http://localhost/VacanTaxi/';
 var infowindow;
 var i=0;
 
@@ -115,7 +115,7 @@ function loadDrivers(){
 		cars.length = 0;
 	}
 	
-	$.get("http://localhost/vacanttaxi/index.php/backend/get_list", {},
+	$.get(hostpath+"index.php/backend/get_list", {},
 		function(data){
 			//alert(data[]);
 			for (var i = 0; i < data.length; i++) {

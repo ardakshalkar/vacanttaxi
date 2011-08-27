@@ -17,7 +17,7 @@ foreach ($menu as $mitem){
 	
 	<div id="user">
 		<?php if (!$logged_in) : ?>
-			<span id="taxist">Войти</span>
+			<div id="enter">Войти</div>
 		<?php else:?>
 			<?= $user->displayname; ?> <a href="<?=base_url()."index.php/auth/logout"?>">Выйти</a><br/>
 			<a href="<?=base_url()?>/index.php/auth/edit_driver">В каталоге</a>|

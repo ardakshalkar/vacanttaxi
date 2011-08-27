@@ -38,7 +38,7 @@ height:140px;
 margin:auto;
 background-color:#fafafa;
 position:relative;
-background:url('images/taxipattern.png');
+background:url('images/taxipatternopaque.png');
 background-repeat:repeat-x;
 background-position:0% 100%;
 }
@@ -127,6 +127,10 @@ width:300px;
 height:300px;
 }
 #present{
+border-radius:10px;
+background: url('images/mainpartback.png');
+background-repeat:repeat-x;
+background-color:#fec601;
 position:relative;
 overflow:auto;
 padding-bottom:100px;
@@ -426,4 +430,12 @@ background-color:#5BE15D;
 padding:5px;
 margin:5px;	
 border:1px solid #4BAE3D;
+}
+#enter{
+text-align:center;
+background-color:#003266;
+color:white;
+padding:10px;
+border-radius:5px;
+cursor:pointer;
 }
