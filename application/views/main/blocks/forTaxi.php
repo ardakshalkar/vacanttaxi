@@ -1,8 +1,8 @@
-<div class = "infowindow"><img src="http://localhost/VacanTaxi/style/uploads/<?php echo $a['photo']; ?>" style="float:left; width:80px; padding-right:5px; overflaw:hidden;" alt="driver photo"><h2><?php echo $a['lastname'].' '.$a['firstname'].' '.$a['middlename']; ?></h2><p>Опыт: <?php echo $a['experience'];?>.  Номер телефона: <?php echo $a['m_phone'];?></p><p onclick="startChat(<?php echo $a['user_id']; ?>)">Чат</p>
-
-<div class="floatleft">
-<div id="star_container_<?php echo $a['user_id']; ?>">
-<?php $this->load->view('front/blocks/ratingDiv'); ?>
-</div>
-</div>
+<div class = "infowindow">
+<?php foreach($a['user_profile'] as $profile){?>
+<img src="<?php echo $profile->photo;?>" style="float:left; width:75px; height:70px; padding-right:5px; overflaw:hidden;" alt="company photo">
+<?}?>
+<h2><?php echo $a['c_name']; ?></h2>
+<p>Опыт: <?php echo $a['experience'];?>. тел.: <?php echo $a['m_phone'];?></p>
+<p><?php echo $a['about'];?></p>
 </div>

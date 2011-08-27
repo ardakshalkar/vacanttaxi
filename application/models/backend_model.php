@@ -76,12 +76,7 @@ class Backend_Model extends CI_Model
 		$c_list = NULL;
 		foreach($query->result() as $i)
 		{
-			$c_list[$i->name] = $i->name; 
-			$query2 = $this->db->query("SELECT * FROM `district` WHERE `city_id`=".$i->id);
-			foreach($query2->result() as $j)
-			{
-				$c_list[$j->name] = "&hellip;".$j->name;
-			}
+			$c_list[$i->id] = $i->name; 
 		}
 		return $c_list;
 	}
@@ -117,6 +112,13 @@ class Backend_Model extends CI_Model
 		$query = $this->db->get($table);
 		$query = $query->result();
 		return $query[0];
+	}
+	
+	function get_userinfo2($id,$table){
+		$this->db->where('id',$id);
+		$query = $this->db->get($table);
+		$order = $query->result_array();
+		return $order[0];
 	}
 	
 	function get_districts($city_id,$table)
@@ -184,12 +186,22 @@ class Backend_Model extends CI_Model
 		}
 	}
 	
+	#get where
+	function get_or_where($rule,$rule2,$table)
+	{
+		$this->db->where($rule);
+		$this->db->or_where($rule2);
+		$query = $this->db->get($table);
+		$query = $query->result();
+  		return $query;
+	}
+	
 	# Return all companies
 	function get_companies_list()
 	{
-		$query = $this->db->query('SELECT * FROM `company`');
+		$query = $this->db->get(COMPANY_TABLE);
 		$c_list = NULL;
-		$c_list['0']='Vacant Taxi';
+		$c_list['0']='Любая';
 		foreach($query->result() as $i)
 		{
 			$c_list[$i->id] = $i->company_name; 
@@ -218,12 +230,12 @@ class Backend_Model extends CI_Model
   		return $list;
  	}
  	
- 	function get_company_channel($id,$table)
+ 	function get_company_id($id,$table)
  	{
   		$this->db->where('user_id',$id);
   		$query = $this->db->get(DISPATCHER_TABLE);
   		$query = $query->result();
-  		return 'company'.$query[0]->company_id;
+  		return $query[0]->company_id;
   		
  	}
 	
@@ -267,10 +279,10 @@ class Backend_Model extends CI_Model
  	}
 	
 	#Get id of driver
-	function get_id($cname)
+	function get_id($rule)
 	{
 		$this->db->select('id');
-		$this->db->where('c_name',$cname);
+		$this->db->where($rule);
 		$query = $this->db->get('driver');
 		if($query->num_rows() > 0)
 		{
@@ -280,6 +292,7 @@ class Backend_Model extends CI_Model
 		}
 		return false;
 	}
+	
 	#Get company id
 	function get_cid($user_id)
 	{
@@ -380,5 +393,56 @@ class Backend_Model extends CI_Model
 		$result[5]= count($query5->result());
 		return $result;
 	}
+
+	function get_online_list()
+	{
+		$this->db->where("(`status` = 1 AND `public` = 0)", NULL, FALSE);  
+		$query = $this->db->get('users');
+		$list = NULL;
+		$j=0;
+		foreach($query->result() as $i) 
+		{
+			$list[$j]['id'] = $i->id; 
+			$list[$j]['title']= $i->displayname;
+			$list[$j]['login']= $i->username;
+			$this->db->where('uid',$i->id); 
+			$query2 = $this->db->get('driver_location');
+			foreach($query2->result() as $k){
+			$list[$j]['lat']=$k->lat;
+			$list[$j]['lon']=$k->lon;}
+			$j++;
+		}
+		return $list;
+	}
+
+	function get_driver_info2($id,$cid)
+	{	
+		$this->db->where('user_id',$id);
+		$query = $this->db->get('driver');
+		$driver = NULL;
+		foreach($query->result() as $taxist)
+		{
+			$driver['id'] = $taxist->id;
+			$driver['c_name'] = $taxist->c_name;
+			$driver['experience'] = $taxist->experience;
+			$driver['status'] = $taxist->status;
+			$query2 = $this->db->query("SELECT * FROM `company` WHERE `id`=".$cid);
+			$driver['company']=$query2->result();
+		}
+		return $driver;
+	}
+
+	function c_id($id){
+		$this->db->select('company_id');
+		$this->db->where('driver_id',$id);
+		$query = $this->db->get('driver_to_company');
+		if($query->num_rows() > 0)
+		{
+			$row = $query->row_array();
+			$id=$row['company_id'];
+			return $id;
+		}
+	}
+
 }
 ?>
