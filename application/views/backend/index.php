@@ -1,5 +1,5 @@
 <?php $this->load->view('backend/head-content'); ?>
-<body>
+<body onload="initialize()">
 <div id="wrapper">
 
 	<?php $this->load->view('backend/header-menu'); ?>

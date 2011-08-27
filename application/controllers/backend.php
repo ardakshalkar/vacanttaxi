@@ -816,6 +816,72 @@ class Backend extends CI_Controller
 		}
 	}
 	
+	#Add car
+	function add_car($id)
+	{
+		$data['image_error_message'] = NULL;
+		if($this->session->userdata['admin_id'] > 0 && $this->session->userdata['admin_type'] >= ADMIN)
+		{
+			if(isset($_POST['add_car']))
+			{
+				if(isset($_POST['cancel'])) redirect("backend/manage_drivers");
+				
+				/*$config['upload_path'] = 'C:\xampp\htdocs\VacanTaxi\style\uploads'; 
+                $config['allowed_types'] = 'jpg|png|gif|jpeg';
+				$config['max_size']    = '1000'; 
+				$config['max_width']  = '1024'; 
+				$config['max_height']  = '768'; 
+            
+                $this->load->library('upload', $config);
+			
+				$bool = true;
+				$image_error_message = NULL;
+				$image_name = "style/uploads/default.png";
+				
+				if($this->upload->do_upload())
+				{				
+					$image_name = $this->upload->data('file_name');
+					$image_name = "style/uploads/".$image_name['file_name'];
+				}else
+				{
+					$bool = false;
+					$data['image_error_message'] = $this->upload->display_errors();
+				}*/
+				$image_name = 'default.png';
+				$this->form_validation->set_rules('add_car_no','Car Number','required|alpha_numeric|xss_clean');
+				$this->form_validation->set_rules('add_model','Model', 'required|xss_clean');
+				$this->form_validation->set_rules('add_description','Description', 'required|xss_clean');
+				
+				if($this->form_validation->run())
+				{
+				$driver_id = $this->backend_model->get_id(array('user_id'=>$id));
+				$info1 = array(
+								'driver_id'=>$driver_id,
+								'car_no'=>$this->input->post('add_car_no'),
+								'type'=>$this->input->post('add_type'),
+							   	'model'=>$this->input->post('add_model'),
+							   	'description'=>$this->input->post('add_description'),
+								'photo'=>$image_name);
+				
+				$this->backend_model->insert_userinfo($info1,CAR_TABLE);
+				redirect("backend/manage_drivers");							
+				}
+			}
+			$data += $this->backend_model->general();
+
+			$menu_items = array('backend/add_driver'=>'Добавить Водителя',
+								'backend/manage_drivers'=>'Все Водители');
+									
+			$data += $this->backend_model->page_info('page/add_car','Добавить Машину',$menu_items);
+			$data['id']=$id;									
+
+			$this->load->view('backend/index',$data);
+		}else
+		{
+			redirect('backend/login');
+		}
+	}
+
 	function edit_driver($id)
 	{
 		if($this->session->userdata['admin_id'] > 0 && $this->session->userdata['admin_type'] >= ADMIN)
@@ -874,24 +940,115 @@ class Backend extends CI_Controller
 		}
 	}
 	
+	function edit_car($id)
+	{
+			
+		if($this->session->userdata['admin_id'] > 0 && $this->session->userdata['admin_type'] >= ADMIN)
+		{	
+			$user_id = $this->session->userdata['admin_id'];
+			$driver_id = $this->backend_model->get_id(array('user_id'=>$user_id));
+			if(isset($_POST['edit_car']))
+			{
+				if(isset($_POST['cancel'])) redirect("backend/manage_drivers");
+								
+				$this->form_validation->set_rules('edit_car_no','Car Number','required|alpha_numeric|xss_clean');
+				$this->form_validation->set_rules('edit_model','Model', 'required|xss_clean');
+				$this->form_validation->set_rules('edit_description','Description', 'required|xss_clean');
+				
+				if($this->form_validation->run())
+				{
+						
+					$image = 'default.png';	
+					$info = array(
+							'driver_id'=>$driver_id,
+							'car_no'=>$this->input->post('edit_car_no'),
+							'type'=>$this->input->post('edit_type'),
+							'model'=>$this->input->post('edit_model'),
+							'description'=>$this->input->post('edit_description'));//,
+							//'photo'=>$image);
+								
+					$this->backend_model->update_userinfo_1(array('id'=>$id),$info, CAR_TABLE);
+					redirect("backend/manage_drivers");
+				}
+			}
+						
+			$data = $this->backend_model->general();
+
+			$menu_items = array('backend/add_driver'=>'Добавить Водителя',
+								'backend/manage_drivers'=>'Все Водители');
+									
+			$data += $this->backend_model->page_info('page/edit_car','Редактировать машину',$menu_items);
+			$data['info'] = $this->backend_model->return_userinfo(array('id'=>$id),CAR_TABLE);
+			$data['id']=$id;
+			$this->load->view('backend/index',$data);
+		
+		}else
+		{
+			redirect('backend/login');
+		}
+	}	
+
 	# For view info about driver
 	function view_driver($id)
 	{
 		if(isset($this->session->userdata['admin_id']) && $this->session->userdata['admin_type'] >= ADMIN)
 		{
+		
+		$driver_id = $this->backend_model->get_id(array('user_id'=>$id));
 		$data = $this->backend_model->general();
 
-		$menu_items = array('backend/add_driver'=>'Добавить работника',
-								'backend/manage_drivers'=>'Все работники');
+		$menu_items = array('backend/add_driver'=>'Добавить водителя',
+								'backend/manage_drivers'=>'Все водители');
 							
 		$data += $this->backend_model->page_info('page/view_driver',
 												'Водитель',$menu_items);
-												
+		
+		$data['id'] = $id;
 		$data['userinfo1'] = $this->backend_model->get_userinfo($id,USER_TABLE);
 		$data['userinfo2'] = $this->backend_model->return_userinfo(array('user_id'=>$id),DRIVER_TABLE);
+		$data['userinfo3'] = $this->backend_model->return_users(array('driver_id'=>$driver_id),CAR_TABLE);
 		
 		$this->load->view('backend/index',$data);
 		}else
+		{
+			redirect('backend/login');
+		}
+	}
+
+	function view_car($id)
+	{
+		if(isset($this->session->userdata['admin_id']) && $this->session->userdata['admin_type'] >= ADMIN)
+		{
+		
+		//$driver_id = $this->backend_model->get_id(array('user_id'=>$id),DRIVER_TABLE);
+		$data = $this->backend_model->general();
+
+		$menu_items = array('backend/add_driver'=>'Добавить водителя',
+								'backend/manage_drivers'=>'Все водители');
+							
+		$data += $this->backend_model->page_info('page/view_car',
+												'Машина',$menu_items);
+		
+		$data['userinfo'] = $this->backend_model->return_userinfo(array('id'=>$id),CAR_TABLE);
+		
+		$this->load->view('backend/index',$data);
+		}else
+		{
+			redirect('backend/login');
+		}
+	}
+	
+	function delete_car($id)
+	{
+		if(isset($this->session->userdata['admin_id']) && $this->session->userdata['admin_type'] >= ADMIN)
+		{
+			if($id > 0)
+			{
+				$this->backend_model->delete_users(array('id'=>$id),CAR_TABLE);
+				redirect("backend/manage_drivers");
+			}
+		}
+		else
 		{
 			redirect('backend/login');
 		}
@@ -1157,16 +1314,16 @@ class Backend extends CI_Controller
 														'Отчет',$menu_items);
 			
 			$report = $this->backend_model->get_orders();
-			$tmpl = array('table_open'  => '<table id="orders_catalogue">');
+			$tmpl = array('table_open'  => '<table id="catalogue">');
 			$this->table->set_template($tmpl);
 			$this->table->set_heading('Name','From','To','Status',' Dispatcher','Order date','City');
 			foreach ($report as $row){
 			$status = "";
-			if ($row->status=='1111') $status = lang("unknown");
-			else if ($row->status=='1112') $status = lang("auction");
-			else if ($row->status=='1113') $status = lang("descarded");
-			else if ($row->status=='1114') $status = lang("taken");
-			else if ($row->status=='1115') $status = lang("done");
+			if ($row->status=='1111') {$status = lang("unknown");$class='ui-icon ui-icon-help';}
+			else if ($row->status=='1112') {$status = lang("auction"); $class='ui-icon ui-icon-radio-on';}
+			else if ($row->status=='1113') {$status = lang("descarded"); $class='ui-icon ui-icon-minus';}
+			else if ($row->status=='1114') {$status = lang("taken"); $class='ui-icon ui-icon-plus';}
+			else if ($row->status=='1115') {$status = lang("done"); $class='ui-icon ui-icon-check';}
 				$this->table->add_row(
 					array($row->surname,$row->from,$row->to,$status,$row->dname,$row->order_date, $row->name)
 				);
@@ -1339,8 +1496,8 @@ class Backend extends CI_Controller
 							
 							if($this->form_validation->run())
 							{				
-									$info1 = array(
-										  'user_id'=>NULL,
+								$info1 = array(
+										  'user_id'=>null,
 										  'c_name'=>$this->input->post('add_cname'),
 										  'status'=>$this->input->post('add_status'),
 										  'smoke'=>$this->input->post('add_smoke'),
@@ -1355,7 +1512,7 @@ class Backend extends CI_Controller
 												   
 									$this->backend_model->insert_userinfo($info1,DRIVER_TABLE);
 									
-									$id = $this->backend_model->get_id($this->input->post('add_cname'));
+									$id = $this->backend_model->get_id(array('c_name'=>$this->input->post('add_cname')));
 									$c_id = $this->backend_model->get_cid($this->session->userdata['admin_id']);
 									
 									$info2 = array(
@@ -1575,10 +1732,10 @@ class Backend extends CI_Controller
 		else if($mode==1) //for cars 
 		{
 			$column_name='photo';
-			$next_page='backend/edit_company/'.$id;
+			$next_page='backend/edit_car/'.$id;
 			$uppath = "style/uploads/cars/";
 			$table = CAR_TABLE;
-			$rule = array('driver_id'=> $id);
+			$rule = array('id'=> $id);
 		}
 		else if($mode==2)// for companies
 		{
@@ -1641,7 +1798,40 @@ class Backend extends CI_Controller
 			}
 		}
 		redirect($next_page);
-	} 
+	}
+	
+	function map()
+	{
+		if($this->session->userdata['admin_id'] > 0 && $this->session->userdata['admin_type'] == DISPATCHER)
+		{
+			$data = $this->backend_model->general();
+			$menu_items = array('backend/add_dispatcher'=>'Добавить диспетчера',
+								'backend/manage_dispatchers'=>'Все диспетчера');
+							
+			$data += $this->backend_model->page_info('page/map','Karta',$menu_items);			
+			$this->load->view('backend/index',$data);
+		}else
+		{
+			redirect('backend/login');
+		}
+	}
+
+	function get_list()
+	{
+		$data=$this->backend_model->get_online_list();
+		echo json_encode($data);
+	}
+
+	function get_driver2()
+	{
+		$id =  $this->input->post('id');
+		$driver_id = $this->backend_model->get_id(array('user_id'=>$id));
+		$c_id = $this->backend_model->c_id($driver_id);
+		$data['a']=$this->backend_model->get_driver_info2($id,$c_id);
+		$data['base_url'] = $this->config->item('base_url');
+		echo $this->load->view('backend/head/infowindow',$data);
+	}
+
 }
 	
 ?>

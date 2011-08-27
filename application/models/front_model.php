@@ -102,47 +102,37 @@ class Front_Model extends CI_Model
 	
 	function get_driver_info2($id)
 	{	
-		$this->db->select('*');
 		$this->db->where('user_id',$id);
-		$this->db->from('driver');
-		$this->db->join('rating', 'rating.driver_id = driver.user_id');
-		$query = $this->db->get();
-		if($query->num_rows() == 1)
+		//$this->db->join('rating', 'rating.driver_id = driver.user_id');
+		$query = $this->db->get('driver');
+		$driver = NULL;
+		foreach($query->result() as $taxist)
 		{
-			$row = $query->row_array();
-			$exp='';
-			if($row['experience'] == 0)
-				{
-					$exp= "Р‘РµР· РѕРїС‹С‚Р°";
-				}else if($row['experience'] == 1)
-				{
-					$exp= "1 РіРѕРґ";
-				}else if($row['experience'] > 1 &$row['experience'] <= 4)
-				{
-					$exp= $row['experience']." РіРѕРґР°";
-				}else
-				{
-					$exp= $row['experience']." Р»РµС‚";
-				}
-				
-			return $row;
+			$driver['id'] = $taxist->id;
+			$driver['c_name'] = $taxist->c_name;
+			$driver['experience'] = $taxist->experience;
+			$driver['status'] = $taxist->status;
+			$driver['m_phone'] = $taxist->m_phone;
+			$driver['about'] = $taxist->about;
+			$query2 = $this->db->query("SELECT * FROM `user_profiles` WHERE `user_id`=".$id);
+			$driver['user_profile']=$query2->result();
 		}
-		return false;
+		return $driver;
 	}
 	
 	function get_online_list()
 	{
-		$this->db->where('status',1);
+		$this->db->where("(`status` = 1 AND `public` = 1)", NULL, FALSE);  
 		$query = $this->db->get('users');
 		$list = NULL;
 		$j=0;
 		foreach($query->result() as $i) 
 		{
 			$list[$j]['id'] = $i->id; 
-			$list[$j]['title']= $i->custom_message;
-			$list[$j]['login']= $i->login;
-			$this->db->where('id',$i->id); 
-			$query2 = $this->db->get('location');
+			$list[$j]['title']= $i->displayname;
+			$list[$j]['login']= $i->username;
+			$this->db->where('uid',$i->id); 
+			$query2 = $this->db->get('driver_location');
 			foreach($query2->result() as $k){
 			$list[$j]['lat']=$k->lat;
 			$list[$j]['lon']=$k->lon;}

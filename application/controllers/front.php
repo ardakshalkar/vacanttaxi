@@ -141,7 +141,12 @@ class Front extends MY_Controller
 		$id =  $this->input->post('id');
 		$data['a']=$this->front_model->get_driver_info2($id);
 		$data['base_url'] = $this->config->item('base_url');
-		echo $this->load->view('front/blocks/forTaxi',$data);
+		echo $this->load->view('main/blocks/forTaxi',$data);
+	}
+	function get_list()
+	{
+		$data=$this->front_model->get_online_list();
+		echo json_encode($data);
 	}
 	
 	function driver_profile()

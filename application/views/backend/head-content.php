@@ -15,13 +15,16 @@
 <script type="text/javascript" src="<?php echo $base_url; ?>style/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>style/js/jquery-ui-1.8.15.custom.min.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>style/js/jNice.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=ABQIAAAACH4j3210cqhvWDAXAv4jcBSVl4AMz3hSJ7yI0QAV2YpsPNpdhhQoxPSmNKPyloFYnF64PHVdfn8ySA">
+</script>
+<script type="text/javascript" src="<?php echo base_url()."style/js/disMap.js"; ?>"></script>
+
 
 <?php
 if ($PAGE == 'page/manage_orders'){
 	$this->load->view('backend/head/catalogue');
-}
+}else if($PAGE == 'page/statistics'){$this->load->view('backend/head/statisticsScript');}
 ?>  
-
 
 <script>
 $(document).ready(function(){	

@@ -279,10 +279,10 @@ class Backend_Model extends CI_Model
  	}
 	
 	#Get id of driver
-	function get_id($cname)
+	function get_id($rule)
 	{
 		$this->db->select('id');
-		$this->db->where('c_name',$cname);
+		$this->db->where($rule);
 		$query = $this->db->get('driver');
 		if($query->num_rows() > 0)
 		{
@@ -292,6 +292,7 @@ class Backend_Model extends CI_Model
 		}
 		return false;
 	}
+	
 	#Get company id
 	function get_cid($user_id)
 	{
@@ -392,5 +393,56 @@ class Backend_Model extends CI_Model
 		$result[5]= count($query5->result());
 		return $result;
 	}
+
+	function get_online_list()
+	{
+		$this->db->where("(`status` = 1 AND `public` = 0)", NULL, FALSE);  
+		$query = $this->db->get('users');
+		$list = NULL;
+		$j=0;
+		foreach($query->result() as $i) 
+		{
+			$list[$j]['id'] = $i->id; 
+			$list[$j]['title']= $i->displayname;
+			$list[$j]['login']= $i->username;
+			$this->db->where('uid',$i->id); 
+			$query2 = $this->db->get('driver_location');
+			foreach($query2->result() as $k){
+			$list[$j]['lat']=$k->lat;
+			$list[$j]['lon']=$k->lon;}
+			$j++;
+		}
+		return $list;
+	}
+
+	function get_driver_info2($id,$cid)
+	{	
+		$this->db->where('user_id',$id);
+		$query = $this->db->get('driver');
+		$driver = NULL;
+		foreach($query->result() as $taxist)
+		{
+			$driver['id'] = $taxist->id;
+			$driver['c_name'] = $taxist->c_name;
+			$driver['experience'] = $taxist->experience;
+			$driver['status'] = $taxist->status;
+			$query2 = $this->db->query("SELECT * FROM `company` WHERE `id`=".$cid);
+			$driver['company']=$query2->result();
+		}
+		return $driver;
+	}
+
+	function c_id($id){
+		$this->db->select('company_id');
+		$this->db->where('driver_id',$id);
+		$query = $this->db->get('driver_to_company');
+		if($query->num_rows() > 0)
+		{
+			$row = $query->row_array();
+			$id=$row['company_id'];
+			return $id;
+		}
+	}
+
 }
 ?>
