@@ -115,7 +115,7 @@ function loadDrivers(){
 		cars.length = 0;
 	}
 	
-	$.get("http://localhost/vacanttaxi/index.php/backend/get_list", {},
+	$.get(hostpath+"index.php/backend/get_list", {},
 		function(data){
 			//alert(data[]);
 			for (var i = 0; i < data.length; i++) {
@@ -131,7 +131,7 @@ function loadDrivers(){
 					google.maps.event.addListener(marker, 'click', 
 					function() {
 						if (!infowindow) {infowindow = new google.maps.InfoWindow();}
-						$.post( "http://localhost/vacanttaxi/index.php/backend/get_driver2", {'id':data[i].id} ,
+						$.post( hostpath+"index.php/backend/get_driver2", {'id':data[i].id} ,
 							function( data ) {
 								infowindow.setContent(data);
 							}
