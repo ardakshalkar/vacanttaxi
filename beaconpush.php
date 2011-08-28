@@ -11,7 +11,7 @@ class BeaconPush {
     /**
      * Send the request
      */
-    protected static function _request($method, $command, $arg=NULL, array $data=array(), $curl_timeout=60)
+    protected static function _request($method, $command, $arg=NULL, array $data=array(), $curl_timeout=100)
     {
         $request_url = 'http://api.beaconpush.com/'.BeaconPush::$api_version.'/'.BeaconPush::$api_key;
         $request_url = $request_url.'/'.strtolower($command).($arg ? '/'.$arg : '');

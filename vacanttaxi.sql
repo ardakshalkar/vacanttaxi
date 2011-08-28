@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.4
+-- version 3.3.2deb1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 27, 2011 at 10:59 AM
+-- Generation Time: Aug 27, 2011 at 09:25 PM
 -- Server version: 5.1.41
--- PHP Version: 5.3.1
+-- PHP Version: 5.3.5
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   `last_visit` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `admins`
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('11394c4b184b6432b1d22a404d0ee782', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.24 (', 1314435309, 'a:5:{s:4:"city";s:6:"Almaty";s:7:"city_id";s:1:"1";s:7:"user_id";s:2:"38";s:8:"username";s:6:"marram";s:6:"status";s:1:"1";}');
+('0ce773d598f68f664a1bd07306e6cd5f', '0.0.0.0', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.30 (', 1314441070, 'a:2:{s:4:"city";s:6:"Almaty";s:7:"city_id";s:1:"1";}');
 
 -- --------------------------------------------------------
 
@@ -216,7 +216,7 @@ CREATE TABLE IF NOT EXISTS `company` (
 --
 
 INSERT INTO `company` (`id`, `user_id`, `company_name`, `driver_max`, `disp_max`, `city`, `contacts`, `about`, `logo`, `site`) VALUES
-(1, 4, 'Алматы Такси', 50, 5, 1, 'Адрес:\nРК, г. Алматы, мкрн. "Сайран" 17\nТелефоны:\nВызов такси: +7 (727) 2 555 - 333\nПриемная: +7 (727) 2 258 855\nФакс: +7 (727) 2 250 111\n\nE-mail: info@almatytaxi.kz ', 'Сегодня, ТОО «Алматы-Такси» самый крупный таксомоторный парк не только в Казахстане, но и во всей Центральной Азии, являющийся лидером среди транспортных компаний по перевозкам пассажиров и багажа!', 'http://localhost/VacanTaxi/style/uploads/company_logos/comics_08.jpg', 'http://almatytaxi.kz/'),
+(1, 4, 'almatyTaxi', 50, 5, 1, 'Адрес:\nРК, г. Алматы, мкрн. "Сайран" 17\nТелефоны:\nВызов такси: +7 (727) 2 555 - 333\nПриемная: +7 (727) 2 258 855\nФакс: +7 (727) 2 250 111\n\nE-mail: info@almatytaxi.kz ', 'Сегодня, ТОО «Алматы-Такси» самый крупный таксомоторный парк не только в Казахстане, но и во всей Центральной Азии, являющийся лидером среди транспортных компаний по перевозкам пассажиров и багажа!', 'http://localhost/VacanTaxi/style/uploads/company_logos/comics_04.jpg', 'http://almatytaxi.kz/'),
 (2, NULL, 'Экспресс Такси', 50, 0, 1, 'Адрес: г. Алматы, Мкр. "Мамыр 4 " д.100а оф 203\r\n\r\nТел: 8-727-2-600-600;\r\n\r\nФакс: 8-727-2-26-27-28;\r\n\r\nМоб.тел.: 8-700-2-600-600; 8-701-9-600-600;\r\n\r\ne-mail: 2600600@mail.ru', 'ТОО "Экспресс такси" основано 24 мая 2001года и динамично развивается. Благодаря разумной ценовой политике, постоянной работе по улучшению качества обслуживания, мы каждый день приобретаем новых клиентов.', 'company.png', 'http://www.express-taxi.kz/'),
 (3, NULL, 'Aport taxi', 50, 0, 1, 'Диспетчерская служба: +7 727 3 999 400 -многоканальный телефон,+7 777 7 999 400, +7 701 767 67 08\r\nОфис :+7 727 292 21 70, +7 727 293 06 97\r\nФакс: +7 727 292 67 74 \r\nАдрес: Алматы, 050012, ул. Масанчи, 57А,\r\nE-mail: info@aporttaxi.kz', '@port Taxi - это новая сервисная компания, осуществляющая пассажирские автоперевозки по г. Алматы, Казахстану и ближнему зарубежью.\r\n@port Taxi - это гарантированное оказание качественных услуг в сфере автоперевозок  (такси, доставка почты, развозка сотрудников, встреча в аэропорту и т.д.).', 'company.png', 'http://www.aporttaxi.kz/'),
 (5, 9, 'Dovezu', 13, 2, 1, '87000323', 'Super compen', 'http://localhost/VacanTaxi/style/uploads/company_logos/japanesemacaque.jpg', 'http://dovezu.kz');
@@ -236,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `company_dispatcher` (
   `mode` int(11) DEFAULT NULL COMMENT 'режим работы',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`,`company_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `company_dispatcher`
@@ -269,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `driver` (
   `about` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=26 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=27 ;
 
 --
 -- Dumping data for table `driver`
@@ -348,7 +348,7 @@ CREATE TABLE IF NOT EXISTS `driver_to_company` (
   `company_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`driver_id`,`company_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `driver_to_company`
@@ -425,7 +425,7 @@ INSERT INTO `message` (`id`, `from`, `to`, `date`, `name`, `text`) VALUES
 CREATE TABLE IF NOT EXISTS `order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `surname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `oname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `contacts` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `from` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `to` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -438,7 +438,32 @@ CREATE TABLE IF NOT EXISTS `order` (
   `order_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `city` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=30 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=69 ;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`id`, `session_id`, `surname`, `oname`, `contacts`, `from`, `to`, `when`, `time`, `status`, `company_id`, `dispatcher_id`, `message`, `order_date`, `city`) VALUES
+(30, '9207fd28aad9005bcd4bf65929ebf4f5', 'Karpov', 'Alexei', '87019939292', 'Kargalinka', 'Al''-Farabi Navoi', '2011-08-24', '05:30:00', '1112', 2, 7, 'hhekhkw', '2011-08-22 13:18:31', 1),
+(56, '0c1eacd91a0d6fecde9de6ea352a977e', 'Mukanova', 'Balnur', '87005465677', 'almaty', 'Airport', '2011-08-24', '06:30:00', '1112', 1, 7, 'jldksd', '2011-08-23 19:34:43', 1),
+(66, 'c793081e504205eb24cff22debedb95d', 'Tolepbergen', 'Iliyas', '87016656767', 'Almaty2', 'timiryazeva 27', '2011-08-25', '04:30:00', '1111', 1, 0, '', '2011-08-24 15:18:16', 1),
+(34, '9207fd28aad9005bcd4bf65929ebf4f5', 'KUrmanov', 'Dauren', '87016656767', 'Katar', 'Doha', '2011-08-23', '02:00:00', '1111', 1, 0, '', '2011-08-22 13:23:34', 1),
+(68, 'f98b070575d9a8967c2657fa582869e5', 'Tolepbergen', 'Ева', '87015527795', 'Katar', 'Doha', '2011-08-25', '05:45:00', '1113', 1, 7, '', '2011-08-24 15:31:04', 1),
+(39, 'fe20a418922b678382bcfbcdcc5a891e', 'Kavein', 'Kenan', '42232323229', 'Tau Gul''', 'Bratislava', '2011-08-23', '02:00:00', '1111', 1, 0, '', '2011-08-22 13:34:10', 1),
+(67, 'c793081e504205eb24cff22debedb95d', 'Tolepbergen', 'Iliyas', '87016656767', 'Almaty2', 'timiryazeva 27', '2011-08-25', '04:30:00', '1111', 1, 0, '', '2011-08-24 15:18:25', 1),
+(55, '0c1eacd91a0d6fecde9de6ea352a977e', 'Mukanova', 'Balnur', '87005465677', 'almaty', 'Airport', '2011-08-24', '06:30:00', '1113', 1, 7, 'slishkom daleko', '2011-08-23 19:31:02', 1),
+(42, '5d75043cda9b44a5a892a04edf0b7360', 'Abilov', 'Jarjan', '87019939292', 'Atyrau', 'Aktobe', '2011-08-25', '06:30:00', '1114', 1, 7, 'kjlllkj', '2011-08-23 15:23:37', 9),
+(58, 'c9f9c9d607c5b2e56c5259986f72372e', 'ttt', 'swwwwwwe', '42232323229', 'Hairov', 'Azat', '2011-08-18', '00:00:00', '1113', 1, 7, 'malo deneg', '2011-08-24 11:13:06', 1),
+(59, 'c9f9c9d607c5b2e56c5259986f72372e', 'Tazhibayeva', 'Saltanat', '87016656767', 'Katar', 'Doha', '2011-08-27', '11:30:00', '1114', 1, 7, '', '2011-08-24 11:15:27', 1),
+(60, 'c9f9c9d607c5b2e56c5259986f72372e', 'Saltanat', 'Ева', '87019939292', 'Atyrau', 'Aktobe', '2011-08-25', '15:00:00', '1114', 1, 7, 'uyiuiuyi', '2011-08-24 11:19:02', 1),
+(61, '7aeb2ce50e6fdff160f4e17f65216e2b', 'Saltanat', 'Kamila', '87019939292', 'Semei', 'Semei Vokzaly', '2011-08-25', '06:45:00', '1113', 1, 7, 'Trebuyet mnogo deneg', '2011-08-24 11:21:56', 1),
+(47, 'bb65bb4a9ba76ec620b28ea2637a30ce', 'Tolepbergen', 'Olzhas', '87779890899', 'Katar', 'Doha', '2011-08-24', '09:00:00', '1114', 1, 7, 'lk;kl;l', '2011-08-23 15:35:48', 1),
+(57, '5c8ec66fe8f2c1846b2316d323c71313', 'Tergemesova', 'Gauhar', '87016656767', 'kaskelen', 'Kordai', '2011-08-25', '03:30:00', '1114', 1, 7, 'op[[[p', '2011-08-24 11:09:37', 1),
+(62, '7aeb2ce50e6fdff160f4e17f65216e2b', 'Saltanat', 'Kamila', '87019939292', 'Semei', 'Semei Vokzaly', '2011-08-25', '06:45:00', '1114', 1, 7, 'ploho umravlyaet soboi', '2011-08-24 11:24:05', 1),
+(63, 'c793081e504205eb24cff22debedb95d', 'Tolepbergen', 'Iliyas', '87016656767', 'Almaty2', 'timiryazeva 27', '2011-08-25', '04:30:00', '1111', 1, 0, '', '2011-08-24 15:15:14', 1),
+(64, 'c793081e504205eb24cff22debedb95d', 'Tolepbergen', 'Iliyas', '87016656767', 'Almaty2', 'timiryazeva 27', '2011-08-25', '04:30:00', '1111', 1, 0, '', '2011-08-24 15:18:04', 1),
+(65, 'c793081e504205eb24cff22debedb95d', 'Tolepbergen', 'Iliyas', '87016656767', 'Almaty2', 'timiryazeva 27', '2011-08-25', '04:30:00', '1111', 1, 0, '', '2011-08-24 15:18:11', 1);
 
 --
 -- Dumping data for table `order`
@@ -567,7 +592,7 @@ CREATE TABLE IF NOT EXISTS `unofficial_order` (
   `accomplished` int(11) NOT NULL,
   `access_token` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=68 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=70 ;
 
 --
 -- Dumping data for table `unofficial_order`
@@ -575,8 +600,10 @@ CREATE TABLE IF NOT EXISTS `unofficial_order` (
 
 INSERT INTO `unofficial_order` (`id`, `name`, `message`, `contacts`, `date`, `from`, `to`, `user_id`, `type`, `accomplished`, `access_token`) VALUES
 (65, 'Marram Marram', '2000 через пять минут', '87009999999', '2011-08-21 23:23:20', 'Вокзал-1', 'Барахолка', 38, 1, 0, ''),
-(66, 'Marram Marram', 'за 2000 тенге', '87009999999', '2011-08-22 13:31:40', 'Kaskelen', 'Karaganda', 38, 0, 0, ''),
-(67, 'Marram Marram', 'за 1500', '87009999999', '2011-08-22 13:32:24', 'Алматы-1', 'Фурманова-Аль-фараби', 38, 0, 0, '');
+(66, 'Karlygash', '400 tenge', '87778797878', '2011-08-22 12:26:05', 'Saina Marecheka', 'Al''-Farabi Shalyapina', 0, 0, 1, '9ec019b0d23d9bdb4ed65aa9ef83cd9b'),
+(67, 'Mariyam', '1000 tengw', '87016656767', '2011-08-22 13:16:04', 'Karaganda', 'Kaskelen', 0, 0, 0, '9ec019b0d23d9bdb4ed65aa9ef83cd9b'),
+(68, 'Elena', '500 tenge', '87015527795', '2011-08-24 15:25:12', 'Kaskelen', 'Timiryazeva', 0, 0, 0, '3f331af48bf3126583f009011a458dd3'),
+(69, 'Ardak', '500tenge', '87015527795', '2011-08-24 15:29:58', 'Kaskelen', 'Kaskelen', 0, 0, 0, '3f331af48bf3126583f009011a458dd3');
 
 -- --------------------------------------------------------
 
@@ -607,12 +634,19 @@ CREATE TABLE IF NOT EXISTS `users` (
   `status` int(11) NOT NULL,
   `public` int(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=36 ;
 
 --
 -- Dumping data for table `users`
 --
 
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `displayname`, `identity`, `provider`, `type`, `status`, `public`) VALUES
+(30, '', '', 'ardak.shalkar@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '0000-00-00 00:00:00', '2011-08-03 08:14:48', '2011-08-25 21:19:28', 'Ardak Shalkarbayuli', 'http://www.facebook.com/ardak.shalkar', 'http://www.facebook.com/', '', 0, 1),
+(31, 'marram', '123', 'marram@gmail.com', 1, 0, NULL, NULL, NULL, NULL, 'cb12343501c3edb3c9c49061a86952a1', '127.0.0.1', '0000-00-00 00:00:00', '2011-08-04 20:00:51', '2011-08-25 21:24:08', '', '', '', '', 0, 1),
+(32, 'massam', '$2a$08$8MA3urRuoE0Hmuie3fu5A.VCX1c5VxhOjKIvG2v74o.w2vonNCXyO', 'massam@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2011-08-04 20:14:59', '2011-08-04 20:04:53', '2011-08-27 09:18:32', '', '', '', '', 1, 1),
+(33, 'salta', '$2a$08$9Qe1LA1bNdvrJ46pSVTN1eAyTZiJ9UZ2ZlPk42BgsZ6Juum60nPzS', 'tasalta@gmail.com', 1, 0, NULL, NULL, NULL, NULL, 'acb3c21c3a53acf7e295449e6218b591', '0.0.0.0', '2011-08-08 14:58:30', '2011-08-08 14:56:42', '2011-08-25 21:42:50', '', '', '', '', 1, 0),
+(34, 'karaman', '$2a$08$/vTUJ06glg9QBiuP6y8xV.ER3QwI4z5bd/gA8qZRXHbcPboNpVxka', 'karaman@gmail.com', 0, 0, NULL, NULL, NULL, NULL, 'eda187ebbb5b0019cf46769106535bd7', '127.0.0.1', '0000-00-00 00:00:00', '2011-08-18 21:06:20', '2011-08-25 21:19:28', 'Karaman', '', '', '', 0, 1),
+(35, 'dauren', '$2a$08$ErtNmiOeFVUtHlsPSCEB/.UWqmYyUJR9WlSIHcMzZeeZ7qjLg0ruO', 't.fatimka@mail.ru', 0, 0, NULL, NULL, NULL, NULL, '3c64f2a1df667fe0a950070f14f6e35a', '127.0.0.1', '0000-00-00 00:00:00', '2011-08-19 07:15:15', '2011-08-25 21:19:28', 'Dauren', '', '', '', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -650,7 +684,7 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
   `status` varchar(160) COLLATE utf8_bin NOT NULL,
   `contacts` varchar(100) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `user_profiles`

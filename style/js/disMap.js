@@ -131,7 +131,7 @@ function loadDrivers(){
 					google.maps.event.addListener(marker, 'click', 
 					function() {
 						if (!infowindow) {infowindow = new google.maps.InfoWindow();}
-						$.post( "http://localhost/vacanttaxi/index.php/backend/get_driver2", {'id':data[i].id} ,
+						$.post( hostpath+"index.php/backend/get_driver2", {'id':data[i].id} ,
 							function( data ) {
 								infowindow.setContent(data);
 							}
