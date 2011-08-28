@@ -41,23 +41,22 @@ if (isset($extraHeadContent)) {
 <script>
 var id2,loginWidget=false,loginWidgetClicked=false;;
 $(document).ready(function(){
+	
+	$( "#taxistDiv" ).dialog({
+			autoOpen: false,
+			width:"750px"
+			});
 	$("#dateoforder").datepicker({dateFormat: 'yy-mm-dd'});
 	$("#chatDiv").hide();
-	$("#taxist").click( function(){
+	$("#enter").click( function(){
 		$("#loginPart").load("<?php echo base_url()?>index.php/auth/login2?ajax=true");
-		
-		$("#taxistDiv").show();
-	});
-	$("#loginCloseButton").click(function(){
-		$("#taxistDiv").hide();
+		$("#taxistDiv").dialog("open");
+		//$("#taxistDiv").show();
 	});
 	$("#client").click(function(){
 		loginWidget = true;
 		$("#taxistDiv").hide();
 		$("#clientDiv").fadeIn('normal');
-	});
-	$("#can").click(function(){
-		$("#taxistDiv").load("<?php echo base_url();?>index.php/front/ajaxlogin2", {'cache':false});
 	});
 	$("#register a").click(function(){
 		event.preventDefault(); 

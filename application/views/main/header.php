@@ -37,9 +37,15 @@ foreach ($menu as $mitem){
 	</div>
 
 
+<div id = "dialog">
+    <ul>
+		    
+    </ul>
+</div>
+
 
 	<?php if (!$logged_in) : ?>
-        <div id="taxistDiv">
+        <div id="taxistDiv" title="Войдите в сайт">
 			<script src="http://loginza.ru/js/widget.js" type="text/javascript"></script>
 			<div style="float:left;width:48%;">
 				<div id="loginzaInfo">Зайдите с помощью вашего аккаунта из социальных сетей</div>
@@ -51,17 +57,10 @@ foreach ($menu as $mitem){
 				<div id="loginPart">
 					
 				</div>
-				<div id="loginCloseButton">X</div>
 			</div>
-			
+			<div style="clear:both;"></div>
         </div>
 	<?php endif;?>
-<div id = "dialog">
-    <ul>
-		    
-    </ul>
-</div>
-
 <? /*
 <div id="user">
 	

@@ -28,8 +28,7 @@
     <div id="dialog-form" title="Оставить сообщение">
        	<?php 
 			$id = $this->session->userdata('user_id');
-//			echo $id;
-			if($id){
+			if($logged_in){
 				$contact = $user->contacts;
 //				print_r($user);
 				echo $contact;

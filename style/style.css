@@ -30,7 +30,7 @@ margin:auto;
 min-height:100%;
 }
 #menu{
-margin:20px 0px 0px 0px;
+margin:20px 0px 10px 0px;
 }
 #header{
 width:960px;
@@ -126,6 +126,9 @@ right:5px;
 width:300px;
 height:300px;
 }
+#top{
+background-color:white;
+}
 #present{
 border-radius:10px;
 background: url('images/mainpartback.png');
@@ -133,19 +136,16 @@ background-repeat:repeat-x;
 background-color:#fec601;
 position:relative;
 overflow:auto;
-padding-bottom:100px;
+padding:15px 20px 100px 20px;
 }
 #center{
 }
 
 #taxistDiv{
--moz-border-radius: 5px;
-border-radius:5px;
+-moz-border-radius: 10px;
+border-radius:10px;
 background-color:#ffff75;
 width:750px;
-position:absolute;
-z-index:3;
-visibility:visible;
 display:none;
 }
 #clientDiv{
