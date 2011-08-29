@@ -2,7 +2,6 @@ var map, geocoder,latlng,latLng_marker, markerWe, cnt;
 var cars =[];
 var infowindow, infowindow2;
 var browserSupportFlag =  new Boolean();
-var hostpath='http://localhost/vacanttaxi/';
 var carIcons = [];
 carIcons[0] = new google.maps.MarkerImage(
 	base_url+'style/images/car.png', 
@@ -12,7 +11,7 @@ carIcons[0] = new google.maps.MarkerImage(
 );
 
 carIcons[1] = new google.maps.MarkerImage(
-	hostpath+'style/images/car2.png', 
+	base_url+'style/images/car2.png', 
 	new google.maps.Size(32, 32),
 	new google.maps.Point(0, 0), 
 	new google.maps.Point(16, 30)
@@ -26,6 +25,7 @@ function findCityCoordinates(city){
 	}
 	geocoder.geocode(geocoderRequest, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
+			latlng = results[0].geometry.location;
 			map.setCenter(results[0].geometry.location);
 			if (!markerWe) {
 				markerWe = new google.maps.Marker({
@@ -43,6 +43,7 @@ function findCityCoordinates(city){
 			content += 'Lng: ' + results[0].geometry.location.lng();
 			infowindow.setContent(content);
 			infowindow.open(map, markerWe);
+	mapContent();
 		} 
 	});
 }
@@ -53,40 +54,57 @@ function initialize(){
 	};
 	var mapContainer = document.getElementById('map');
 	map = new google.maps.Map(mapContainer, options);
-	
-	findCityCoordinates(city);
-	
+	//findCityCoordinates(city)
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(success, errorfunct);	 
 	}
-
 	function errorfunct(code){
 		//mapContent();
-		alert('problems with navigator');
+		console.log(code);
+		if (code.code==2)
+			alert("Ваше точное местоположение не определено");
+		findCityCoordinates(city);
 	}
 
 	function success(position) {
 		latlng =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		codeLatLng(latlng);
-		//mapContent();
+		//codeLatLng(latlng);
+		map.setCenter(latlng);
+		if (!markerWe) {
+			markerWe = new google.maps.Marker({
+				map: map,
+				title: 'Вы здесь',
+				draggable: true
+			});
+		}
+		markerWe.setPosition(latlng);
+		if (!infowindow) {
+			infowindow = new google.maps.InfoWindow();
+			infowindow.setContent("Вы здесь");
+			infowindow.open(map, markerWe);
+		}
+		mapContent();
 	}
 	
 }
 function mapContent(){
-		
-	/*if(!markerWe){
-	markerWe = new google.maps.Marker({
-		position: latlng,
-		title: 'Вы здесь',
-		map: map,
-		draggable: true
-	});
-	markerWe.setPosition();}*/	
-	/*
-	latLng_marker= markerWe.getPosition();
-	var content = '<strong>' + 'Address:' +latLng_marker.formatted_address +'</strong><br />';
+	if(!markerWe){
+		markerWe = new google.maps.Marker({
+			position: latlng,
+			title: 'Вы здесь',
+			map: map,
+			draggable: true
+		});
+		markerWe.setPosition();
+	}
+	/*var content = '<strong>' + 'Address:' +latLng_marker.formatted_address +'</strong><br />';
 	content += 'Lat:' + latLng_marker.lat()+'<br/>';
-	content += 'Lng: ' + latLng_marker.lng();
+	content += 'Lng: ' + latLng_marker.lng();*/
+	var content = 'Lat:' + latlng.lat()+'<br/>';
+	content += 'Lng: ' + latlng.lng();
+	if (!infowindow) {
+		infowindow = new google.maps.InfoWindow();
+	}
 	infowindow.setContent(content);
 	infowindow.open(map, markerWe);
 	
@@ -98,11 +116,10 @@ function mapContent(){
 		c += 'Lng: ' + location.lng();
 		infowindow2.setContent(c);
 		infowindow2.open(map, markerWe);
-	});*/	
+	});
 	loadMarkers();
 }
 function loadMarkers(){
-	//alert('carsss');
 	if (cars) {
 		for (i in cars) {
 		cars[i].setMap(null);
@@ -183,4 +200,13 @@ function codeLatLng(latlng)
 			}
 		}
 	});
+}
+$(document).ready(function(){
+	$("#data_to_server").click(function(){
+		sendDataToServer();
+	});
+});
+function sendDataToServer(){
+	$.get(base_url+'map/update_position',{lat:latlng.lat(),lon:latlng.lng()});
+	setTimeout('sendDataToServer()',60*1000);
 }
