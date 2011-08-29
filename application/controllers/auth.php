@@ -99,7 +99,7 @@ class Auth extends MY_Controller
 			$data["component"] = "auth/login_form";
 			$data["main_title"] = "Неправильный пароль";
 			if (isset($_GET["ajax"]))
-				$this->load->view('auth/login_form',$data);
+				$this->load->view('main/components/auth/login_form',$data);
 			else
 				$this->load->view('main/index',$data);
 		}

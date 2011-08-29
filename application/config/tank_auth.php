@@ -8,7 +8,7 @@
 |--------------------------------------------------------------------------
 */
 $config['website_name'] = 'VacantTaxi - такси в вашем городе!';
-$config['webmaster_email'] = 'vacanttaxi.kz@gmail.com';
+$config['webmaster_email'] = 'webmaster@vacanttaxi.kz';
 
 /*
 |--------------------------------------------------------------------------

@@ -320,6 +320,7 @@ class Front extends MY_Controller
 		$data = $this->data;
 		$data['component'] = 'map';
 		$data['main_title'] = 'Карта';
+		$data['message'] = 'Если вы хотите чтобы ваш автомобиль отображался на этой карте. Скачайте файл и установите себе на мобильный телефон';
 		$this->load->view('main/index',$data);
 	}
 }
