@@ -207,6 +207,31 @@ $(document).ready(function(){
 	});
 });
 function sendDataToServer(){
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(success, errorfunct);	 
+	}
+	function errorfunct(code){
+	}
+
+	function success(position) {
+		latlng =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		//codeLatLng(latlng);
+		map.setCenter(latlng);
+		if (!markerWe) {
+			markerWe = new google.maps.Marker({
+				map: map,
+				title: 'Вы здесь',
+				draggable: true
+			});
+		}
+		markerWe.setPosition(latlng);
+		if (!infowindow) {
+			infowindow = new google.maps.InfoWindow();
+			infowindow.setContent("Вы здесь");
+			infowindow.open(map, markerWe);
+		}
+		mapContent();
+	}
 	$.get(base_url+'map/update_position',{lat:latlng.lat(),lon:latlng.lng()});
 	setTimeout('sendDataToServer()',60*1000);
 }

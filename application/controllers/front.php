@@ -321,6 +321,16 @@ class Front extends MY_Controller
 		$data['component'] = 'map';
 		$data['main_title'] = 'Карта';
 		$data['message'] = 'Если вы хотите чтобы ваш автомобиль отображался на этой карте. Скачайте файл и установите себе на мобильный телефон';
+		$data['client_msg'] = $this->front_model->get_messages(0);
+		$data['taxist_msg'] = $this->front_model->get_messages(1);
+		require('beaconpush.php');
+		$beaconpush = new BeaconPush();
+		$data['beaconpush'] = $beaconpush;
+		
+		/* catalogue */
+		$this->load->model('catalogue_model');
+		$data['drivers'] = $this->catalogue_model->loadCatalogue($this->session->userdata('city'));
+		
 		$this->load->view('main/index',$data);
 	}
 }

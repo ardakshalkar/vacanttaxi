@@ -24,5 +24,7 @@
 		</div>
 	</div>
 	<div id="footer"><?php $this->load->view('main/footer'); ?></div>
+	<div id="catalogue_flying_box"><?php if (isset($drivers)) echo $this->load->view('main/driver_list');?></div>
+	<?php $this->load->view('main/finish'); ?>
 </body>
 </html>

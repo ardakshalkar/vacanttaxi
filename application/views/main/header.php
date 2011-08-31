@@ -32,10 +32,6 @@ foreach ($menu as $mitem){
 	</div>
 </div>
 
-	<div id="menu">
-		<? echo ul($links); ?><div class="clear"></div>
-	</div>
-
 
 <div id = "dialog">
     <ul>

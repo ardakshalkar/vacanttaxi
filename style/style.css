@@ -26,7 +26,6 @@ body {
 html{ height:100%;}
 #wrapper{
 width:960px;
-margin:auto;
 min-height:100%;
 }
 #menu{
@@ -46,11 +45,17 @@ background-position:0% 100%;
 width:960px;
 margin:auto;
 }
-
+#catalogue_flying_box{
+position:absolute;
+left:980px;
+top:10px;
+border-radius:10px;
+background-color:#FFB871;
+width:200px;
+}
 #footer{
 clear:both;
 background-color:#FAFAFA;
-margin:auto;
 width:960px;
 text-align:center;
 position: relative;
@@ -62,7 +67,6 @@ background-position:0% 100%;
 }
 #msgs{
 margin:auto;
-width:840px;
 }
 #menu{
 clear:both;
@@ -366,7 +370,7 @@ overflow:auto;
 #taxist_msg, #client_msg{
 margin:10px;
 float:left;
-width:400px;
+width:300px;
 }
 #client_msg li{
 list-style:none;
@@ -438,4 +442,21 @@ color:white;
 padding:10px;
 border-radius:5px;
 cursor:pointer;
+}
+#catalogue_flying_box{
+padding:5px;
+}
+#catalogue_flying_box ul{
+margin:0px;
+padding:0px;
+}
+#catalogue_flying_box li{
+list-style-type:none;
+}
+#catalogue_flying_box li:nth-child(odd){
+	background-color:#FFB871;
+}
+
+#catalogue_flying_box li:nth-child(even){
+	background-color:#FF9;
 }
