@@ -1,7 +1,7 @@
 
 <div id="msgs">
 	<div id="taxist_msg">
-		<h3>Таксист</h3>
+		<h3>Водитель</h3>
 
 		<?php 
 			$data['messages']=$taxist_msg;
@@ -14,7 +14,7 @@
 		</div>
 	</div>
     <div id="client_msg">
-		<h3>Клиент</h3>
+		<h3>Пассажир</h3>
         <?php 
 			$data['messages']=$client_msg;
 			$data['ulid'] = 'show_msgC';

@@ -12,6 +12,7 @@ if ($component == "front"){
 	//$this->load->view('head/map'); 
 }
 if ($component == "map"){
+	$this->load->view('head/twits');
 	$this->load->view('head/map');
 }
 if ($component == "catalogue"|| $component == "catalogue_manage"){

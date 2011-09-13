@@ -6,5 +6,8 @@
 <h2><?php echo $a['c_name']; ?></h2>
 <p>Опыт: <?php echo $a['experience'];?>. тел.: <?php echo $a['m_phone'];?></p>
 <p><?php echo $a['about'];?></p>
-<? endif; ?>
+<? else : ?>
+<?php echo $a['c_name'] ?><br/>
+Профиль у пользователя еще не создан
+<? endif;?>
 </div>

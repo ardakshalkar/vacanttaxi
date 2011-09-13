@@ -13,7 +13,7 @@ foreach ($menu as $mitem){
 <div id = "header">
 	<div>
 	</div>
-	<img src="<?php echo base_url()."style/images/logo.png"; ?>" />
+	<a href="<?php echo base_url();?>"/><img src="<?php echo base_url()."style/images/logo.png"; ?>" /></a>
 	
 	<div id="user">
 		<?php if (!$logged_in) : ?>

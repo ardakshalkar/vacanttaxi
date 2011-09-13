@@ -8,8 +8,8 @@ class Catalogue_Model extends CI_Model
 	}
 	function loadCatalogue($city)
 	{
-		$city = $this->db->get_where('city',array('name'=>$city))->result();
-		$city_id = $city[0]->id;
+		//$city = $this->db->get_where('city',array('name'=>$city))->result();
+		$city_id = $this->session->userdata('city_id');
 		$query = $this->db->select('*')->from('driver')->join('car','driver.id=car.driver_id','left')->join('users','users.id=driver.user_id','left')->where('city',$city_id)->get();
 		$drivers = $query->result();
 		return $drivers;

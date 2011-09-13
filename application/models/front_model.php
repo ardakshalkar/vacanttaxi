@@ -106,16 +106,24 @@ class Front_Model extends CI_Model
 		//$this->db->join('rating', 'rating.driver_id = driver.user_id');
 		$query = $this->db->get('driver');
 		$driver = NULL;
-		foreach($query->result() as $taxist)
-		{
-			$driver['id'] = $taxist->id;
-			$driver['c_name'] = $taxist->c_name;
-			$driver['experience'] = $taxist->experience;
-			$driver['status'] = $taxist->status;
-			$driver['m_phone'] = $taxist->m_phone;
-			$driver['about'] = $taxist->about;
-			$query2 = $this->db->query("SELECT * FROM `user_profiles` WHERE `user_id`=".$id);
-			$driver['user_profile']=$query2->result();
+		if (count($query->result())>0)
+			foreach($query->result() as $taxist)
+			{
+				$driver['id'] = $taxist->id;
+				$driver['c_name'] = $taxist->c_name;
+				$driver['experience'] = $taxist->experience;
+				$driver['status'] = $taxist->status;
+				$driver['m_phone'] = $taxist->m_phone;
+				$driver['about'] = $taxist->about;
+				$query2 = $this->db->query("SELECT * FROM `user_profiles` WHERE `user_id`=".$id);
+				$driver['user_profile']=$query2->result();
+			}
+		else{
+			$this->db->where('id',$id);
+			$query = $this->db->get('users');
+			$user=$query->result();
+			$user = $user[0];
+			$driver['c_name'] = $user->displayname;
 		}
 		return $driver;
 	}

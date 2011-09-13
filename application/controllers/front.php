@@ -16,6 +16,8 @@ class Front extends MY_Controller
 	# General Page
 	function index()
 	{
+		$this->map();
+		return;
 		$data = $this->data;
 		$data['base_url'] = $this->config->item('base_url');
 		$data['main_title'] = 'Главная';
@@ -270,8 +272,8 @@ class Front extends MY_Controller
 	
 	function setCityOnMap($city){
 		if(isset($city)){
-			$this->session->set_userdata('city',$city);
-			$this->input->set_cookie('city', $city,5184000);
+			$this->session->set_userdata('city_id',$city);
+			$this->input->set_cookie('city_id', $city,5184000);
 			redirect("front/index");
 		
 		}
@@ -280,7 +282,7 @@ class Front extends MY_Controller
 		$this->load->model('front_model');
 		$cities = $this->front_model->getCity();
 		foreach ($cities as $row){
-			echo "<li><a href = '".base_url()."/index.php/front/setCityOnMap/".$row->name."'>".$row->name."</a></li>";
+			echo "<li><a href = '".base_url()."/index.php/front/setCityOnMap/".$row->id."'>".$row->ru_name."</a></li>";
 		}
 	}
  

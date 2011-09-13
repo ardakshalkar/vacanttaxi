@@ -27,6 +27,7 @@ html{ height:100%;}
 #wrapper{
 width:960px;
 min-height:100%;
+padding-left:80px;
 }
 #menu{
 margin:20px 0px 10px 0px;
@@ -47,7 +48,7 @@ margin:auto;
 }
 #catalogue_flying_box{
 position:absolute;
-left:980px;
+right:80px;
 top:10px;
 border-radius:10px;
 background-color:#FFB871;
@@ -55,15 +56,19 @@ width:200px;
 }
 #footer{
 clear:both;
-background-color:#FAFAFA;
-width:960px;
 text-align:center;
 position: relative;
 margin-top: -100px;
 height: 100px;
+padding-left:80px;
+}
+#footer_content{
 background:url('images/taxipattern.png');
-background-repeat:repeat-x;
 background-position:0% 100%;
+background-repeat:repeat-x;
+width:960px;
+height:100px;
+background-color:#FEC601;
 }
 #msgs{
 margin:auto;
@@ -334,6 +339,7 @@ padding:0;
 #msgs h3{
 text-align:center;
 width:100%;
+margin:0px;
 }
 #msgs li{
 padding-left:10px;
@@ -369,8 +375,13 @@ overflow:auto;
 }
 #taxist_msg, #client_msg{
 margin:10px;
-float:left;
-width:300px;
+width:250px;
+}
+#client_msg{
+float:right;
+}
+#taxist_msg{
+float:right;
 }
 #client_msg li{
 list-style:none;
@@ -459,4 +470,14 @@ list-style-type:none;
 
 #catalogue_flying_box li:nth-child(even){
 	background-color:#FF9;
+}
+#leaveMsg input{
+padding:0px;
+width:100%;
+}
+#cars_on_map_info{
+width:510px;
+float:right;
+padding:5px;
+background-color:#FF9;
 }

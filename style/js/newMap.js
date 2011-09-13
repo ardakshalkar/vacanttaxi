@@ -128,6 +128,7 @@ function loadMarkers(){
 	}
 	$.get(base_url+"front/get_list", {},
 		function(data){
+			$("#car_amount").html(data.length);
 			for (var i = 0; i < data.length; i++) {
 				var carMarker = new google.maps.Marker({
 					position: new google.maps.LatLng(data[i].lat,data[i].lon), 
