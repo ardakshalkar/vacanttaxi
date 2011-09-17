@@ -34,13 +34,26 @@ margin:20px 0px 10px 0px;
 }
 #header{
 width:960px;
-height:140px;
+height:100px;
 margin:auto;
-background-color:#fafafa;
 position:relative;
-background:url('images/taxipatternopaque.png');
 background-repeat:repeat-x;
 background-position:0% 100%;
+}
+#info_menu{
+position:absolute;
+left:200px;
+width:300px;
+top:0px;
+}
+#info_menu ul{
+list-style-type:none;
+}
+#info_menu li{
+float:left;
+}
+#info_menu a{
+margin:0 5px;
 }
 #middlepart{
 width:960px;
@@ -475,9 +488,27 @@ list-style-type:none;
 padding:0px;
 width:100%;
 }
-#cars_on_map_info{
+#cars_on_map_amount_info{
 width:510px;
 float:right;
 padding:5px;
 background-color:#FF9;
 }
+.company_list{
+float:left;
+width:150px;
+}
+ul#cars_on_map_list{
+	float: right;
+width: 510px;
+padding: 0px;
+}
+ul#cars_on_map_list li{
+list-style-type:none;
+}
+.list_driver_name{
+width:150px;
+font-weight:bold;
+display:inline-block;
+}
+

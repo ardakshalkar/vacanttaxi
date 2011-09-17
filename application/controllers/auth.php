@@ -151,7 +151,13 @@ class Auth extends MY_Controller
 						$this->form_validation->set_value('remember'),
 						$data['login_by_username'],
 						$data['login_by_email'])) {								// success
-					redirect('');
+						$user_id = $this->session->userdata('user_id');
+						$this->db->where('user_id',$user_id);
+						$query = $this->db->get('driver');
+						if (count($query->result())==0)
+							redirect('auth/edit_driver');
+						else
+							redirect('');
 
 				} else {
 					$errors = $this->tank_auth->get_error_message();
@@ -341,7 +347,6 @@ class Auth extends MY_Controller
 		if ($this->tank_auth->activate_user($user_id, $new_email_key)) {		// success
 			$this->tank_auth->logout();
 			$this->_show_message($this->lang->line('auth_message_activation_completed').' '.anchor('/auth/login/', 'Login'));
-
 		} else {																// fail
 			$this->_show_message($this->lang->line('auth_message_activation_failed'));
 		}

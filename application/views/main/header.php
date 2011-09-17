@@ -14,7 +14,13 @@ foreach ($menu as $mitem){
 	<div>
 	</div>
 	<a href="<?php echo base_url();?>"/><img src="<?php echo base_url()."style/images/logo.png"; ?>" /></a>
-	
+	<div id="info_menu">
+		<ul>
+			<li><?php echo anchor('flat/drivers','Водителям');?></li>
+			<li><?php echo anchor('flat/passengers','Пассажирам');?></li>
+			<li><?php echo anchor('flat/companies','Компаниям');?></li>
+		</ul>
+	</div>
 	<div id="user">
 		<?php if (!$logged_in) : ?>
 			<div id="enter">Войти</div>

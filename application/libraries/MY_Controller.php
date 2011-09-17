@@ -18,7 +18,7 @@ class MY_Controller extends CI_Controller{
 		else {
 			$this->data["logged_in"] = false;
 		}
-		$this->data['main_title'] = 'vacanttaxi.kz';
+		$this->data['main_title'] = 'VTaxi.kz - такси в вашем городе, заказ такси через интернет';
 	}
 }
 ?>

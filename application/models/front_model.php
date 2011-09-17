@@ -128,22 +128,24 @@ class Front_Model extends CI_Model
 		return $driver;
 	}
 	
-	function get_online_list()
+	function get_online_list($lat,$lon)
 	{
-		$this->db->where("(`status` = 1 AND `public` = 1)", NULL, FALSE);  
-		$query = $this->db->get('users');
-		$list = NULL;
-		$j=0;
+		$this->db->select("*");
+		$this->db->from("users");
+		$this->db->join('driver_location','users.id=driver_location.uid','inner');
+		$this->db->where('ABS(lat-'.$lat.')<',0.3);
+		$this->db->where('ABS(lon-'.$lon.')<',0.3);
+		$query = $this->db->get();
+		$j = 0;
+		$list = array();
 		foreach($query->result() as $i) 
 		{
+			$list[$j] = array();
 			$list[$j]['id'] = $i->id; 
 			$list[$j]['title']= $i->displayname;
 			$list[$j]['login']= $i->username;
-			$this->db->where('uid',$i->id); 
-			$query2 = $this->db->get('driver_location');
-			foreach($query2->result() as $k){
-			$list[$j]['lat']=$k->lat;
-			$list[$j]['lon']=$k->lon;}
+			$list[$j]['lat'] = $i->lat;
+			$list[$j]['lon'] = $i->lon;
 			$j++;
 		}
 		return $list;

@@ -126,10 +126,12 @@ function loadMarkers(){
 		}
 		cars.length = 0;
 	}
-	$.get(base_url+"front/get_list", {},
+	$.get(base_url+"front/get_list/"+latlng.lat()+"/"+latlng.lng(), {},
 		function(data){
 			$("#car_amount").html(data.length);
+			$("#cars_on_map_list").empty();
 			for (var i = 0; i < data.length; i++) {
+				$("#cars_on_map_list").append("<li><span class='list_driver_name'>"+data[i].title+"</span><span class='status'>свободен</span></li>");
 				var carMarker = new google.maps.Marker({
 					position: new google.maps.LatLng(data[i].lat,data[i].lon), 
 					map: map,

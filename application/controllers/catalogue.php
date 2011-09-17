@@ -58,7 +58,6 @@ class Catalogue extends MY_Controller {
 		$data["main_title"]="Каталог Компаний";
 		$data["component"]	= 'companies';
 		$companies = $this->catalogue_model->get_companies();
-		$data['city']=$this->session->userdata('city');
 		$data['companies'] = $companies;
 		$this->load->view('main/index',$data);
 		

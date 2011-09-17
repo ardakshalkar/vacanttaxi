@@ -60,45 +60,47 @@
 		<div>
 		<?php echo validation_errors();?>
         </div>
-		<div>
-			<label for="otkuda" id="otlabel">Откуда:</label>
-        	<?php echo form_input($otkuda);?>
-        </div>
-        <div>
-        	<label for="kuda" id="klabel">Куда:</label>
-        	<?php echo form_input($kuda);?>
-        </div>
-        <div>
-        	<label for="date" id="dlabel">На какой день:</label>
-        	<?php echo form_input($date);?>
-        </div>
-        <div>
-        	<label for="time" id="tlabel">Время:</label>
-        	<?php echo form_dropdown('hours',$hours,'00');?>
-            <?php echo form_dropdown('mins',$mins,'00');?>
-        </div>
-        <div>
-			<label for="surname" id="slabel">Фамилия:</label>
-        	<?php echo form_input($surname);?>
-        </div>
-        <div>
-			<label for="name" id="nlabel">Имя:</label>
-        	<?php echo form_input($name);?>
-        </div>
-        <div>
-        	<label for="contacts" id="conlabel">Номер Тел:</label>
-        	<?php echo form_input($contacts);?>
-        </div>
-        <div>
-        	<label for="contacts" id="conlabel">Такси Компания:</label>
-        	<?php echo form_dropdown('company',$companies); ?>
-        </div>
-        <div>
-        	<label for="contacts" id="conlabel">Ваш город:</label>
-        	<?php echo form_dropdown('city',$cities,$this->session->userdata['city_id']); ?>
-        </div>
-        <div>
-        	<?php echo form_submit(array('name'=>'order_button'),'Order');?>
-        </div>
+		<table>
+			<tr>
+				<td><label for="otkuda" id="otlabel">Откуда:</label></td>
+				<td><?php echo form_input($otkuda);?></td>
+			</tr>
+			<tr>
+				<td><label for="kuda" id="klabel">Куда:</label></td>
+				<td><?php echo form_input($kuda);?></td>
+			</tr>
+			<tr>
+				<td><label for="date" id="dlabel">На какой день:</label></td>
+				<td><?php echo form_input($date);?></td>
+			</tr>
+			<tr>
+				<td><label for="time" id="tlabel">Время:</label></td>
+				<td><?php echo form_dropdown('hours',$hours,'00');?>
+					<?php echo form_dropdown('mins',$mins,'00');?></td>
+			</tr>
+			<tr>
+				<td><label for="surname" id="slabel">Фамилия:</label></td>
+				<td><?php echo form_input($surname);?></td>
+			</tr>
+			<tr>
+				<td><label for="name" id="nlabel">Имя:</label></td>
+				<td><?php echo form_input($name);?></td>
+			</tr>
+			<tr>
+				<td><label for="contacts" id="conlabel">Номер Тел:</label></td>
+				<td><?php echo form_input($contacts);?></td>
+			</tr>
+			<tr>
+				<td><label for="contacts" id="conlabel">Такси Компания:</label></td>
+				<td><?php echo form_dropdown('company',$companies); ?></td>
+			</tr>
+			<tr>
+				<td><label for="contacts" id="conlabel">Ваш город:</label></td>
+				<td><?php echo form_dropdown('city',$cities,$this->session->userdata['city_id']); ?></td>
+			</tr>
+			<tr>
+				<td colspan=2><?php echo form_submit(array('name'=>'order_button'),'Заказать');?></td>
+			</tr>
+		</table>
         <?php echo form_close();?>        
 </div>

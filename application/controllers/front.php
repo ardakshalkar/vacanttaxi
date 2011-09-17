@@ -18,6 +18,9 @@ class Front extends MY_Controller
 	{
 		$this->map();
 		return;
+	}
+	function twits()
+	{
 		$data = $this->data;
 		$data['base_url'] = $this->config->item('base_url');
 		$data['main_title'] = 'Главная';
@@ -29,18 +32,7 @@ class Front extends MY_Controller
 		$beaconpush = new BeaconPush();
 		$data['beaconpush'] = $beaconpush;
 		$this->load->view('main/index',$data);
-		/*
-		if(isset($this->session->userdata['user_id']))
-		{
-			redirect('front/driver_profile');
-		}
-		else{
-			$data['page'] = 'login';		
-			$this->load->view('main/index',$data);
-		}*/
-		
 	}
-	
 	function register()
 	{
 		$data['image_error_message'] = NULL;
@@ -145,9 +137,9 @@ class Front extends MY_Controller
 		$data['base_url'] = $this->config->item('base_url');
 		echo $this->load->view('main/blocks/forTaxi',$data);
 	}
-	function get_list()
+	function get_list($lat,$lng)
 	{
-		$data=$this->front_model->get_online_list();
+		$data=$this->front_model->get_online_list($lat,$lng);
 		echo json_encode($data);
 	}
 	
@@ -321,7 +313,7 @@ class Front extends MY_Controller
  	function map(){
 		$data = $this->data;
 		$data['component'] = 'map';
-		$data['main_title'] = 'Карта';
+		$data['main_title'] = 'VTaxi.kz - такси в вашем городе, заказ такси через интернет';
 		$data['message'] = 'Если вы хотите чтобы ваш автомобиль отображался на этой карте. Скачайте файл и установите себе на мобильный телефон';
 		$data['client_msg'] = $this->front_model->get_messages(0);
 		$data['taxist_msg'] = $this->front_model->get_messages(1);
@@ -332,7 +324,8 @@ class Front extends MY_Controller
 		/* catalogue */
 		$this->load->model('catalogue_model');
 		$data['drivers'] = $this->catalogue_model->loadCatalogue($this->session->userdata('city'));
-		
+		$companies = $this->catalogue_model->get_companies();
+		$data['companies'] = $companies;
 		$this->load->view('main/index',$data);
 	}
 }
