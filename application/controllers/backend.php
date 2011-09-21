@@ -613,7 +613,7 @@ class Backend extends CI_Controller
 				$this->form_validation->set_rules('edit_confirm','Confirm',
 												'mathces[add_password]|xss_clean');
 												
-				$this->form_validation->set_rules('edit_name','Name',
+				$this->form_validation->set_rules('edit_dname','Name',
 												'required|alpha_numeric|min_length[3]|xss_clean');
 												
 				$this->form_validation->set_rules('edit_company','Company',
@@ -629,7 +629,7 @@ class Backend extends CI_Controller
 					$username = $this->input->post('edit_username');
 					$email = $this->input->post('edit_email');
 					$password = $this->input->post('edit_password');
-					$name = $this->input->post('edit_name');
+					$name = $this->input->post('edit_d		name');
 					$company_id = $this->input->post('edit_company');
 					$phone=$this->input->post('edit_phone');
 					$mode=$this->input->post('edit_mode');
@@ -652,7 +652,7 @@ class Backend extends CI_Controller
 								   'mode'=>$mode);
 					}else if($this->session->userdata['admin_type'] == DISPATCHER)
 					{				
-						$info2 = array('name'=>$name,
+						$info2 = array('dname'=>$name,
 								   'phone'=>$phone,
 								   'mode'=>$mode);
 					}

@@ -34,7 +34,7 @@
 </p>
 <p>
     <label>Имя:</label>
-    <?php echo form_input(array('name'=>'edit_name','class'=>'text-long','value'=>$info2->dname)); ?>
+    <?php echo form_input(array('name'=>'edit_dname','class'=>'text-long','value'=>$info2->dname)); ?>
 </p>
 <p>
     <label>Телефон:</label>

@@ -25,25 +25,7 @@ function findCityCoordinates(city){
 	}
 	geocoder.geocode(geocoderRequest, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
-			latlng = results[0].geometry.location;
-			map.setCenter(results[0].geometry.location);
-			if (!markerWe) {
-				markerWe = new google.maps.Marker({
-					map: map,
-				});
-			}
-			markerWe.setPosition(results[0].geometry.location);
-			if (!infowindow) {
-				infowindow = new google.maps.InfoWindow();
-			}
-			//console.log(results[0]);
-			
-			var content = '<strong>' + results[0].formatted_address + '</strong><br />';
-			content += 'Lat: ' + results[0].geometry.location.lat() + '<br />';
-			content += 'Lng: ' + results[0].geometry.location.lng();
-			infowindow.setContent(content);
-			infowindow.open(map, markerWe);
-	mapContent();
+			mapContent(latlng);
 		} 
 	});
 }
@@ -54,13 +36,13 @@ function initialize(){
 	};
 	var mapContainer = document.getElementById('map');
 	map = new google.maps.Map(mapContainer, options);
-	//findCityCoordinates(city)
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(success, errorfunct);	 
 	}
+	else {
+		findCityCoordinates(city);
+	}
 	function errorfunct(code){
-		//mapContent();
-		console.log(code);
 		if (code.code==2)
 			alert("Ваше точное местоположение не определено");
 		findCityCoordinates(city);
@@ -68,26 +50,12 @@ function initialize(){
 
 	function success(position) {
 		latlng =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		//codeLatLng(latlng);
-		map.setCenter(latlng);
-		if (!markerWe) {
-			markerWe = new google.maps.Marker({
-				map: map,
-				title: 'Вы здесь',
-				draggable: true
-			});
-		}
-		markerWe.setPosition(latlng);
-		if (!infowindow) {
-			infowindow = new google.maps.InfoWindow();
-			infowindow.setContent("Вы здесь");
-			infowindow.open(map, markerWe);
-		}
-		mapContent();
+		mapContent(latlng);
 	}
-	
+
 }
-function mapContent(){
+function mapContent(center){
+	map.setCenter(latlng);
 	if(!markerWe){
 		markerWe = new google.maps.Marker({
 			position: latlng,
@@ -95,11 +63,8 @@ function mapContent(){
 			map: map,
 			draggable: true
 		});
-		markerWe.setPosition();
+		markerWe.setPosition(center);
 	}
-	/*var content = '<strong>' + 'Address:' +latLng_marker.formatted_address +'</strong><br />';
-	content += 'Lat:' + latLng_marker.lat()+'<br/>';
-	content += 'Lng: ' + latLng_marker.lng();*/
 	var content = 'Lat:' + latlng.lat()+'<br/>';
 	content += 'Lng: ' + latlng.lng();
 	if (!infowindow) {
@@ -107,13 +72,12 @@ function mapContent(){
 	}
 	infowindow.setContent(content);
 	infowindow.open(map, markerWe);
-	
 	google.maps.event.addListener(markerWe, 'dragend', function(event) {
 		var location = event.latLng;
 		markerWe.setPosition(location);
 		var c = '<strong>' + 'Address:' + location.formatted_address +'</strong><br />';
 		c += 'Lat:' + location.lat()+'<br/>';
-		c += 'Lng: ' + location.lng();
+		c += 'Lng:' + location.lng();
 		infowindow2.setContent(c);
 		infowindow2.open(map, markerWe);
 	});
@@ -122,7 +86,7 @@ function mapContent(){
 function loadMarkers(){
 	if (cars) {
 		for (i in cars) {
-		cars[i].setMap(null);
+			cars[i].setMap(null);
 		}
 		cars.length = 0;
 	}
@@ -155,86 +119,22 @@ function loadMarkers(){
 		}, "json");
 	setTimeout(loadMarkers, 10*5000);  
 }
-
-function getCoordinates(address) {
-	if(!geocoder) {
-		geocoder = new google.maps.Geocoder();	
-	}
-	var geocoderRequest = {
-		address: address
-	}
-	geocoder.geocode(geocoderRequest, function(results, status) {
-		if (status == google.maps.GeocoderStatus.OK) {
-			map.setCenter(results[0].geometry.location);
-			if (!markerWe) {
-				markerWe = new google.maps.Marker({
-					map: map
-				});
-			}
-			markerWe.setPosition(results[0].geometry.location);
-			if (!infowindow) {
-				infowindow = new google.maps.InfoWindow();
-			}
-			var content = '<strong>' + results[0].formatted_address + '</strong><br />';
-			content += 'Lat: ' + results[0].geometry.location.lat() + '<br />';
-			content += 'Lng: ' + results[0].geometry.location.lng();
-			infowindow.setContent(content);
-			infowindow.open(map, markerWe);
-		} 
-	});
-}
-function codeLatLng(latlng) 
-{
-	if(!geocoder) {
-		geocoder = new google.maps.Geocoder();	
-	}
-	geocoder.geocode({'latLng': latlng}, function(results, status) 
-	{
-		if (status == google.maps.GeocoderStatus.OK) 
-		{
-			if (results[1].formatted_address.indexOf(city) !=-1 ){
-				map.setCenter(latlng);
-				markerWe.setPosition(latlng);
-				mapContent();
-			}
-			else {
-				getCoordinates(city);
-				mapContent();
-			}
-		}
-	});
-}
-$(document).ready(function(){
-	$("#data_to_server").click(function(){
-		sendDataToServer();
-	});
-});
 function sendDataToServer(){
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(success, errorfunct);	 
 	}
 	function errorfunct(code){
 	}
-
 	function success(position) {
 		latlng =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		//codeLatLng(latlng);
-		map.setCenter(latlng);
-		if (!markerWe) {
-			markerWe = new google.maps.Marker({
-				map: map,
-				title: 'Вы здесь',
-				draggable: true
-			});
-		}
-		markerWe.setPosition(latlng);
-		if (!infowindow) {
-			infowindow = new google.maps.InfoWindow();
-			infowindow.setContent("Вы здесь");
-			infowindow.open(map, markerWe);
-		}
-		mapContent();
+		mapContent(latlng);
+		$.get(base_url+'map/update_position',{lat:latlng.lat(),lon:latlng.lng()});
+		setTimeout('sendDataToServer()',60*1000);
 	}
-	$.get(base_url+'map/update_position',{lat:latlng.lat(),lon:latlng.lng()});
-	setTimeout('sendDataToServer()',60*1000);
 }
+
+$(document).ready(function(){
+	$("#data_to_server").click(function(){
+		sendDataToServer();
+	});
+});
